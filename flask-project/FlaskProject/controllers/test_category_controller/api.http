@@ -1,0 +1,60 @@
+###############################################################################
+#                               Test categories
+
+###
+#@name test_category_create
+POST http://0.0.0.0:5000/testCategory
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name test_category_alter
+PUT http://0.0.0.0:5000/testCategory/<string:test_category_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name test_category_inactivate
+DELETE http://0.0.0.0:5000/testCategory/<string:test_category_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name test_category_activate
+POST http://0.0.0.0:5000/testCategory/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
+
+###
+#@name test_category_get_one
+GET http://0.0.0.1:5000/testCategory/<string:test_category_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name test_category_autocomplete_by_name
+POST http://0.0.0.0:5000/testCategory/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
+#@name test_category_pagination
+GET http://0.0.0.1:5000/testCategory?start=some_int&limit=some_int&name=some_string
+content-type: application/json
+Authorization: {{token}}

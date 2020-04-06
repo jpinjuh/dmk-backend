@@ -1,0 +1,77 @@
+# Flask stuff
+flask < 1.0.3
+flask-sqlalchemy
+flask-alembic
+flask-script
+flask-cors
+flask-socketio
+
+
+# Awesome Python REPL
+ipython >= 5
+ipdb
+
+
+#Driver for MySQL
+#PyMySQL
+#Driver for PostgreSQL
+psycopg2
+sqlalchemy-repr
+
+# Some generally useful things
+unipath
+pytz
+tzlocal
+
+# Model factories
+#factory-boy
+#fake-factory
+
+# Test stuff
+#pytest
+#pytest-flask
+#pytest-colordots
+#pytest-spec
+#pytest-cov
+#vcrpy
+#httpretty
+
+PyJWT
+marshmallow
+configobj
+decorator
+Flask
+Flask-Login
+Flask-WTF
+gunicorn
+iniparse
+itsdangerous
+Jinja2
+MarkupSafe
+meld3
+#perf
+Pillow
+#pycurl
+#pygobject
+#pygpgme
+#pyliblzma
+python-dateutil
+pyudev
+#pyxattr
+redis
+requests
+six
+#slip
+#slip.dbus
+SQLAlchemy
+#supervisor
+#urlgrabber
+virtualenv
+Werkzeug
+#WTForms
+xlrd
+#yum-metadata-parser
+faker >= 0.6.0
+pandas >=0.23.4
+pycrypto
+pywebpush

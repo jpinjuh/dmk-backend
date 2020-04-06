@@ -1,0 +1,38 @@
+###############################################################################
+#                               Test films
+
+###
+#@name test_film_create
+POST http://0.0.0.0:5000/testFilm
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string",
+  "test_category": {"id":  "UUID as string"}
+}
+
+
+###
+#@name test_film_get_one
+GET http://0.0.0.1:5000/testFilm/<string:test_film_id>
+content-type: application/json
+Authorization: {{token}}
+
+
+###
+#@name test_film_autocomplete_by_name
+POST http://0.0.0.0:5000/testFilm/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+
+###
+#@name test_film_pagination
+GET http://0.0.0.1:5000/testFilm?start=some_int&limit=some_int&film_name=some_string&category_id=some_string
+content-type: application/json
+Authorization: {{token}}
