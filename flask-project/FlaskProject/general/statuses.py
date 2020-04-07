@@ -53,25 +53,18 @@ class Status:
         return cls(-1, 'Token required')
 
     @classmethod
-    def status_test_category_already_exist(cls):
+    def status_role_already_exist(cls):
         """
-        :return: cls(-1, 'This category already exist')
+        :return: cls(-1, 'This role already exist')
         """
-        return cls(-1, 'This category already exist')
+        return cls(-1, 'This role already exist')
 
     @classmethod
-    def status_test_category_not_exist(cls):
+    def status_role_not_exist(cls):
         """
-        :return: cls(-1, 'This category does not exist')
+        :return: cls(-1, 'This role does not exist')
         """
-        return cls(-1, 'This category does not exist')
-
-    @classmethod
-    def status_test_film_not_exist(cls):
-        """
-        :return: cls(-1, 'This film does not exist')
-        """
-        return cls(-1, 'This film does not exist')
+        return cls(-1, 'This role does not exist')
 
     def repr_print(self):
         return {
