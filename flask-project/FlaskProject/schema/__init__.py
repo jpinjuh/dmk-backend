@@ -1,2 +1,3 @@
-from .test_category_schema import TestCategorySchema
-from .test_film_schema import TestFilmSchema
+from .states_schema import StateSchema
+from .cities_schema import CitySchema
+from .districts_schema import DistrictSchema

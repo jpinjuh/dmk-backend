@@ -53,25 +53,32 @@ class Status:
         return cls(-1, 'Token required')
 
     @classmethod
-    def status_test_category_already_exist(cls):
+    def status_state_already_exist(cls):
         """
-        :return: cls(-1, 'This category already exist')
+        :return: cls(-1, 'This state already exist')
         """
-        return cls(-1, 'This category already exist')
+        return cls(-1, 'This state already exist')
 
     @classmethod
-    def status_test_category_not_exist(cls):
+    def status_state_not_exist(cls):
         """
-        :return: cls(-1, 'This category does not exist')
+        :return: cls(-1, 'This state does not exist')
         """
-        return cls(-1, 'This category does not exist')
+        return cls(-1, 'This state does not exist')
 
     @classmethod
-    def status_test_film_not_exist(cls):
+    def status_city_not_exist(cls):
         """
-        :return: cls(-1, 'This film does not exist')
+        :return: cls(-1, 'This city does not exist')
         """
-        return cls(-1, 'This film does not exist')
+        return cls(-1, 'This city does not exist')
+
+    @classmethod
+    def status_district_not_exist(cls):
+        """
+        :return: cls(-1, 'This district does not exist')
+        """
+        return cls(-1, 'This district does not exist')
 
     def repr_print(self):
         return {
