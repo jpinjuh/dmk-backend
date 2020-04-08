@@ -1,0 +1,60 @@
+###############################################################################
+#                               Roles
+
+###
+#@name role_create
+POST http://0.0.0.0:5000/role
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name role_alter
+PUT http://0.0.0.0:5000/role/<string:role_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name role_inactivate
+DELETE http://0.0.0.0:5000/role/<string:role_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name role_activate
+POST http://0.0.0.0:5000/role/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
+
+###
+#@name role_get_one
+GET http://0.0.0.1:5000/role/<string:role_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name role_autocomplete_by_name
+POST http://0.0.0.0:5000/role/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
+#@name role_pagination
+GET http://0.0.0.1:5000/role?start=some_int&limit=some_int&name=some_string
+content-type: application/json
+Authorization: {{token}}

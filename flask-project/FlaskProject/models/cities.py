@@ -6,60 +6,60 @@ from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
 
 
-# class TestFilmQuery(BaseQuery):
+class CityQuery(BaseQuery):
 
-#     def get_one(self, _id):
-#         try:
-#             return self.filter(TestFilm.id == _id).first()
-#         except Exception as e:
-#             db.session.rollback()
-#             return None
+     def get_one(self, _id):
+         try:
+             return self.filter(City.id == _id).first()
+         except Exception as e:
+             db.session.rollback()
+             return None
 
-#     @staticmethod
-#     def query_details():
-#         from . import TestCategory
-#         return db.session.query(TestFilm, TestCategory).join(
-#             TestCategory,
-#             TestFilm.test_category_id == TestCategory.id,
-#             isouter=False)
+     @staticmethod
+     def query_details():
+         from . import State
+         return db.session.query(City, State).join(
+             State,
+             City.state_id == State.id,
+             isouter=False)
 
-#     def get_one_details(self, _id):
-#         try:
-#             return self.query_details().filter(TestFilm.id == _id).first()
-#         except Exception as e:
-#             db.session.rollback()
-#             return None
+     def get_one_details(self, _id):
+         try:
+             return self.query_details().filter(City.id == _id).first()
+         except Exception as e:
+             db.session.rollback()
+             return None
 
-#     def autocomplete_by_name(self, search):
-#         try:
-#             from . import TestCategory
-#             return self.query_details().filter(
-#                 TestCategory.status == TestCategory.STATUSES['active'],
-#                 TestFilm.status == TestFilm.STATUSES['active'],
-#                 TestFilm.name.ilike('%'+search+'%')
-#             ).all()
-#         except Exception as e:
-#             db.session.rollback()
-#             return []
+     def autocomplete_by_name(self, search):
+         try:
+             from . import State
+             return self.query_details().filter(
+                 State.status == State.STATUSES['active'],
+                 City.status == City.STATUSES['active'],
+                 City.name.ilike('%'+search+'%')
+             ).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
 
-#     def get_all_by_filter(self, filter_data):
-#         try:
-#             from . import TestCategory
-#             return self.query_details().filter(
-#                 TestCategory.status == TestCategory.STATUSES['active'],
-#                 TestFilm.status == TestFilm.STATUSES['active'],
-#                 filter_data
-#             ).order_by(TestFilm.created_at.desc())
-#         except Exception as e:
-#             db.session.rollback()
-#             return []
+     def get_all_by_filter(self, filter_data):
+         try:
+             from . import State
+             return self.query_details().filter(
+                 State.status == State.STATUSES['active'],
+                 City.status == City.STATUSES['active'],
+                 filter_data
+             ).order_by(City.created_at.desc())
+         except Exception as e:
+             db.session.rollback()
+             return []
 
 
 class City(ModelsMixin, TimestampedModelMixin, db.Model):
 
     __tablename__ = 'cities'
 
-    #query_class = TestFilmQuery
+    query_class = CityQuery
 
     STATUSES = {
         'active': 1,

@@ -53,6 +53,7 @@ class Status:
         return cls(-1, 'Token required')
 
     @classmethod
+
     def status_state_already_exist(cls):
         """
         :return: cls(-1, 'This state already exist')
@@ -79,6 +80,19 @@ class Status:
         :return: cls(-1, 'This district does not exist')
         """
         return cls(-1, 'This district does not exist')
+
+    def status_role_already_exist(cls):
+        """
+        :return: cls(-1, 'This role already exist')
+        """
+        return cls(-1, 'This role already exist')
+
+    @classmethod
+    def status_role_not_exist(cls):
+        """
+        :return: cls(-1, 'This role does not exist')
+        """
+        return cls(-1, 'This role does not exist')
 
     def repr_print(self):
         return {

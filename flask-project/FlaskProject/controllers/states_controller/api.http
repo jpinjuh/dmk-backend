@@ -1,0 +1,60 @@
+###############################################################################
+#                               Test categories
+
+###
+#@name create_state
+POST http://0.0.0.0:5000/state
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name alter_state
+PUT http://0.0.0.0:5000//state/<string:state_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name state_inactivate
+DELETE http://0.0.0.0:5000//state/<string:state_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name state_activate
+POST http://0.0.0.0:5000//state/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
+
+###
+#@name get_one_state
+GET http://0.0.0.1:5000//state/<string:state_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name state_autocomplete
+POST http://0.0.0.0:5000//state/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
+#@name get_state
+GET http://0.0.0.1:5000/state?start=some_int&limit=some_int&name=some_string
+content-type: application/json
+Authorization: {{token}}

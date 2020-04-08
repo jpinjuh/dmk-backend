@@ -1,0 +1,38 @@
+###############################################################################
+#                               Test films
+
+###
+#@name create_district
+POST http://0.0.0.0:5000/district
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string",
+  "city": {"id":  "UUID as string"}
+}
+
+
+###
+#@name get_one_district
+GET http://0.0.0.1:5000/district/<string:district_id>
+content-type: application/json
+Authorization: {{token}}
+
+
+###
+#@name district_autocomplete
+POST http://0.0.0.0:5000/district/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+
+###
+#@name get_districts
+GET http://0.0.0.1:5000/district?start=some_int&limit=some_int&district_name=some_string&city_id=some_string
+content-type: application/json
+Authorization: {{token}}

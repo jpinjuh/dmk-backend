@@ -11,6 +11,7 @@ from werkzeug.exceptions import default_exceptions
 from .general import CustomLogException, FlaskProjectLogException
 
 #Dodati import router od svakoga controllera
+from .controllers.role_controller import router
 from .controllers.states_controller import router
 from .controllers.cities_controller import router
 from .controllers.districts_controller import router
