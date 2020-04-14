@@ -11,10 +11,14 @@ from werkzeug.exceptions import default_exceptions
 from .general import CustomLogException, FlaskProjectLogException
 
 #Dodati import router od svakoga controllera
-from .controllers.role_controller import router
+from .controllers.roles_controller import router
 from .controllers.states_controller import router
 from .controllers.cities_controller import router
 from .controllers.districts_controller import router
+from .controllers.permissions_controller import router
+from .controllers.privileges_controller import router
+from .controllers.users_controller import router
+from .controllers.identity_controller import router
 
 
 def create_app(config_environment):

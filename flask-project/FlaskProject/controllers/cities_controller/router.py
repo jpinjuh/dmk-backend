@@ -8,7 +8,7 @@ from ...schema import CitySchema
 
 
 @bpp.route('/city', methods=['POST'])
-@allow_access
+#@allow_access
 def create_city():
     request_json = request.get_json()
     schema = CitySchema(exclude=('id',))
@@ -55,7 +55,7 @@ def city_autocomplete():
 
 
 @bpp.route('/city', methods=['GET'])
-@allow_access
+#@allow_access
 def get_cities():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

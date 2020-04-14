@@ -162,3 +162,16 @@ class RoleController(BaseController):
         return dict(
             status=Status.status_successfully_processed().__dict__,
             total=total, data=list_data)
+
+    @staticmethod
+    def get_all():
+        roles = Role.query.order_by(Role.created_at.asc()).all()
+
+        list_data = []
+
+        for role in roles:
+            list_data.append(obj_to_dict(role))
+
+        return dict(
+            status=Status.status_successfully_processed().__dict__,
+            data=list_data)

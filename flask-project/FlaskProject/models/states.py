@@ -9,11 +9,11 @@ from ..db import db
 class StateQuery(BaseQuery):
 
     def get_one(self, _id):
-         try:
-             return self.filter(State.id == _id).first()
-         except Exception as e:
-             db.session.rollback()
-             return None
+        try:
+            return self.filter(State.id == _id).first()
+        except Exception as e:
+            db.session.rollback()
+            return None
 
     def check_if_already_exist_by_name(self, name):
         try:

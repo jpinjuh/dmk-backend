@@ -1,8 +1,8 @@
 """initial
 
-Revision ID: 53494491beb1
+Revision ID: 35d9941ac860
 Revises: 
-Create Date: 2020-04-06 17:08:15.174925
+Create Date: 2020-04-09 16:30:15.328229
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '53494491beb1'
+revision = '35d9941ac860'
 down_revision = None
 branch_labels = ('default',)
 depends_on = None
@@ -79,15 +79,18 @@ def upgrade():
     sa.Column('id', postgresql.UUID(as_uuid=True), nullable=False),
     sa.Column('roles_id', postgresql.UUID(as_uuid=True), nullable=True),
     sa.Column('districts_id', postgresql.UUID(as_uuid=True), nullable=True),
-    sa.Column('first_name', sa.String(length=255), nullable=True),
-    sa.Column('last_name', sa.String(length=255), nullable=True),
-    sa.Column('username', sa.String(length=255), nullable=True),
+    sa.Column('first_name', sa.String(length=255), nullable=False),
+    sa.Column('last_name', sa.String(length=255), nullable=False),
+    sa.Column('username', sa.String(length=255), nullable=False),
+    sa.Column('email', sa.String(length=255), nullable=False),
+    sa.Column('password_hash', sa.String(length=128), nullable=False),
     sa.Column('status', sa.SmallInteger(), server_default='1', nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['districts_id'], ['districts.id'], ),
     sa.ForeignKeyConstraint(['roles_id'], ['roles.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('email')
     )
     # ### end Alembic commands ###
 

@@ -1,9 +1,58 @@
 from flask import current_app
 from flask_script import Command
+from ..controllers.states_controller.controller import StateController
+from ..controllers.cities_controller.controller import CityController
+from ..controllers.roles_controller.controller import RoleController
+from ..controllers.districts_controller.controller import DistrictController
+from ..controllers.users_controller.controller import UserController
+from ..models.states import State, StateQuery
+from ..models.cities import City, CityQuery
+from ..models.roles import Role
+from ..models.districts import District
+from ..models.users import User
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class Seed(Command):
     """Seeds database with fake but realistic data"""
 
+
     def run(self):
         current_app.logger.info('Seeding database with test data...')
+        controller = StateController(
+            state=State(
+                name='BiH'
+            ))
+        controller.create()
+        state = State.query.filter_by(name='BiH').first()
+        controller = CityController(
+            city=City(
+                name='Grude',
+                state_id=state.id
+            ))
+        controller.create()
+        city = City.query.filter_by(name='Grude').first()
+        controller = DistrictController(
+            district=District(
+                name='Gorica-Sovići',
+                city_id=city.id
+            ))
+        controller.create()
+        controller = RoleController(
+            role=Role(
+                name='admin'
+            ))
+        controller.create()
+        role = Role.query.filter_by(name='admin').first()
+        district = District.query.filter_by(name='Gorica-Sovići').first()
+        user_create = UserController(
+            user=User(
+                first_name='Anđela',
+                last_name='Bošnjak',
+                username='andjelabosnjak',
+                email='andjela.bosnjak30@gmail.com',
+                password_hash=generate_password_hash('123456', method='sha256'),
+                roles_id=role.id,
+                districts_id=district.id
+            ))
+        user_create.create()

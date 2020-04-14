@@ -4,62 +4,88 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
-# class TestFilmQuery(BaseQuery):
+class UserQuery(BaseQuery):
 
-#     def get_one(self, _id):
-#         try:
-#             return self.filter(TestFilm.id == _id).first()
-#         except Exception as e:
-#             db.session.rollback()
-#             return None
+     def get_one(self, _id):
+         try:
+             return self.filter(User.id == _id).first()
+         except Exception as e:
+             db.session.rollback()
+             return None
 
-#     @staticmethod
-#     def query_details():
-#         from . import TestCategory
-#         return db.session.query(TestFilm, TestCategory).join(
-#             TestCategory,
-#             TestFilm.test_category_id == TestCategory.id,
-#             isouter=False)
+     def check_if_already_exist_by_name(self, name):
+         try:
+             return self.filter(
+                 User.status == User.STATUSES['active'],
+                 User.username == name).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
 
-#     def get_one_details(self, _id):
-#         try:
-#             return self.query_details().filter(TestFilm.id == _id).first()
-#         except Exception as e:
-#             db.session.rollback()
-#             return None
+     def check_if_name_is_taken(self, _id, name):
+         try:
+             return self.filter(
+                 User.id != _id,
+                 User.status == User.STATUSES['active'],
+                 User.username == name).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
 
-#     def autocomplete_by_name(self, search):
-#         try:
-#             from . import TestCategory
-#             return self.query_details().filter(
-#                 TestCategory.status == TestCategory.STATUSES['active'],
-#                 TestFilm.status == TestFilm.STATUSES['active'],
-#                 TestFilm.name.ilike('%'+search+'%')
-#             ).all()
-#         except Exception as e:
-#             db.session.rollback()
-#             return []
+     @staticmethod
+     def query_details():
+         from . import Role, District
+         return db.session.query(User, Role, District)\
+             .join(
+             Role,
+             User.roles_id == Role.id,
+             isouter=False)\
+             .join(District, User.districts_id == District.id, isouter=False)
 
-#     def get_all_by_filter(self, filter_data):
-#         try:
-#             from . import TestCategory
-#             return self.query_details().filter(
-#                 TestCategory.status == TestCategory.STATUSES['active'],
-#                 TestFilm.status == TestFilm.STATUSES['active'],
-#                 filter_data
-#             ).order_by(TestFilm.created_at.desc())
-#         except Exception as e:
-#             db.session.rollback()
-#             return []
+     def get_one_details(self, _id):
+         try:
+             return self.query_details().filter(User.id == _id).first()
+         except Exception as e:
+             db.session.rollback()
+             return None
+
+     def autocomplete_by_name(self, search):
+         try:
+             from . import Role, District
+             return self.query_details().filter(
+                 Role.status == Role.STATUSES['active'],
+                 District.status == District.STATUSES['active'],
+                 User.status == User.STATUSES['active'],
+                 User.first_name.ilike('%'+search+'%'),
+                 User.last_name.ilike('%'+search+'%'),
+                 User.username.ilike('%' + search + '%')
+             ).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
+
+     def get_all_by_filter(self, filter_data):
+         try:
+             from . import Role, District
+             return self.query_details().filter(
+                 Role.status == Role.STATUSES['active'],
+                 District.status == District.STATUSES['active'],
+                 User.status == User.STATUSES['active'],
+                 filter_data
+             ).order_by(User.created_at.desc())
+         except Exception as e:
+             db.session.rollback()
+             return []
 
 
 class User(ModelsMixin, TimestampedModelMixin, db.Model):
 
     __tablename__ = 'users'
 
-    #query_class = TestFilmQuery
+    query_class = UserQuery
 
     STATUSES = {
         'active': 1,
@@ -76,9 +102,25 @@ class User(ModelsMixin, TimestampedModelMixin, db.Model):
     districts_id = db.Column(UUID(as_uuid=True),
                                  db.ForeignKey('districts.id'),
                                  nullable=True)
-    first_name = db.Column(db.String(255), nullable=True)
-    last_name = db.Column(db.String(255), nullable=True)
-    username = db.Column(db.String(255), nullable=True)
+    first_name = db.Column(db.String(255), nullable=False)
+    last_name = db.Column(db.String(255), nullable=False)
+    username = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
     status = db.Column(
         db.SmallInteger, nullable=False,
         default=STATUSES['active'], server_default=str(STATUSES['active']))
+
+    @classmethod
+    def authenticate(cls, **kwargs):
+        username = kwargs.get('username')
+        password = kwargs.get('password')
+
+        if not username or not password:
+            return None
+
+        user = cls.query.filter_by(username=username).first()
+        if not user or not check_password_hash(user.password_hash, password):
+            return None
+
+        return user

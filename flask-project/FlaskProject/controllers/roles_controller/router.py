@@ -7,7 +7,7 @@ from ...general.route_decorators import allow_access
 from ...schema import RoleSchema
 
 @bpp.route('/role', methods=['POST'])
-#@allow_access
+@allow_access
 def create_role():
     request_json = request.get_json()
     schema = RoleSchema(exclude=('id',))
@@ -25,7 +25,7 @@ def create_role():
         status=Status.status_successfully_inserted().__dict__)
 
 @bpp.route('/role/<string:role_id>', methods=['PUT'])
-#@allow_access
+@allow_access
 def alter_role(role_id):
     request_json = request.get_json()
     schema = RoleSchema(exclude=('id',))
@@ -100,9 +100,17 @@ def role_autocomplete():
 @bpp.route('/role', methods=['GET'])
 #@allow_access
 def get_roles():
+    start = request.args.get('start', 0, int)
+    limit = request.args.get('limit', 20, int)
+    name = request.args.get('name', None, str)
 
     pagination_result = RoleController.get_list_pagination(
         start=start, limit=limit, name=name)
 
     return jsonify(pagination_result)
 
+@bpp.route('/roles', methods=['GET'])
+@allow_access
+def get_all_roles():
+    data = RoleController.get_all()
+    return jsonify(data)

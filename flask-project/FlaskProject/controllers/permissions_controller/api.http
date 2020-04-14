@@ -1,0 +1,60 @@
+###############################################################################
+#                               Permissions
+
+###
+#@name permission_create
+POST http://0.0.0.0:5000/permission
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name permission_alter
+PUT http://0.0.0.0:5000/permission/<string:permission_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name permission_inactivate
+DELETE http://0.0.0.0:5000/permission/<string:permission_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name permission_activate
+POST http://0.0.0.0:5000/permission/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
+
+###
+#@name permission_get_one
+GET http://0.0.0.1:5000/permission/<string:permission_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name permission_autocomplete_by_name
+POST http://0.0.0.0:5000/permission/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
+#@name permission_pagination
+GET http://0.0.0.1:5000/permission?start=some_int&limit=some_int&name=some_string
+content-type: application/json
+Authorization: {{token}}

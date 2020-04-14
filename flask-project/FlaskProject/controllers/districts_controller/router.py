@@ -8,7 +8,7 @@ from ...schema import DistrictSchema
 
 
 @bpp.route('/district', methods=['POST'])
-@allow_access
+#@allow_access
 def create_district():
     request_json = request.get_json()
     schema = DistrictSchema(exclude=('id',))
@@ -55,7 +55,7 @@ def district_autocomplete():
 
 
 @bpp.route('/district', methods=['GET'])
-@allow_access
+#@allow_access
 def get_districts():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

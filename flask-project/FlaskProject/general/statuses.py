@@ -81,11 +81,19 @@ class Status:
         """
         return cls(-1, 'This district does not exist')
 
+    @classmethod
+    def status_district_already_exist(cls):
+        """
+        :return: cls(-1, 'This district already exists')
+        """
+        return cls(-1, 'This district already exists')
+
+    @classmethod
     def status_role_already_exist(cls):
         """
-        :return: cls(-1, 'This role already exist')
+        :return: cls(-1, 'This role already exists')
         """
-        return cls(-1, 'This role already exist')
+        return cls(-1, 'This role already exists')
 
     @classmethod
     def status_role_not_exist(cls):
@@ -93,6 +101,48 @@ class Status:
         :return: cls(-1, 'This role does not exist')
         """
         return cls(-1, 'This role does not exist')
+
+    @classmethod
+    def status_permission_already_exist(cls):
+        """
+        :return: cls(-1, 'This permission already exists')
+        """
+        return cls(-1, 'This permission already exists')
+
+    @classmethod
+    def status_permission_not_exist(cls):
+        """
+        :return: cls(-1, 'This permission does not exist')
+        """
+        return cls(-1, 'This permission does not exist')
+
+    @classmethod
+    def status_privilege_already_exist(cls):
+        """
+        :return: cls(-1, 'This privilege already exists')
+        """
+        return cls(-1, 'This privilege already exists')
+
+    @classmethod
+    def status_privilege_not_exist(cls):
+        """
+        :return: cls(-1, 'This privilege does not exist')
+        """
+        return cls(-1, 'This privilege does not exist')
+
+    @classmethod
+    def status_user_already_exist(cls):
+        """
+        :return: cls(-1, 'This user already exists')
+        """
+        return cls(-1, 'This user already exists')
+
+    @classmethod
+    def status_user_not_exist(cls):
+        """
+        :return: cls(-1, 'This user does not exist')
+        """
+        return cls(-1, 'This user does not exist')
 
     def repr_print(self):
         return {
