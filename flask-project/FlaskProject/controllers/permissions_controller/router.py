@@ -90,7 +90,7 @@ def get_one_permission(permission_id):
 
 
 @bpp.route('/permission/autocomplete', methods=['POST'])
-#@allow_access
+@allow_access
 def permission_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)

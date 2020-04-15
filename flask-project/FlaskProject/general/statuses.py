@@ -39,6 +39,13 @@ class Status:
         return cls(200, 'Successfully processed')
 
     @classmethod
+    def status_unsuccessfully_processed(cls):
+        """
+        :return: cls(200, 'Unsuccessfully processed')
+        """
+        return cls(-1, 'Unsuccessfully processed')
+
+    @classmethod
     def status_connection_refuse(cls):
         """
         :return: cls(-1, 'Connection refuse')

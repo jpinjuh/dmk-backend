@@ -37,11 +37,15 @@ def login():
     user = User.authenticate(**data)
 
     if not user:
-        return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
+        return jsonify(
+            message='Invalid credentials',
+            status=Status.status_unsuccessfully_processed().__dict__)
 
     token = jwt.encode({
         'username': user.username,
         'iat': datetime.datetime.utcnow(),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
         current_app.config['JWT_SECRET_KEY'])
-    return jsonify({'access_token': token.decode('UTF-8')})
+    return jsonify(
+        access_token=token.decode('UTF-8'),
+        status=Status.status_successfully_processed().__dict__)
