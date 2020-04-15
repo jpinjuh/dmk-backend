@@ -1,0 +1,13 @@
+###############################################################################
+#                               Identity
+
+###
+#@name login
+POST http://0.0.0.0:5000/login
+content-type: application/json
+
+{
+  "username": "Some string",
+  "password": "Some string"
+}
+

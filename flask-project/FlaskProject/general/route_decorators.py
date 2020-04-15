@@ -22,15 +22,17 @@ def allow_access(function):
 
         try:
             token = request.headers.environ['HTTP_AUTHORIZATION']
+            #token = request.args.get('token')
+            #token = request.headers['HTTP_AUTHORIZATION']
             ##Ovdje ide programski kod za validaciju jwt
-            data = jwt.decode(token, current_app.config.get('JWT_SECRET_KEY'))
-            current_user = Users.query.filter_by(username=data['username']).first()
 
+            data = jwt.decode(token, current_app.config.get('JWT_SECRET_KEY'))
+            #current_user = Users.query.filter_by(username=data['username']).first()
 
         except Exception as e:
             return jsonify(stattus=Status.status_token_required().__dict__)
 
-        return function(current_user, *args, **kwargs)
+        return function(*args, **kwargs)
 
     return decorated_function
 

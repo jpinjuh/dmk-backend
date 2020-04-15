@@ -8,7 +8,7 @@ from ...schema import StateSchema
 
 
 @bpp.route('/state', methods=['POST'])
-#@allow_access
+@allow_access
 def create_state():
     request_json = request.get_json()
     schema = StateSchema(exclude=('id',))
@@ -103,7 +103,7 @@ def state_autocomplete():
 
 
 @bpp.route('/state', methods=['GET'])
-#@allow_access
+@allow_access
 def get_states():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

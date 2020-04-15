@@ -8,7 +8,7 @@ from ...schema import PrivilegeSchema
 
 
 @bpp.route('/privilege', methods=['POST'])
-#@allow_access
+@allow_access
 def create_privilege():
     request_json = request.get_json()
     schema = PrivilegeSchema(exclude=('id',))
@@ -29,7 +29,7 @@ def create_privilege():
 
 
 @bpp.route('/privilege/<string:privilege_id>', methods=['GET'])
-#@allow_access
+@allow_access
 def get_one_privilege(privilege_id):
     controller = PrivilegeController.get_one_details(privilege_id)
 
@@ -42,7 +42,7 @@ def get_one_privilege(privilege_id):
 
 
 @bpp.route('/privilege/autocomplete', methods=['POST'])
-#@allow_access
+@allow_access
 def privilege_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)
@@ -55,7 +55,7 @@ def privilege_autocomplete():
 
 
 @bpp.route('/privilege', methods=['GET'])
-#@allow_access
+@allow_access
 def get_privileges():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

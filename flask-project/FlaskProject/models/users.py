@@ -25,6 +25,15 @@ class UserQuery(BaseQuery):
              db.session.rollback()
              return False
 
+     def check_if_already_exist_by_email(self, email):
+         try:
+             return self.filter(
+                 User.status == User.STATUSES['active'],
+                 User.email == email).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
      def check_if_name_is_taken(self, _id, name):
          try:
              return self.filter(

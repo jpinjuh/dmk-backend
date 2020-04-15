@@ -8,7 +8,7 @@ from ...schema import UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @bpp.route('/user', methods=['POST'])
-#@allow_access
+@allow_access
 def create_user():
     request_json = request.get_json()
     schema = UserSchema(exclude=('id',))
@@ -34,7 +34,7 @@ def create_user():
 
 
 @bpp.route('/user/<string:user_id>', methods=['GET'])
-#@allow_access
+@allow_access
 def get_one_user(user_id):
     controller = UserController.get_one_details(user_id)
 
@@ -47,7 +47,7 @@ def get_one_user(user_id):
 
 
 @bpp.route('/user/autocomplete', methods=['POST'])
-#@allow_access
+@allow_access
 def user_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)
@@ -60,7 +60,7 @@ def user_autocomplete():
 
 
 @bpp.route('/user', methods=['GET'])
-#@allow_access
+@allow_access
 def get_users():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

@@ -22,6 +22,11 @@ class UserController(BaseController):
             raise FlaskProjectLogException(
                 Status.status_user_already_exist())
 
+        if User.query.check_if_already_exist_by_email(
+                self.user.email):
+            raise FlaskProjectLogException(
+                Status.status_user_already_exist())
+
         if self.user.roles_id is not None:
             user_role = RoleController.get_one(
                 self.user.roles_id)

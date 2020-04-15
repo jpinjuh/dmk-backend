@@ -1,0 +1,38 @@
+###############################################################################
+#                               Privileges
+
+###
+#@name create_privilege
+POST http://0.0.0.0:5000/privilege
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "role": {"id":  "UUID as string"},
+  "permission": {"id":  "UUID as string"}
+}
+
+
+###
+#@name get_one_privilege
+GET http://0.0.0.1:5000/privilege/<string:privilege_id>
+content-type: application/json
+Authorization: {{token}}
+
+
+###
+#@name privilege_autocomplete
+POST http://0.0.0.0:5000/privilege/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+
+###
+#@name get_privileges
+GET http://0.0.0.1:5000/privilege?start=some_int&limit=some_int&city_name=some_string&state_id=some_string
+content-type: application/json
+Authorization: {{token}}

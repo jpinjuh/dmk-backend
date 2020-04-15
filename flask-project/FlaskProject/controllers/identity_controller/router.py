@@ -40,8 +40,8 @@ def login():
         return jsonify({'message': 'Invalid credentials', 'authenticated': False}), 401
 
     token = jwt.encode({
-        'sub': user.username,
+        'username': user.username,
         'iat': datetime.datetime.utcnow(),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)},
         current_app.config['JWT_SECRET_KEY'])
-    return jsonify({'token': token.decode('UTF-8')})
+    return jsonify({'access_token': token.decode('UTF-8')})
