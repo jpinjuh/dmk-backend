@@ -1,5 +1,10 @@
 from flask import request, jsonify, make_response, current_app, Flask
-from ...flask_jwt.flask_jwt import JWT, jwt_required, current_identity
+from ...flask_jwt.flask_jwt import JWT, jwt_required, current_identity, JWTError
+from ...flask_jwt_extended.flask_jwt_extended import (
+    JWTManager, create_access_token,
+    jwt_refresh_token_required, create_refresh_token,
+    get_jwt_identity, fresh_jwt_required
+)
 from ...controllers.users_controller.controller import UserController
 from ... import bpp, User, FlaskProjectLogException
 from ...general import Status, authenticate, identity
@@ -40,20 +45,21 @@ def login():
 
 
 """
-
 @bpp.route('/renew', methods=['POST', 'GET'])
-@allow_access
+@jwt_required()
 def refresh():
 
-    user = User.query.filter_by(id=current_identity['id']).first()
-    data = {'user': user.id}
-    user_id = data.get(current_app.config.get('JWT_AUTH_USERNAME_KEY'), None)
-    criterion = [user_id, len(data) == 1]
-
+    return %s current_identity
+    #user = User.query.filter(id=current_identity['id']).first()
+    #data = {'user': user.id}
+    #username = data.get(current_app.config.get('JWT_AUTH_USERNAME_KEY'), None)
+    #criterion = [username, len(data) == 1]
+"""
+"""
     if not all(criterion):
         raise JWTError('Bad Request', 'Invalid credentials')
 
-    identity = _jwt.authentication_callback(user_id)
+    #identity = _jwt.authentication_callback(user_id)
     identity.update({
         'first_name': current_identity['first_name'],
         'last_name': current_identity['last_name'],
@@ -65,14 +71,24 @@ def refresh():
         identity['user'] = user
         return _jwt.auth_response_callback(access_token, identity)
     else:
-        raise JWTError('Bad Request', 'Invalid credentials') """
+        raise JWTError('Bad Request', 'Invalid credentials')"""
+
 
 """
 @bpp.route('/renew', methods=['POST', 'GET'])
 @jwt_required()
-def renew():
+def refresh():
     verify_jwt()
     payload = jwt.payload_callback(current_user)
     new_token = jwt.encode_callback(payload)
-    return jwt.response_callback(new_token)
-"""
+    return jwt.response_callback(new_token)"""
+
+@bpp.route('/refresh', methods=['POST'])
+@jwt_required()
+def refresh():
+    current_user = current_identity
+    #current_user = User.query.filter_by(id=current_identity['id']).first()
+    return current_identity.first_name
+    #new_token = create_access_token(identity=current_user, fresh=False)
+    #ret = {'access_token': new_token}
+    #return jsonify(ret), 200
