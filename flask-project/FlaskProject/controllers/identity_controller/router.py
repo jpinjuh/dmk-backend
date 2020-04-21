@@ -83,7 +83,7 @@ def refresh():
 def refresh():
     current_user = current_identity
     #current_user = User.query.filter_by(id=current_identity['id']).first()
-    return current_identity.first_name
+    return current_user
     #new_token = create_access_token(identity=current_user, fresh=False)
     #ret = {'access_token': new_token}
     #return jsonify(ret), 200
