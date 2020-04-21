@@ -1,5 +1,4 @@
 from flask import request, jsonify
-
 from .controller import RoleController
 from ... import bpp, Role, FlaskProjectLogException
 from ...general import Status, obj_to_dict
@@ -8,7 +7,7 @@ from ...schema import RoleSchema
 from ...flask_jwt import JWT, jwt_required
 
 @bpp.route('/role', methods=['POST'])
-
+@jwt_required()
 def create_role():
     request_json = request.get_json()
     schema = RoleSchema(exclude=('id',))
@@ -26,7 +25,7 @@ def create_role():
         status=Status.status_successfully_inserted().__dict__)
 
 @bpp.route('/role/<string:role_id>', methods=['PUT'])
-
+@jwt_required()
 def alter_role(role_id):
     request_json = request.get_json()
     schema = RoleSchema(exclude=('id',))
@@ -45,7 +44,7 @@ def alter_role(role_id):
         status=Status.status_update_success().__dict__)
 
 @bpp.route('/role/<string:role_id>', methods=['DELETE'])
-
+@jwt_required()
 def role_inactivate(role_id):
     controller = RoleController(
         role=Role(id=role_id))
@@ -57,7 +56,7 @@ def role_inactivate(role_id):
         status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/role/activate', methods=['POST'])
-
+@jwt_required()
 def role_activate():
     request_json = request.get_json()
     schema = RoleSchema(only=('id',))
@@ -73,7 +72,7 @@ def role_activate():
         status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/role/<string:role_id>', methods=['GET'])
-
+@jwt_required()
 def get_one_role(role_id):
     controller = RoleController.get_one_details(role_id)
 
@@ -86,7 +85,7 @@ def get_one_role(role_id):
 
 
 @bpp.route('/role/autocomplete', methods=['POST'])
-
+@jwt_required()
 def role_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)
@@ -99,7 +98,7 @@ def role_autocomplete():
 
 
 @bpp.route('/role', methods=['GET'])
-
+@jwt_required()
 def get_roles():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)
@@ -110,8 +109,9 @@ def get_roles():
 
     return jsonify(pagination_result)
 
-@bpp.route('/roles', methods=['GET'])
 
+@bpp.route('/roles', methods=['GET'])
 def get_all_roles():
     data = RoleController.get_all()
     return jsonify(data)
+

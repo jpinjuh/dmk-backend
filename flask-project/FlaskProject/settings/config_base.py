@@ -8,6 +8,8 @@ import pytz
 import tzlocal
 from flask_cors import CORS
 from unipath import Path
+from ..flask_jwt import JWT
+from ..general import authenticate, identity
 
 
 class ImproperlyConfiguredError(RuntimeError):
@@ -48,9 +50,9 @@ class ConfigBase:
     # --------------------------------------------------------------------------
     # Flask config
     # --------------------------------------------------------------------------
-    SECRET_KEY = None
-    JWT_EXPIRES_IN = None
-    JWT_SECRET_KEY = None
+    SECRET_KEY = 'sgdgasgad'
+    JWT_EXPIRES_IN = 1
+    JWT_SECRET_KEY = 'neki_kljuc'
 
     # --------------------------------------------------------------------------
     # Flask-Alembic config
@@ -238,7 +240,7 @@ class ConfigBase:
             self.validate()
             app.config.from_object(self)
             self._init_loggers(app)
+            JWT(app, authenticate, identity)
             CORS(app)
-
 
 
