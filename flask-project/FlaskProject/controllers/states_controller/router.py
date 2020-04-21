@@ -1,5 +1,5 @@
 from flask import request, jsonify
-
+from ...flask_jwt.flask_jwt import JWT, current_identity, jwt_required
 from .controller import StateController
 from ... import bpp, State, FlaskProjectLogException
 from ...general import Status, obj_to_dict
@@ -8,7 +8,8 @@ from ...schema import StateSchema
 
 
 @bpp.route('/state', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def create_state():
     request_json = request.get_json()
     schema = StateSchema(exclude=('id',))
@@ -27,7 +28,8 @@ def create_state():
 
 
 @bpp.route('/state/<string:state_id>', methods=['PUT'])
-@allow_access
+@jwt_required()
+#@allow_access
 def alter_state(state_id):
     request_json = request.get_json()
     schema = StateSchema(exclude=('id',))
@@ -47,7 +49,8 @@ def alter_state(state_id):
 
 
 @bpp.route('/state/<string:state_id>', methods=['DELETE'])
-@allow_access
+@jwt_required()
+#@allow_access
 def state_inactivate(state_id):
     controller = StateController(
         state=State(id=state_id))
@@ -60,7 +63,8 @@ def state_inactivate(state_id):
 
 
 @bpp.route('/state/activate', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def state_activate():
     request_json = request.get_json()
     schema = StateSchema(only=('id',))
@@ -77,7 +81,8 @@ def state_activate():
 
 
 @bpp.route('/state/<string:state_id>', methods=['GET'])
-@allow_access
+@jwt_required()
+#@allow_access
 def get_one_state(state_id):
     controller = StateController.get_one_details(state_id)
 
@@ -90,7 +95,8 @@ def get_one_state(state_id):
 
 
 @bpp.route('/state/autocomplete', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def state_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)
@@ -103,7 +109,8 @@ def state_autocomplete():
 
 
 @bpp.route('/state', methods=['GET'])
-@allow_access
+@jwt_required()
+#@allow_access
 def get_states():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

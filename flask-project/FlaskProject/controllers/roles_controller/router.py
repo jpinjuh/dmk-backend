@@ -1,13 +1,13 @@
 from flask import request, jsonify
-
 from .controller import RoleController
+from ...flask_jwt.flask_jwt import JWT, current_identity,jwt_required
 from ... import bpp, Role, FlaskProjectLogException
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import RoleSchema
 
 @bpp.route('/role', methods=['POST'])
-@allow_access
+@jwt_required()
 def create_role():
     request_json = request.get_json()
     schema = RoleSchema(exclude=('id',))
@@ -25,7 +25,8 @@ def create_role():
         status=Status.status_successfully_inserted().__dict__)
 
 @bpp.route('/role/<string:role_id>', methods=['PUT'])
-@allow_access
+@jwt_required()
+#@allow_access
 def alter_role(role_id):
     request_json = request.get_json()
     schema = RoleSchema(exclude=('id',))
@@ -44,7 +45,8 @@ def alter_role(role_id):
         status=Status.status_update_success().__dict__)
 
 @bpp.route('/role/<string:role_id>', methods=['DELETE'])
-@allow_access
+@jwt_required()
+#@allow_access
 def role_inactivate(role_id):
     controller = RoleController(
         role=Role(id=role_id))
@@ -56,6 +58,7 @@ def role_inactivate(role_id):
         status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/role/activate', methods=['POST'])
+@jwt_required()
 @allow_access
 def role_activate():
     request_json = request.get_json()
@@ -72,7 +75,8 @@ def role_activate():
         status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/role/<string:role_id>', methods=['GET'])
-@allow_access
+@jwt_required()
+#@allow_access
 def get_one_role(role_id):
     controller = RoleController.get_one_details(role_id)
 
@@ -85,7 +89,8 @@ def get_one_role(role_id):
 
 
 @bpp.route('/role/autocomplete', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def role_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)
@@ -98,7 +103,7 @@ def role_autocomplete():
 
 
 @bpp.route('/role', methods=['GET'])
-@allow_access
+@jwt_required()
 def get_roles():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)
@@ -108,9 +113,3 @@ def get_roles():
         start=start, limit=limit, name=name)
 
     return jsonify(pagination_result)
-
-@bpp.route('/roles', methods=['GET'])
-@allow_access
-def get_all_roles():
-    data = RoleController.get_all()
-    return jsonify(data)

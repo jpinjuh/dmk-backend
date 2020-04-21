@@ -1,5 +1,5 @@
 from flask import request, jsonify
-
+from ...flask_jwt.flask_jwt import JWT, jwt_required, current_identity
 from .controller import DistrictController
 from ... import bpp, District, FlaskProjectLogException
 from ...general import Status
@@ -8,7 +8,8 @@ from ...schema import DistrictSchema
 
 
 @bpp.route('/district', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def create_district():
     request_json = request.get_json()
     schema = DistrictSchema(exclude=('id',))
@@ -29,7 +30,8 @@ def create_district():
 
 
 @bpp.route('/district/<string:district_id>', methods=['GET'])
-@allow_access
+@jwt_required()
+#@allow_access
 def get_one_district(district_id):
     controller = DistrictController.get_one_details(district_id)
 
@@ -42,7 +44,8 @@ def get_one_district(district_id):
 
 
 @bpp.route('/district/autocomplete', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def district_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)
@@ -55,7 +58,8 @@ def district_autocomplete():
 
 
 @bpp.route('/district', methods=['GET'])
-@allow_access
+@jwt_required()
+#@allow_access
 def get_districts():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

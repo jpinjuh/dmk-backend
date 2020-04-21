@@ -1,5 +1,4 @@
 from sqlalchemy import and_
-
 from ..districts_controller.controller import DistrictController
 from ..roles_controller.controller import RoleController
 from ... import User, FlaskProjectLogException, Role, District
@@ -47,8 +46,6 @@ class UserController(BaseController):
         self.user.commit_or_rollback()
 
         return Status.status_successfully_inserted().__dict__
-
-
 
     def alter(self):
         raise NotImplementedError("To be implemented")

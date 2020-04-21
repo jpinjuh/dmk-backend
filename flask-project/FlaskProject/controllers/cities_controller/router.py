@@ -1,5 +1,5 @@
 from flask import request, jsonify
-
+from ...flask_jwt.flask_jwt import JWT, jwt_required, current_identity
 from .controller import CityController
 from ... import bpp, City, FlaskProjectLogException
 from ...general import Status
@@ -8,7 +8,8 @@ from ...schema import CitySchema
 
 
 @bpp.route('/city', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def create_city():
     request_json = request.get_json()
     schema = CitySchema(exclude=('id',))
@@ -29,7 +30,8 @@ def create_city():
 
 
 @bpp.route('/city/<string:city_id>', methods=['GET'])
-@allow_access
+@jwt_required()
+#@allow_access
 def get_one_city(city_id):
     controller = CityController.get_one_details(city_id)
 
@@ -42,7 +44,8 @@ def get_one_city(city_id):
 
 
 @bpp.route('/city/autocomplete', methods=['POST'])
-@allow_access
+@jwt_required()
+#@allow_access
 def city_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)
@@ -55,7 +58,8 @@ def city_autocomplete():
 
 
 @bpp.route('/city', methods=['GET'])
-@allow_access
+@jwt_required()
+#@allow_access
 def get_cities():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

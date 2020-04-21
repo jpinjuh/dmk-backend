@@ -1,6 +1,7 @@
 from uuid import UUID
 import datetime
-
+from ..models import User
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def obj_to_dict(row):
     from datetime import datetime as dt, date as d
@@ -59,6 +60,16 @@ def obj_to_dict_complex_query(row):
     return dicts
 
 
+def authenticate(username, password):
+    user = User.query.filter(User.username == username).first()
+    if not user or not check_password_hash(user.password_hash, password):
+        return None
+    return user
+
+
+def identity(payload):
+    user_id = payload['identity']
+    return User.query.filter(User.id == user_id).first()
 
 
 
