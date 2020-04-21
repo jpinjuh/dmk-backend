@@ -2,7 +2,7 @@ from sqlalchemy import and_
 
 from ..districts_controller.controller import DistrictController
 from ..roles_controller.controller import RoleController
-from ..users_controller.controller import RoleController
+from ..users_controller.controller import RoleController, UserController
 from ... import User, FlaskProjectLogException, Role, District
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
