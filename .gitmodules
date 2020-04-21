@@ -1,3 +1,0 @@
-[submodule "flask-project/flask-project/FlaskProject/flask_jwt"]
-	path = flask-project/flask-project/FlaskProject/flask_jwt
-	url = https://github.com/mattupstate/flask-jwt
