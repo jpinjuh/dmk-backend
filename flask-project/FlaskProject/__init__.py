@@ -9,7 +9,7 @@ from .models import *  # This one is important for Alembic auto generated migrat
 from .settings import environments
 from werkzeug.exceptions import default_exceptions
 from .general import CustomLogException, FlaskProjectLogException
-from .flask_jwt.flask_jwt import JWT, jwt_required, current_identity
+from .flask_jwt import JWT, jwt_required, current_identity
 
 #Dodati import router od svakoga controllera
 from .controllers.roles_controller import router

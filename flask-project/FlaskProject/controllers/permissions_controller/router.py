@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from ...flask_jwt.flask_jwt import JWT, jwt_required, current_identity
+from ...flask_jwt import JWT, jwt_required, current_identity
 from .controller import PermissionController
 from ... import bpp, Permission, FlaskProjectLogException
 from ...general import Status, obj_to_dict

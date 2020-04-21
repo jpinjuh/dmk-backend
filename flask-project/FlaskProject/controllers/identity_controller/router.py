@@ -1,10 +1,5 @@
 from flask import request, jsonify, make_response, current_app, Flask
-from ...flask_jwt.flask_jwt import JWT, jwt_required, current_identity, JWTError
-from ...flask_jwt_extended.flask_jwt_extended import (
-    JWTManager, create_access_token,
-    jwt_refresh_token_required, create_refresh_token,
-    get_jwt_identity, fresh_jwt_required
-)
+from ...flask_jwt import JWT, jwt_required, current_identity, JWTError
 from ...controllers.users_controller.controller import UserController
 from ... import bpp, User, FlaskProjectLogException
 from ...general import Status, authenticate, identity

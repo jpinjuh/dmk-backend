@@ -8,8 +8,7 @@ import pytz
 import tzlocal
 from flask_cors import CORS
 from unipath import Path
-from ..flask_jwt.flask_jwt import JWT
-from ..flask_jwt_extended.flask_jwt_extended import JWTManager
+from ..flask_jwt import JWT
 from ..general import authenticate, identity
 
 
@@ -242,7 +241,6 @@ class ConfigBase:
             app.config.from_object(self)
             self._init_loggers(app)
             JWT(app, authenticate, identity)
-            JWTManager(app)
             CORS(app)
 
 
