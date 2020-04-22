@@ -7,3 +7,4 @@ from .privileges import Privilege
 from .districts import District
 from .cities import City
 from .states import State
+

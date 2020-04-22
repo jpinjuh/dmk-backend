@@ -1,5 +1,9 @@
 from flask import request, jsonify
-from ...flask_jwt import JWT, jwt_required, current_identity
+#from ...flask_jwt import JWT, jwt_required, current_identity
+from ...flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity, get_jwt_claims
+)
 from .controller import PrivilegeController
 from ... import bpp, Privilege, FlaskProjectLogException
 from ...general import Status
@@ -8,7 +12,7 @@ from ...schema import PrivilegeSchema
 
 
 @bpp.route('/privilege', methods=['POST'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def create_privilege():
     request_json = request.get_json()
@@ -30,7 +34,7 @@ def create_privilege():
 
 
 @bpp.route('/privilege/<string:privilege_id>', methods=['GET'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def get_one_privilege(privilege_id):
     controller = PrivilegeController.get_one_details(privilege_id)
@@ -44,7 +48,7 @@ def get_one_privilege(privilege_id):
 
 
 @bpp.route('/privilege/autocomplete', methods=['POST'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def privilege_autocomplete():
     request_json = request.get_json()
@@ -58,7 +62,7 @@ def privilege_autocomplete():
 
 
 @bpp.route('/privilege', methods=['GET'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def get_privileges():
     start = request.args.get('start', 0, int)
