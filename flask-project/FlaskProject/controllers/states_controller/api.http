@@ -1,5 +1,5 @@
 ###############################################################################
-#                               Test categories
+#                               States
 
 ###
 #@name create_state
@@ -13,7 +13,7 @@ Authorization: {{token}}
 
 ###
 #@name alter_state
-PUT http://0.0.0.0:5000//state/<string:state_id>
+PUT http://0.0.0.0:5000/state/<string:state_id>
 content-type: application/json
 Authorization: {{token}}
 
@@ -23,13 +23,13 @@ Authorization: {{token}}
 
 ###
 #@name state_inactivate
-DELETE http://0.0.0.0:5000//state/<string:state_id>
+DELETE http://0.0.0.0:5000/state/<string:state_id>
 content-type: application/json
 Authorization: {{token}}
 
 ###
 #@name state_activate
-POST http://0.0.0.0:5000//state/activate
+POST http://0.0.0.0:5000/state/activate
 content-type: application/json
 Authorization: {{token}}
 
@@ -39,13 +39,13 @@ Authorization: {{token}}
 
 ###
 #@name get_one_state
-GET http://0.0.0.1:5000//state/<string:state_id>
+GET http://0.0.0.1:5000/state/<string:state_id>
 content-type: application/json
 Authorization: {{token}}
 
 ###
 #@name state_autocomplete
-POST http://0.0.0.0:5000//state/autocomplete
+POST http://0.0.0.0:5000/state/autocomplete
 content-type: application/json
 Authorization: {{token}}
 

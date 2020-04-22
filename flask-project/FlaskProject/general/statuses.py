@@ -60,7 +60,6 @@ class Status:
         return cls(-1, 'Token required')
 
     @classmethod
-
     def status_state_already_exist(cls):
         """
         :return: cls(-1, 'This state already exist')
@@ -73,6 +72,13 @@ class Status:
         :return: cls(-1, 'This state does not exist')
         """
         return cls(-1, 'This state does not exist')
+
+    @classmethod
+    def status_city_already_exist(cls):
+        """
+        :return: cls(-1, 'This city already exist')
+        """
+        return cls(-1, 'This city already exist')
 
     @classmethod
     def status_city_not_exist(cls):

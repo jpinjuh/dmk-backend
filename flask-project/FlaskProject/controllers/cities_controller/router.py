@@ -6,7 +6,7 @@ from ...flask_jwt_extended import (
 )
 from .controller import CityController
 from ... import bpp, City, FlaskProjectLogException
-from ...general import Status
+from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import CitySchema
 
@@ -32,6 +32,56 @@ def create_city():
         data=CityController.get_one_details(controller.city.id),
         status=Status.status_successfully_inserted().__dict__)
 
+@bpp.route('/city/<string:city_id>', methods=['PUT'])
+@jwt_required
+#@allow_access
+def alter_city(city_id):
+    request_json = request.get_json()
+    schema = CitySchema(exclude=('id',))
+
+    params = schema.load(request_json)
+
+    controller = CityController(
+        city=City(
+            id=city_id,
+            name=params['name'],
+            state_id=params['state']['id']
+        ))
+    controller.alter()
+
+    return jsonify(
+        data=obj_to_dict(controller.city),
+        status=Status.status_update_success().__dict__)
+
+@bpp.route('/city/<string:city_id>', methods=['DELETE'])
+@jwt_required
+#@allow_access
+def city_inactivate(city_id):
+    controller = CityController(
+        city=City(id=city_id))
+
+    controller.inactivate()
+
+    return jsonify(
+        data=obj_to_dict(controller.city),
+        status=Status.status_successfully_processed().__dict__)
+
+@bpp.route('/city/activate', methods=['POST'])
+@jwt_required
+#@allow_access
+def city_activate():
+    request_json = request.get_json()
+    schema = CitySchema(only=('id',))
+
+    params = schema.load(request_json)
+    controller = CityController(
+        city=City(id=params['id']))
+
+    controller.activate()
+
+    return jsonify(
+        data=obj_to_dict(controller.city),
+        status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/city/<string:city_id>', methods=['GET'])
 @jwt_required

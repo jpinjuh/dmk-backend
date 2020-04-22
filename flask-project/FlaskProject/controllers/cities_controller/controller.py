@@ -16,11 +16,16 @@ class CityController(BaseController):
         :return: Status object or raise FlaskProjectLogException
         """
 
+        if City.query.check_if_already_exist_by_name(
+                self.city.name):
+            raise FlaskProjectLogException(
+                Status.status_city_already_exist())
+
         if self.city.state_id is not None:
-            state1 = StateController.get_one(
+            state = StateController.get_one(
                 self.city.state_id)
 
-            if state1.state is None:
+            if state.state is None:
                 raise FlaskProjectLogException(
                     Status.status_state_not_exist())
 
@@ -30,13 +35,77 @@ class CityController(BaseController):
         return Status.status_successfully_inserted().__dict__
 
     def alter(self):
-        raise NotImplementedError("To be implemented")
+        """
+         Method used for updating cities
+         :return: Status object or raise FlaskProjectLogException
+         """
+        city = City.query.get_one(self.city.id)
+
+        if city is None:
+            raise FlaskProjectLogException(
+                Status.status_city_not_exist())
+
+        if City.query.check_if_name_is_taken(
+                city.id, self.city.name):
+            raise FlaskProjectLogException(
+                Status.status_city_already_exist())
+
+        if self.city.state_id is not None:
+            state = StateController.get_one(
+                self.city.state_id)
+
+            if state.state is None:
+                raise FlaskProjectLogException(
+                    Status.status_state_not_exist())
+
+        city.name = self.city.name
+        city.state_id = self.city.state_id
+        city.update()
+        city.commit_or_rollback()
+
+        self.city = city
+
+        return Status.status_update_success().__dict__
 
     def inactivate(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for setting cities status to inactive (0)
+        :return: Status object or raise FlaskProjectLogException
+        """
+        city = City.query.get_one(self.city.id)
+
+        if city is None:
+            raise FlaskProjectLogException(
+                Status.status_city_not_exist())
+
+        city.status = City.STATUSES['inactive']
+
+        city.update()
+        city.commit_or_rollback()
+
+        self.city = city
+
+        return Status.status_successfully_processed().__dict__
 
     def activate(self):
-        raise NotImplementedError("To be implemented")
+        """
+         Method used for setting cities status to active (1)
+         :return: Status object or raise FlaskProjectLogException
+         """
+        city = City.query.get_one(self.city.id)
+
+        if city is None:
+            raise FlaskProjectLogException(
+                Status.status_city_not_exist())
+
+        city.status = City.STATUSES['active']
+
+        city.update()
+        city.commit_or_rollback()
+
+        self.city = city
+
+        return Status.status_successfully_processed().__dict__
 
     @classmethod
     def get_one(cls, identifier):

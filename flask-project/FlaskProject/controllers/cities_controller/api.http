@@ -12,6 +12,32 @@ Authorization: {{token}}
   "state": {"id":  "UUID as string"}
 }
 
+###
+#@name alter_city
+PUT http://0.0.0.0:5000/city/<string:city_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string",
+  "state": {"id":  "UUID as string"}
+}
+
+###
+#@name city_inactivate
+DELETE http://0.0.0.0:5000/city/<string:city_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name city_activate
+POST http://0.0.0.0:5000/city/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
 
 ###
 #@name get_one_city
