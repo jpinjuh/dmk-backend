@@ -54,6 +54,10 @@ class UserController(BaseController):
         """
         user = User.query.get_one(self.user.id)
 
+        if user is None:
+            raise FlaskProjectLogException(
+                Status.status_user_not_exist())
+
         if User.query.check_if_name_is_taken(
                 user.id, self.user.username):
             raise FlaskProjectLogException(
