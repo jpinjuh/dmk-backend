@@ -48,13 +48,121 @@ class UserController(BaseController):
         return Status.status_successfully_inserted().__dict__
 
     def alter(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for updating users
+        :return: Status object or raise FlaskProjectLogException
+        """
+        user = User.query.get_one(self.user.id)
+
+        if user is None:
+            raise FlaskProjectLogException(
+                Status.status_user_not_exist())
+
+        if User.query.check_if_name_is_taken(
+                user.id, self.user.username):
+            raise FlaskProjectLogException(
+                Status.status_user_already_exist())
+
+        if User.query.check_if_email_is_taken(
+                user.id, self.user.email):
+            raise FlaskProjectLogException(
+                Status.status_user_with_that_email_already_exist())
+
+        if self.user.roles_id is not None:
+            user_role = RoleController.get_one(
+                self.user.roles_id)
+
+            if user_role.role is None:
+                raise FlaskProjectLogException(
+                    Status.status_role_not_exist())
+
+        if self.user.districts_id is not None:
+            district_role = DistrictController.get_one(
+                self.user.districts_id)
+
+            if district_role.district is None:
+                raise FlaskProjectLogException(
+                    Status.status_district_not_exist())
+
+        user.first_name = self.user.first_name
+        user.last_name = self.user.last_name
+        user.username = self.user.username
+        user.email = self.user.email
+        user.roles_id = self.user.roles_id
+        user.districts_id = self.user.districts_id
+        user.update()
+        user.commit_or_rollback()
+
+        self.user = user
+
+        return Status.status_update_success().__dict__
+
 
     def inactivate(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for setting user status to inactive (0)
+        :return: Status object or raise FlaskProjectLogException
+        """
+        user = User.query.get_one(self.user.id)
+
+        if user is None:
+            raise FlaskProjectLogException(
+                Status.status_user_not_exist())
+
+        user.status = User.STATUSES['inactive']
+
+        user.update()
+        user.commit_or_rollback()
+
+        self.user = user
+
+        return Status.status_successfully_processed().__dict__
 
     def activate(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for setting user status to active (1)
+        :return: Status object or raise FlaskProjectLogException
+        """
+        user = User.query.get_one(self.user.id)
+
+        if user is None:
+            raise FlaskProjectLogException(
+                Status.status_user_not_exist())
+
+        if User.query.check_if_name_is_taken(
+                user.id, self.user.username):
+            raise FlaskProjectLogException(
+                Status.status_user_already_exist())
+
+        if User.query.check_if_email_is_taken(
+                user.id, self.user.email):
+            raise FlaskProjectLogException(
+                Status.status_user_with_that_email_already_exist())
+
+        if self.user.roles_id is not None:
+            user_role = RoleController.get_one(
+                self.user.roles_id)
+
+            if user_role.role is None:
+                raise FlaskProjectLogException(
+                    Status.status_role_not_exist())
+
+        if self.user.districts_id is not None:
+            district_role = DistrictController.get_one(
+                self.user.districts_id)
+
+            if district_role.district is None:
+                raise FlaskProjectLogException(
+                    Status.status_district_not_exist())
+
+        user.status = User.STATUSES['active']
+
+        user.update()
+        user.commit_or_rollback()
+
+        self.user = user
+
+        return Status.status_successfully_processed().__dict__
 
     @classmethod
     def get_one(cls, identifier):

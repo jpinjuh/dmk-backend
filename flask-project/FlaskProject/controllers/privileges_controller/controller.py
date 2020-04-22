@@ -39,13 +39,81 @@ class PrivilegeController(BaseController):
         return Status.status_successfully_inserted().__dict__
 
     def alter(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for updating privileges
+        :return: Status object or raise FlaskProjectLogException
+        """
+
+        privilege = Privilege.query.get_one(self.privilege.id)
+
+        if privilege is None:
+            raise FlaskProjectLogException(
+                Status.status_privilege_not_exist())
+
+        if self.privilege.roles_id is not None:
+            role = RoleController.get_one(
+                self.privilege.roles_id)
+
+            if role.role is None:
+                raise FlaskProjectLogException(
+                    Status.status_role_not_exist())
+
+        if self.privilege.permissions_id is not None:
+            permission = PermissionController.get_one(
+                self.privilege.permissions_id)
+
+            if permission.permission is None:
+                raise FlaskProjectLogException(
+                    Status.status_permission_not_exist())
+
+        privilege.roles_id = self.privilege.roles_id
+        privilege.permissions_id = self.privilege.permissions_id
+        privilege.update()
+        privilege.commit_or_rollback()
+
+        self.privilege = privilege
+
+        return Status.status_update_success().__dict__
 
     def inactivate(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for setting privileges status to inactive (0)
+        :return: Status object or raise FlaskProjectLogException
+        """
+        privilege = Privilege.query.get_one(self.privilege.id)
+
+        if privilege is None:
+            raise FlaskProjectLogException(
+                Status.status_privilege_not_exist())
+
+        privilege.status = Privilege.STATUSES['inactive']
+
+        privilege.update()
+        privilege.commit_or_rollback()
+
+        self.privilege = privilege
+
+        return Status.status_successfully_processed().__dict__
 
     def activate(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for setting privileges status to active (1)
+        :return: Status object or raise FlaskProjectLogException
+        """
+        privilege = Privilege.query.get_one(self.privilege.id)
+
+        if privilege is None:
+            raise FlaskProjectLogException(
+                Status.status_privilege_not_exist())
+
+        privilege.status = Privilege.STATUSES['active']
+
+        privilege.update()
+        privilege.commit_or_rollback()
+
+        self.privilege = privilege
+
+        return Status.status_successfully_processed().__dict__
 
     @classmethod
     def get_one(cls, identifier):

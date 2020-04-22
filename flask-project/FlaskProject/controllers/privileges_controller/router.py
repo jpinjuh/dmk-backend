@@ -6,7 +6,7 @@ from ...flask_jwt_extended import (
 )
 from .controller import PrivilegeController
 from ... import bpp, Privilege, FlaskProjectLogException
-from ...general import Status
+from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import PrivilegeSchema
 
@@ -31,6 +31,60 @@ def create_privilege():
     return jsonify(
         data=PrivilegeController.get_one_details(controller.privilege.id),
         status=Status.status_successfully_inserted().__dict__)
+
+
+@bpp.route('/privilege/<string:privilege_id>', methods=['PUT'])
+@jwt_required
+#@allow_access
+def privilege_user(privilege_id):
+    request_json = request.get_json()
+    schema = PrivilegeSchema(exclude=('id',))
+
+    params = schema.load(request_json)
+
+    controller = PrivilegeController(
+        privilege=Privilege(
+            id=privilege_id,
+            roles_id=params['role']['id'],
+            permissions_id=params['permission']['id']
+        ))
+    controller.alter()
+
+    return jsonify(
+        data=obj_to_dict(controller.privilege),
+        status=Status.status_update_success().__dict__)
+
+
+@bpp.route('/privilege/<string:privilege_id>', methods=['DELETE'])
+@jwt_required
+#@allow_access
+def privilege_inactivate(privilege_id):
+    controller = PrivilegeController(
+        privilege=Privilege(id=privilege_id))
+
+    controller.inactivate()
+
+    return jsonify(
+        data=obj_to_dict(controller.privilege),
+        status=Status.status_successfully_processed().__dict__)
+
+
+@bpp.route('/privilege/activate', methods=['POST'])
+@jwt_required
+#@allow_access
+def privilege_activate():
+    request_json = request.get_json()
+    schema = PrivilegeSchema(only=('id',))
+
+    params = schema.load(request_json)
+    controller = PrivilegeController(
+        privilege=Privilege(id=params['id']))
+
+    controller.activate()
+
+    return jsonify(
+        data=obj_to_dict(controller.privilege),
+        status=Status.status_successfully_processed().__dict__)
 
 
 @bpp.route('/privilege/<string:privilege_id>', methods=['GET'])
