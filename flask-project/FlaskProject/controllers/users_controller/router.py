@@ -6,7 +6,7 @@ from ...flask_jwt_extended import (
 )
 from .controller import UserController
 from ... import bpp, User, FlaskProjectLogException
-from ...general import Status
+from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -36,6 +36,62 @@ def create_user():
     return jsonify(
         data=UserController.get_one_details(controller.user.id),
         status=Status.status_successfully_inserted().__dict__)
+
+@bpp.route('/user/<string:user_id>', methods=['PUT'])
+@jwt_required
+#@allow_access
+def alter_user(user_id):
+    request_json = request.get_json()
+    schema = UserSchema(exclude=('id',))
+
+    params = schema.load(request_json)
+
+    controller = UserController(
+        user=User(
+            id=user_id,
+            first_name=params['first_name'],
+            last_name=params['last_name'],
+            username=params['username'],
+            email=params['email'],
+            password_hash=generate_password_hash(params['password_hash'], method='sha256'),
+            roles_id=params['role']['id'],
+            districts_id=params['district']['id']
+        ))
+    controller.alter()
+
+    return jsonify(
+        data=obj_to_dict(controller.user),
+        status=Status.status_update_success().__dict__)
+
+@bpp.route('/user/<string:user_id>', methods=['DELETE'])
+@jwt_required
+#@allow_access
+def user_inactivate(user_id):
+    controller = UserController(
+        user=User(id=user_id))
+
+    controller.inactivate()
+
+    return jsonify(
+        data=obj_to_dict(controller.user),
+        status=Status.status_successfully_processed().__dict__)
+
+@bpp.route('/user/activate', methods=['POST'])
+@jwt_required
+#@allow_access
+def user_activate():
+    request_json = request.get_json()
+    schema = UserSchema(only=('id',))
+
+    params = schema.load(request_json)
+    controller = UserController(
+        user=User(id=params['id']))
+
+    controller.activate()
+
+    return jsonify(
+        data=obj_to_dict(controller.user),
+        status=Status.status_successfully_processed().__dict__)
 
 
 @bpp.route('/user/<string:user_id>', methods=['GET'])

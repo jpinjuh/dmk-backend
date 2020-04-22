@@ -140,9 +140,16 @@ class Status:
     @classmethod
     def status_user_already_exist(cls):
         """
-        :return: cls(-1, 'This user already exists')
+        :return: cls(-1, 'User with that username already exists.')
         """
-        return cls(-1, 'This user already exists')
+        return cls(-1, 'User with that username already exists.')
+
+    @classmethod
+    def status_user_with_that_email_already_exist(cls):
+        """
+        :return: cls(-1, 'User with that email address already exists.')
+        """
+        return cls(-1, 'User with that email address already exists.')
 
     @classmethod
     def status_user_not_exist(cls):

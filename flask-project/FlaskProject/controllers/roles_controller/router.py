@@ -63,7 +63,7 @@ def role_inactivate(role_id):
 
 @bpp.route('/role/activate', methods=['POST'])
 @jwt_required
-@allow_access
+#@allow_access
 def role_activate():
     request_json = request.get_json()
     schema = RoleSchema(only=('id',))

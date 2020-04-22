@@ -56,3 +56,14 @@ class Seed(Command):
                 districts_id=district.id
             ))
         user_create.create()
+        user_create = UserController(
+            user=User(
+                first_name='Marija',
+                last_name='Bošnjak',
+                username='marijabosnjak',
+                email='marijabosnjak998@gmail.com',
+                password_hash=generate_password_hash('123456', method='sha256'),
+                roles_id=role.id,
+                districts_id=district.id
+            ))
+        user_create.create()

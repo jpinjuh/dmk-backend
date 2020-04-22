@@ -44,6 +44,18 @@ class UserQuery(BaseQuery):
              db.session.rollback()
              return False
 
+
+     def check_if_email_is_taken(self, _id, email):
+         try:
+             return self.filter(
+                 User.id != _id,
+                 User.status == User.STATUSES['active'],
+                 User.email == email).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
+
      @staticmethod
      def query_details():
          from . import Role, District

@@ -53,7 +53,8 @@ def refresh():
         'email': get_jwt_claims()['email'],
         'roles_id': get_jwt_claims()['roles_id'].__str__()
     }
-    access_token = create_access_token(identity=current_user, expires_delta=datetime.timedelta(minutes=30), user_claims=payload)
+    access_token = create_access_token(identity=current_user, expires_delta=datetime.timedelta(minutes=30),
+                                       user_claims=payload)
     return jsonify(
         access_token=access_token,
         status=Status.status_successfully_processed().__dict__)
