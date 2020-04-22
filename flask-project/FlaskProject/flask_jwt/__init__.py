@@ -22,7 +22,6 @@ __version__ = '0.3.2'
 logger = logging.getLogger(__name__)
 
 current_identity = LocalProxy(lambda: getattr(_request_ctx_stack.top, 'current_identity', None))
-
 _jwt = LocalProxy(lambda: current_app.extensions['jwt'])
 
 CONFIG_DEFAULTS = {

@@ -1,5 +1,9 @@
 from flask import request, jsonify
-from ...flask_jwt import JWT, jwt_required, current_identity
+#from ...flask_jwt import JWT, current_identity
+from ...flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 from .controller import UserController
 from ... import bpp, User, FlaskProjectLogException
 from ...general import Status
@@ -8,7 +12,7 @@ from ...schema import UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 
 @bpp.route('/user', methods=['POST'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def create_user():
     request_json = request.get_json()
@@ -35,7 +39,7 @@ def create_user():
 
 
 @bpp.route('/user/<string:user_id>', methods=['GET'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def get_one_user(user_id):
     controller = UserController.get_one_details(user_id)
@@ -49,7 +53,7 @@ def get_one_user(user_id):
 
 
 @bpp.route('/user/autocomplete', methods=['POST'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def user_autocomplete():
     request_json = request.get_json()
@@ -63,7 +67,7 @@ def user_autocomplete():
 
 
 @bpp.route('/user', methods=['GET'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def get_users():
     start = request.args.get('start', 0, int)

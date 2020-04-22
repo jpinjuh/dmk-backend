@@ -7,6 +7,7 @@ from ... import User, FlaskProjectLogException, Role, District
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
+
 class IdentityController(BaseController):
     def __init__(self, user=User()):
         self.user = user

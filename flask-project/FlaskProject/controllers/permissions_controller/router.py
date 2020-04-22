@@ -1,5 +1,9 @@
 from flask import request, jsonify
-from ...flask_jwt import JWT, jwt_required, current_identity
+#from ...flask_jwt import JWT, jwt_required, current_identity
+from ...flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity, get_jwt_claims
+)
 from .controller import PermissionController
 from ... import bpp, Permission, FlaskProjectLogException
 from ...general import Status, obj_to_dict
@@ -7,7 +11,7 @@ from ...general.route_decorators import allow_access
 from ...schema import PermissionSchema
 
 @bpp.route('/permission', methods=['POST'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def create_permission():
     request_json = request.get_json()
@@ -29,7 +33,7 @@ def create_permission():
         status=Status.status_successfully_inserted().__dict__)
 
 @bpp.route('/permission/<string:permission_id>', methods=['PUT'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def alter_permission(permission_id):
     request_json = request.get_json()
@@ -51,7 +55,7 @@ def alter_permission(permission_id):
         status=Status.status_update_success().__dict__)
 
 @bpp.route('/permission/<string:permission_id>', methods=['DELETE'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def permission_inactivate(permission_id):
     controller = PermissionController(
@@ -64,7 +68,7 @@ def permission_inactivate(permission_id):
         status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/permission/activate', methods=['POST'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def permission_activate():
     request_json = request.get_json()
@@ -81,7 +85,7 @@ def permission_activate():
         status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/permission/<string:permission_id>', methods=['GET'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def get_one_permission(permission_id):
     controller = PermissionController.get_one_details(permission_id)
@@ -95,7 +99,7 @@ def get_one_permission(permission_id):
 
 
 @bpp.route('/permission/autocomplete', methods=['POST'])
-@jwt_required()
+@jwt_required
 @allow_access
 def permission_autocomplete():
     request_json = request.get_json()
@@ -107,7 +111,7 @@ def permission_autocomplete():
         status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/permission', methods=['GET'])
-@jwt_required()
+@jwt_required
 #@allow_access
 def get_permission():
     start = request.args.get('start', 0, int)
