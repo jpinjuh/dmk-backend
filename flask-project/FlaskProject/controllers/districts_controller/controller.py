@@ -16,11 +16,16 @@ class DistrictController(BaseController):
         :return: Status object or raise FlaskProjectLogException
         """
 
+        if District.query.check_if_already_exist_by_name(
+                self.district.name):
+            raise FlaskProjectLogException(
+                Status.status_district_already_exist())
+
         if self.district.city_id is not None:
-            city1 = CityController.get_one(
+            city = CityController.get_one(
                 self.district.city_id)
 
-            if city1.city is None:
+            if city.city is None:
                 raise FlaskProjectLogException(
                     Status.status_city_not_exist())
 
@@ -30,13 +35,81 @@ class DistrictController(BaseController):
         return Status.status_successfully_inserted().__dict__
 
     def alter(self):
-        raise NotImplementedError("To be implemented")
+        """
+         Method used for updating districts
+         :return: Status object or raise FlaskProjectLogException
+         """
+
+        district = District.query.get_one(self.district.id)
+
+        if district is None:
+            raise FlaskProjectLogException(
+                Status.status_district_not_exist())
+
+        if District.query.check_if_name_is_taken(
+                district.id, self.district.name):
+            raise FlaskProjectLogException(
+                Status.status_district_already_exist())
+
+        if self.district.city_id is not None:
+            city = CityController.get_one(
+                self.district.city_id)
+
+            if city.city is None:
+                raise FlaskProjectLogException(
+                    Status.status_city_not_exist())
+
+
+        district.name = self.district.name
+        district.city_id = self.district.city_id
+        district.update()
+        district.commit_or_rollback()
+
+        self.district = district
+
+        return Status.status_update_success().__dict__
 
     def inactivate(self):
-        raise NotImplementedError("To be implemented")
+        """
+        Method used for setting districts status to inactive (0)
+        :return: Status object or raise FlaskProjectLogException
+        """
+
+        district = District.query.get_one(self.district.id)
+
+        if district is None:
+            raise FlaskProjectLogException(
+                Status.status_district_not_exist())
+
+        district.status = District.STATUSES['inactive']
+
+        district.update()
+        district.commit_or_rollback()
+
+        self.district = district
+
+        return Status.status_successfully_processed().__dict__
 
     def activate(self):
-        raise NotImplementedError("To be implemented")
+        """
+         Method used for setting districts status to active (1)
+         :return: Status object or raise FlaskProjectLogException
+         """
+
+        district = District.query.get_one(self.district.id)
+
+        if district is None:
+            raise FlaskProjectLogException(
+                Status.status_district_not_exist())
+
+        district.status = District.STATUSES['active']
+
+        district.update()
+        district.commit_or_rollback()
+
+        self.district = district
+
+        return Status.status_successfully_processed().__dict__
 
     @classmethod
     def get_one(cls, identifier):

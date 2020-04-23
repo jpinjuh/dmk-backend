@@ -6,7 +6,7 @@ from ...flask_jwt_extended import (
 )
 from .controller import DistrictController
 from ... import bpp, District, FlaskProjectLogException
-from ...general import Status
+from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import DistrictSchema
 
@@ -32,6 +32,56 @@ def create_district():
         data=DistrictController.get_one_details(controller.district.id),
         status=Status.status_successfully_inserted().__dict__)
 
+@bpp.route('/district/<string:district_id>', methods=['PUT'])
+@jwt_required
+#@allow_access
+def alter_district(district_id):
+    request_json = request.get_json()
+    schema = DistrictSchema(exclude=('id',))
+
+    params = schema.load(request_json)
+
+    controller = DistrictController(
+        district=District(
+            id=district_id,
+            name=params['name'],
+            city_id=params['city']['id']
+        ))
+    controller.alter()
+
+    return jsonify(
+        data=obj_to_dict(controller.district),
+        status=Status.status_update_success().__dict__)
+
+@bpp.route('/district/<string:district_id>', methods=['DELETE'])
+@jwt_required
+#@allow_access
+def district_inactivate(district_id):
+    controller = DistrictController(
+        district=District(id=district_id))
+
+    controller.inactivate()
+
+    return jsonify(
+        data=obj_to_dict(controller.district),
+        status=Status.status_successfully_processed().__dict__)
+
+@bpp.route('/district/activate', methods=['POST'])
+@jwt_required
+#@allow_access
+def district_activate():
+    request_json = request.get_json()
+    schema = DistrictSchema(only=('id',))
+
+    params = schema.load(request_json)
+    controller = DistrictController(
+        district=District(id=params['id']))
+
+    controller.activate()
+
+    return jsonify(
+        data=obj_to_dict(controller.district),
+        status=Status.status_successfully_processed().__dict__)
 
 @bpp.route('/district/<string:district_id>', methods=['GET'])
 @jwt_required

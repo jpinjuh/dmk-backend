@@ -15,6 +15,25 @@ class DistrictQuery(BaseQuery):
              db.session.rollback()
              return None
 
+     def check_if_already_exist_by_name(self, name):
+         try:
+             return self.filter(
+                 District.status == District.STATUSES['active'],
+                 District.name == name).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
+     def check_if_name_is_taken(self, _id, name):
+         try:
+             return self.filter(
+                 District.id != _id,
+                 District.status == District.STATUSES['active'],
+                 District.username == name).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
      @staticmethod
      def query_details():
          from . import City

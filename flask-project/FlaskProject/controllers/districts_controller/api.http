@@ -12,6 +12,32 @@ Authorization: {{token}}
   "city": {"id":  "UUID as string"}
 }
 
+###
+#@name alter_district
+PUT http://0.0.0.0:5000/district/<string:district_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string",
+  "city": {"id":  "UUID as string"}
+}
+
+###
+#@name district_inactivate
+DELETE http://0.0.0.0:5000/district/<string:district_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name district_activate
+POST http://0.0.0.0:5000/district/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
 
 ###
 #@name get_one_district
