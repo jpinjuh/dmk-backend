@@ -123,3 +123,4 @@ def get_roles():
 def get_all_roles():
     data = RoleController.get_all()
     return jsonify(data)
+

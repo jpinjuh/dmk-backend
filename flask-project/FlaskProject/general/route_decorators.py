@@ -1,4 +1,5 @@
 from flask import jsonify, request, current_app
+from ..flask_jwt_extended import jwt_required, get_jwt_identity
 from functools import wraps
 from ..general import Status
 import jwt
@@ -26,9 +27,9 @@ def allow_access(function):
             #token = request.headers['HTTP_AUTHORIZATION']
             ##Ovdje ide programski kod za validaciju jwt
 
-            data = jwt.decode(token, current_app.config.get('JWT_SECRET_KEY'))
+            #data = jwt.decode(token, current_app.config.get('JWT_SECRET_KEY'))
             #current_user = Users.query.filter_by(username=data['username']).first()
-
+            #current_user = get_jwt_identity()
         except Exception as e:
             return jsonify(stattus=Status.status_token_required().__dict__)
 

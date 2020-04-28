@@ -140,8 +140,8 @@ class RoleController(BaseController):
         :return: dict with total, data and status
         """
 
-        filter_main = and_(
-            Role.status == Role.STATUSES['active'])
+        filter_main = and_()
+            #Role.status == Role.STATUSES['active'])
 
         name = kwargs.get('name', None)
 

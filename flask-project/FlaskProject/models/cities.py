@@ -28,8 +28,8 @@ class CityQuery(BaseQuery):
          try:
              return self.filter(
                  City.id != _id,
-                 City.status == City.STATUSES['active'],
-                 City.username == name).first() is not None
+                 #City.status == City.STATUSES['active'],
+                 City.name == name).first() is not None
          except Exception as e:
              db.session.rollback()
              return False
@@ -53,8 +53,8 @@ class CityQuery(BaseQuery):
          try:
              from . import State
              return self.query_details().filter(
-                 State.status == State.STATUSES['active'],
-                 City.status == City.STATUSES['active'],
+                 #State.status == State.STATUSES['active'],
+                 #City.status == City.STATUSES['active'],
                  City.name.ilike('%'+search+'%')
              ).all()
          except Exception as e:
@@ -65,8 +65,8 @@ class CityQuery(BaseQuery):
          try:
              from . import State
              return self.query_details().filter(
-                 State.status == State.STATUSES['active'],
-                 City.status == City.STATUSES['active'],
+                 #State.status == State.STATUSES['active'],
+                 #City.status == City.STATUSES['active'],
                  filter_data
              ).order_by(City.created_at.desc())
          except Exception as e:
