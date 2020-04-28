@@ -130,3 +130,12 @@ def get_privileges():
         role_id=role_id, permission_id=permission_id)
 
     return jsonify(pagination_result)
+
+@bpp.route('/role_permissions', methods=['GET', 'POST'])
+def get_role_permissions():
+    request_json = request.get_json()
+    role_id = request_json.get('role_id')
+
+    permissions = PrivilegeController.get_role_permissions(role_id)
+
+    return jsonify(permissions)

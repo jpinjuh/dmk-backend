@@ -189,3 +189,20 @@ class PrivilegeController(BaseController):
             return_dict['permission'] = obj_to_dict(row_data.Permission)
             return return_dict
         return None
+
+    @staticmethod
+    def get_role_permissions(role_id):
+
+        filter_main = and_()
+        if role_id:
+            filter_main = and_(
+                filter_main, Privilege.roles_id == role_id)
+
+        privileges = Privilege.query.get_all_by_filter(filter_main)
+        list_role_permissions = []
+        for i in privileges:
+            list_role_permissions.append(PrivilegeController.__custom_sql(i))
+
+        return dict(
+            status=Status.status_successfully_processed().__dict__,
+            data=list_role_permissions)
