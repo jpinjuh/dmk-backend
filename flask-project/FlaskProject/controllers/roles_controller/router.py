@@ -108,6 +108,7 @@ def role_autocomplete():
 
 @bpp.route('/role', methods=['GET'])
 @jwt_required
+@allow_access
 def get_roles():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

@@ -124,7 +124,7 @@ def user_autocomplete():
 
 @bpp.route('/user', methods=['GET'])
 @jwt_required
-#@allow_access
+@allow_access
 def get_users():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

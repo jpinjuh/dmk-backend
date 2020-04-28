@@ -141,3 +141,24 @@ def get_role_permissions():
     permissions = PrivilegeController.get_role_permissions(role_id)
 
     return jsonify(permissions)
+
+@bpp.route('/check_access', methods=['POST'])
+@jwt_required
+def check_access():
+
+    current_role = get_jwt_claims()['roles_id']
+    permissions = PrivilegeController.get_role_permissions(current_role)
+
+    rule = request.url_rule
+    route = rule.rule
+    method = request.method
+
+    for i in permissions:
+        if i['route'] == route and i['method'] == method:
+            return 'Success'
+        else:
+            return 'Access denied!'
+
+
+
+

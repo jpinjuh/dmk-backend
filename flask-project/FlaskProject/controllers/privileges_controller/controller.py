@@ -206,8 +206,12 @@ class PrivilegeController(BaseController):
         list_role_permissions = []
         for i in privileges:
             list_role_permissions.append(PrivilegeController.__custom_sql(i))
-
-        return dict(
-            status=Status.status_successfully_processed().__dict__,
-            data=list_role_permissions)
+        list_method_route = []
+        for i in list_role_permissions:
+            method_role = {
+                'method': i['permission']['method'],
+                'route': i['permission']['route']
+            }
+            list_method_route.append(method_role)
+        return list_method_route
 
