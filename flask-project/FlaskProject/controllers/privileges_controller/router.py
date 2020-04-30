@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 #from ...flask_jwt import JWT, jwt_required, current_identity
 from ...flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
@@ -142,7 +142,7 @@ def get_role_permissions():
 
     return jsonify(permissions)
 
-@bpp.route('/check_access', methods=['POST'])
+@bpp.route('/check_access', methods=['POST',])
 @jwt_required
 def check_access():
 
@@ -152,12 +152,15 @@ def check_access():
     rule = request.url_rule
     route = rule.rule
     method = request.method
+    #route = '/user'
+    #method = 'GET'
 
     for i in permissions:
         if i['route'] == route and i['method'] == method:
-            return 'Success'
-        else:
-            return 'Access denied!'
+            return 'Access allowed!'
+
+    return 'Access denied!'
+
 
 
 

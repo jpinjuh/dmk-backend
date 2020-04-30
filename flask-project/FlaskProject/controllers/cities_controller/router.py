@@ -113,7 +113,7 @@ def city_autocomplete():
 
 @bpp.route('/city', methods=['GET'])
 @jwt_required
-#@allow_access
+@allow_access
 def get_cities():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)
