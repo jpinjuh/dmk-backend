@@ -58,7 +58,7 @@ class PrivilegeQuery(BaseQuery):
             from . import Role, Permission
             return self.query_details().filter(
                 #Role.status == Role.STATUSES['active'],
-                #Permission.status == Permission.STATUSES['active'],
+                Permission.status == Permission.STATUSES['active'],
                 #Privilege.status == Privilege.STATUSES['active'],
                 filter_data
             ).order_by(Privilege.created_at.desc())
