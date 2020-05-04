@@ -50,7 +50,7 @@ def alter_district(district_id):
     controller.alter()
 
     return jsonify(
-        data=obj_to_dict(controller.district),
+        data=DistrictController.get_one_details(controller.district.id),
         status=Status.status_update_success().__dict__)
 
 @bpp.route('/district/<string:district_id>', methods=['DELETE'])

@@ -36,7 +36,7 @@ def create_privilege():
 @bpp.route('/privilege/<string:privilege_id>', methods=['PUT'])
 @jwt_required
 #@allow_access
-def privilege_user(privilege_id):
+def alter_privilege(privilege_id):
     request_json = request.get_json()
     schema = PrivilegeSchema(exclude=('id',))
 
@@ -51,7 +51,7 @@ def privilege_user(privilege_id):
     controller.alter()
 
     return jsonify(
-        data=obj_to_dict(controller.privilege),
+        data=PrivilegeController.get_one_details(controller.privilege.id),
         status=Status.status_update_success().__dict__)
 
 

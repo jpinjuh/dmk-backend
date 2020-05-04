@@ -60,9 +60,8 @@ def alter_user(user_id):
             districts_id=params['district']['id']
         ))
     controller.alter()
-
     return jsonify(
-        data=obj_to_dict(controller.user),
+        data=UserController.get_one_details(controller.user.id),
         status=Status.status_update_success().__dict__)
 
 

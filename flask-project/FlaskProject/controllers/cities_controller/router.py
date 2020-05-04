@@ -50,7 +50,7 @@ def alter_city(city_id):
     controller.alter()
 
     return jsonify(
-        data=obj_to_dict(controller.city),
+        data=CityController.get_one_details(controller.city.id),
         status=Status.status_update_success().__dict__)
 
 @bpp.route('/city/<string:city_id>', methods=['DELETE'])
