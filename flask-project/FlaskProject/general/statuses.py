@@ -164,6 +164,20 @@ class Status:
         """
         return cls(-1, 'This user does not exist')
 
+    @classmethod
+    def status_success(cls):
+        """
+        :return: cls(-1, 'Allowed access!')
+        """
+        return cls(-1, 'Allowed access!')
+
+    @classmethod
+    def status_access_denied(cls):
+        """
+        :return: cls(-1, 'Access denied!')
+        """
+        return cls(-1, 'Access denied!')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,

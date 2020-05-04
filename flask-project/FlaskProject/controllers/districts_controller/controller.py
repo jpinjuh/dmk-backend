@@ -15,6 +15,10 @@ class DistrictController(BaseController):
          Method used for creating district
         :return: Status object or raise FlaskProjectLogException
         """
+        if District.query.check_if_already_exist_by_name(
+                self.district.name):
+            raise FlaskProjectLogException(
+                Status.status_district_already_exist())
 
         if District.query.check_if_already_exist_by_name(
                 self.district.name):

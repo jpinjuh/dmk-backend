@@ -13,7 +13,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 @bpp.route('/user', methods=['POST'])
 @jwt_required
-#@allow_access
+@allow_access
 def create_user():
     request_json = request.get_json()
     schema = UserSchema(exclude=('id',))
@@ -39,7 +39,7 @@ def create_user():
 
 @bpp.route('/user/<string:user_id>', methods=['PUT'])
 @jwt_required
-#@allow_access
+@allow_access
 def alter_user(user_id):
     request_json = request.get_json()
     schema = UserSchema(exclude=('id',))
@@ -124,7 +124,7 @@ def user_autocomplete():
 
 @bpp.route('/user', methods=['GET'])
 @jwt_required
-#@allow_access
+@allow_access
 def get_users():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

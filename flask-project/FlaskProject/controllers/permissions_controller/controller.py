@@ -3,7 +3,7 @@ from sqlalchemy import and_
 from ... import Permission, FlaskProjectLogException
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
-
+from ...models import User
 
 class PermissionController(BaseController):
 
@@ -142,8 +142,8 @@ class PermissionController(BaseController):
         :return: dict with total, data and status
         """
 
-        filter_main = and_(
-            Permission.status == Permission.STATUSES['active'])
+        filter_main = and_()
+            #Permission.status == Permission.STATUSES['active'])
 
         name = kwargs.get('name', None)
 
@@ -164,3 +164,7 @@ class PermissionController(BaseController):
         return dict(
             status=Status.status_successfully_processed().__dict__,
             total=total, data=list_data)
+
+
+
+

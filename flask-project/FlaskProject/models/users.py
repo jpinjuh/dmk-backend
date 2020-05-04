@@ -92,9 +92,9 @@ class UserQuery(BaseQuery):
          try:
              from . import Role, District
              return self.query_details().filter(
-                 Role.status == Role.STATUSES['active'],
-                 District.status == District.STATUSES['active'],
-                 User.status == User.STATUSES['active'],
+                 #Role.status == Role.STATUSES['active'],
+                 #District.status == District.STATUSES['active'],
+                 #User.status == User.STATUSES['active'],
                  filter_data
              ).order_by(User.created_at.desc())
          except Exception as e:
@@ -141,7 +141,7 @@ class User(ModelsMixin, TimestampedModelMixin, db.Model):
             return None
 
         user = cls.query.filter_by(username=username).first()
-        if not user or not check_password_hash(user.password_hash, password):
+        if not user or not check_password_hash(user.password_hash, password) or user.status != User.STATUSES['active']:
             return None
 
         return user

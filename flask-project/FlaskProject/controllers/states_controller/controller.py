@@ -140,8 +140,8 @@ class StateController(BaseController):
         :return: dict with total, data and status
         """
 
-        filter_main = and_(
-            State.status == State.STATUSES['active'])
+        filter_main = and_()
+            #State.status == State.STATUSES['active'])
 
         name = kwargs.get('name', None)
 

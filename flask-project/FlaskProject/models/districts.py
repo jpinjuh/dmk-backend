@@ -18,7 +18,7 @@ class DistrictQuery(BaseQuery):
      def check_if_already_exist_by_name(self, name):
          try:
              return self.filter(
-                 District.status == District.STATUSES['active'],
+                 #District.status == District.STATUSES['active'],
                  District.name == name).first() is not None
          except Exception as e:
              db.session.rollback()
@@ -28,7 +28,7 @@ class DistrictQuery(BaseQuery):
          try:
              return self.filter(
                  District.id != _id,
-                 District.status == District.STATUSES['active'],
+                 #District.status == District.STATUSES['active'],
                  District.username == name).first() is not None
          except Exception as e:
              db.session.rollback()
@@ -53,8 +53,8 @@ class DistrictQuery(BaseQuery):
          try:
              from . import City
              return self.query_details().filter(
-                 City.status == City.STATUSES['active'],
-                 District.status == District.STATUSES['active'],
+                 #City.status == City.STATUSES['active'],
+                 #District.status == District.STATUSES['active'],
                  District.name.ilike('%'+search+'%')
              ).all()
          except Exception as e:
@@ -65,8 +65,8 @@ class DistrictQuery(BaseQuery):
          try:
              from . import City
              return self.query_details().filter(
-                 City.status == City.STATUSES['active'],
-                 District.status == District.STATUSES['active'],
+                 #City.status == City.STATUSES['active'],
+                 #District.status == District.STATUSES['active'],
                  filter_data
              ).order_by(District.created_at.desc())
          except Exception as e:

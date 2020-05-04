@@ -16,6 +16,10 @@ class PrivilegeController(BaseController):
          Method used for creating privilege
         :return: Status object or raise FlaskProjectLogException
         """
+        if Privilege.query.check_if_already_exist(
+               self.privilege.roles_id, self.privilege.permissions_id):
+            raise FlaskProjectLogException(
+                Status.status_privilege_already_exist())
 
         if self.privilege.roles_id is not None:
             role = RoleController.get_one(
@@ -202,7 +206,11 @@ class PrivilegeController(BaseController):
         list_role_permissions = []
         for i in privileges:
             list_role_permissions.append(PrivilegeController.__custom_sql(i))
-
-        return dict(
-            status=Status.status_successfully_processed().__dict__,
-            data=list_role_permissions)
+        list_method_route = []
+        for i in list_role_permissions:
+            method_role = {
+                'method': i['permission']['method'],
+                'route': i['permission']['route']
+            }
+            list_method_route.append(method_role)
+        return list_method_route
