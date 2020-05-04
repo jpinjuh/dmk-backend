@@ -35,7 +35,7 @@ class PrivilegeQuery(BaseQuery):
     def check_if_already_exist(self, role_id, permission_id):
         try:
             return self.filter(
-                Privilege.status == Privilege.STATUSES['active'],
+                #Privilege.status == Privilege.STATUSES['active'],
                 Privilege.roles_id == role_id, Privilege.permissions_id == permission_id).first() is not None
         except Exception as e:
             db.session.rollback()
@@ -45,9 +45,9 @@ class PrivilegeQuery(BaseQuery):
         try:
             from . import Role, Permission
             return self.query_details().filter(
-                Role.status == Role.STATUSES['active'],
-                Permission.status == Permission.STATUSES['active'],
-                Privilege.status == Privilege.STATUSES['active'],
+                #Role.status == Role.STATUSES['active'],
+                #Permission.status == Permission.STATUSES['active'],
+                #Privilege.status == Privilege.STATUSES['active'],
             ).all()
         except Exception as e:
             db.session.rollback()
@@ -58,7 +58,7 @@ class PrivilegeQuery(BaseQuery):
             from . import Role, Permission
             return self.query_details().filter(
                 #Role.status == Role.STATUSES['active'],
-                #Permission.status == Permission.STATUSES['active'],
+                Permission.status == Permission.STATUSES['active'],
                 #Privilege.status == Privilege.STATUSES['active'],
                 filter_data
             ).order_by(Privilege.created_at.desc())

@@ -50,7 +50,7 @@ def alter_city(city_id):
     controller.alter()
 
     return jsonify(
-        data=obj_to_dict(controller.city),
+        data=CityController.get_one_details(controller.city.id),
         status=Status.status_update_success().__dict__)
 
 @bpp.route('/city/<string:city_id>', methods=['DELETE'])
@@ -113,7 +113,7 @@ def city_autocomplete():
 
 @bpp.route('/city', methods=['GET'])
 @jwt_required
-#@allow_access
+@allow_access
 def get_cities():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 20, int)

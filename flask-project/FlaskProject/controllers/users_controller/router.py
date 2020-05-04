@@ -11,6 +11,7 @@ from ...general.route_decorators import allow_access
 from ...schema import UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 @bpp.route('/user', methods=['POST'])
 @jwt_required
 @allow_access
@@ -37,6 +38,7 @@ def create_user():
         data=UserController.get_one_details(controller.user.id),
         status=Status.status_successfully_inserted().__dict__)
 
+
 @bpp.route('/user/<string:user_id>', methods=['PUT'])
 @jwt_required
 @allow_access
@@ -58,14 +60,14 @@ def alter_user(user_id):
             districts_id=params['district']['id']
         ))
     controller.alter()
-
     return jsonify(
-        data=obj_to_dict(controller.user),
+        data=UserController.get_one_details(controller.user.id),
         status=Status.status_update_success().__dict__)
+
 
 @bpp.route('/user/<string:user_id>', methods=['DELETE'])
 @jwt_required
-#@allow_access
+@allow_access
 def user_inactivate(user_id):
     controller = UserController(
         user=User(id=user_id))
@@ -76,9 +78,10 @@ def user_inactivate(user_id):
         data=obj_to_dict(controller.user),
         status=Status.status_successfully_processed().__dict__)
 
+
 @bpp.route('/user/activate', methods=['POST'])
 @jwt_required
-#@allow_access
+@allow_access
 def user_activate():
     request_json = request.get_json()
     schema = UserSchema(only=('id',))
@@ -96,7 +99,7 @@ def user_activate():
 
 @bpp.route('/user/<string:user_id>', methods=['GET'])
 @jwt_required
-#@allow_access
+@allow_access
 def get_one_user(user_id):
     controller = UserController.get_one_details(user_id)
 
@@ -110,7 +113,7 @@ def get_one_user(user_id):
 
 @bpp.route('/user/autocomplete', methods=['POST'])
 @jwt_required
-#@allow_access
+@allow_access
 def user_autocomplete():
     request_json = request.get_json()
     search = request_json.get('search', None)

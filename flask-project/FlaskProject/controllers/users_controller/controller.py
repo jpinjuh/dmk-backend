@@ -97,7 +97,6 @@ class UserController(BaseController):
 
         return Status.status_update_success().__dict__
 
-
     def inactivate(self):
         """
         Method used for setting user status to inactive (0)

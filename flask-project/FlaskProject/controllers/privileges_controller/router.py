@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import request, jsonify, redirect
 #from ...flask_jwt import JWT, jwt_required, current_identity
 from ...flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
@@ -36,7 +36,7 @@ def create_privilege():
 @bpp.route('/privilege/<string:privilege_id>', methods=['PUT'])
 @jwt_required
 #@allow_access
-def privilege_user(privilege_id):
+def alter_privilege(privilege_id):
     request_json = request.get_json()
     schema = PrivilegeSchema(exclude=('id',))
 
@@ -51,7 +51,7 @@ def privilege_user(privilege_id):
     controller.alter()
 
     return jsonify(
-        data=obj_to_dict(controller.privilege),
+        data=PrivilegeController.get_one_details(controller.privilege.id),
         status=Status.status_update_success().__dict__)
 
 
@@ -142,7 +142,7 @@ def get_role_permissions():
 
     return jsonify(permissions)
 
-@bpp.route('/check_access', methods=['POST'])
+@bpp.route('/check_access', methods=['POST',])
 @jwt_required
 def check_access():
 
@@ -152,10 +152,13 @@ def check_access():
     rule = request.url_rule
     route = rule.rule
     method = request.method
+    #route = '/user'
+    #method = 'GET'
 
     for i in permissions:
         if i['route'] == route and i['method'] == method:
-            return 'Success'
-        else:
-            return 'Access denied!'
+            return 'Access allowed!'
+
+    return 'Access denied!'
+
 
