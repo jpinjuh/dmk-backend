@@ -15,11 +15,11 @@ class PermissionQuery(BaseQuery):
             db.session.rollback()
             return None
 
-    def check_if_already_exist_by_name(self, name):
+    def check_if_already_exist(self, route, method):
         try:
             return self.filter(
-                Permission.status == Permission.STATUSES['active'],
-                Permission.name == name).first() is not None
+                #Permission.status == Permission.STATUSES['active'],
+                Permission.route == route, Permission.method == method).first() is not None
         except Exception as e:
             db.session.rollback()
             return False

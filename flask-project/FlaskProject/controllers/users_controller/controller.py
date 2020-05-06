@@ -193,6 +193,41 @@ class UserController(BaseController):
         return list_data
 
     @staticmethod
+    def list_autocomplete(search):
+        """
+        Method for searching users with autocomplete
+        :param search:Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            role_district = User.query.autocomplete_by_name(search)
+            for i in role_district:
+                list_data.append(UserController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
+    def list_search(search):
+        """
+        Method for searching users
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            user_role_district = User.query.autocomplete_by_name(search)
+            for i in user_role_district:
+                list_data.append(UserController.__custom_sql(i))
+
+        if len(search) == 0:
+            user_role_district = User.query.get_all()
+            for i in user_role_district:
+                list_data.append(UserController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all users by filter_data in pagination form

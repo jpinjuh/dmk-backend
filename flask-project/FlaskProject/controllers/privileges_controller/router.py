@@ -120,7 +120,7 @@ def privilege_autocomplete():
 #@allow_access
 def get_privileges():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 20, int)
+    limit = request.args.get('limit', 70, int)
     privilege_name = request.args.get('privilege_name', '', str)
     role_id = request.args.get('role_id', None, str)
     permission_id = request.args.get('permission_id', None, str)

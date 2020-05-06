@@ -115,7 +115,7 @@ def permission_autocomplete():
 #@allow_access
 def get_permission():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 20, int)
+    limit = request.args.get('limit', 60, int)
     name = request.args.get('name', None, str)
 
     pagination_result = PermissionController.get_list_pagination(

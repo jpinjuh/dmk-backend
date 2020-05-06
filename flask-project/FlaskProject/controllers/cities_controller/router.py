@@ -111,6 +111,20 @@ def city_autocomplete():
         status=Status.status_successfully_processed().__dict__)
 
 
+@bpp.route('/city/search', methods=['POST'])
+@jwt_required
+#@allow_access
+def city_search():
+    request_json = request.get_json()
+    search = request_json.get('search', None)
+
+    data = CityController.list_search(search)
+
+    return jsonify(
+        data=data,
+        status=Status.status_successfully_processed().__dict__)
+
+
 @bpp.route('/city', methods=['GET'])
 @jwt_required
 @allow_access

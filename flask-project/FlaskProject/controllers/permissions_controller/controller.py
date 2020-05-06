@@ -16,8 +16,8 @@ class PermissionController(BaseController):
         :return: Status object or raise FlaskProjectLogException
         """
 
-        if Permission.query.check_if_already_exist_by_name(
-                self.permission.name):
+        if Permission.query.check_if_already_exist(
+                self.permission.route, self.permission.method):
             raise FlaskProjectLogException(
                 Status.status_permission_already_exist())
 

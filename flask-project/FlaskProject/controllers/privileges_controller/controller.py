@@ -197,23 +197,25 @@ class PrivilegeController(BaseController):
     @staticmethod
     def get_role_permissions(role_id):
 
-        filter_main = and_()
-        if role_id:
-            filter_main = and_(
-                filter_main, Privilege.roles_id == role_id)
-
-        privileges = Privilege.query.get_all_by_filter(filter_main).filter(Privilege.status == Privilege.STATUSES['active'])
-        list_role_permissions = []
-        for i in privileges:
-            list_role_permissions.append(PrivilegeController.__custom_sql(i))
-
         list_method_route = []
-        for i in list_role_permissions:
-            method_role = {
-                'name': i['permission']['name'],
-                'route': i['permission']['route'],
-                'method': i['permission']['method']
-            }
-            list_method_route.append(method_role)
+
+        if role_id:
+            filter_main = and_()
+            if role_id:
+                filter_main = and_(
+                    filter_main, Privilege.roles_id == role_id)
+
+            privileges = Privilege.query.get_all_by_filter(filter_main).filter(Privilege.status == Privilege.STATUSES['active'])
+            list_role_permissions = []
+            for i in privileges:
+                list_role_permissions.append(PrivilegeController.__custom_sql(i))
+
+            for i in list_role_permissions:
+                method_role = {
+                    'name': i['permission']['name'],
+                    'route': i['permission']['route'],
+                    'method': i['permission']['method']
+                }
+                list_method_route.append(method_role)
         return list_method_route
 

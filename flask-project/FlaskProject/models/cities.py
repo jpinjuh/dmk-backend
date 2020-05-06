@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
-
+from sqlalchemy import or_
 
 class CityQuery(BaseQuery):
 
@@ -55,8 +55,17 @@ class CityQuery(BaseQuery):
              return self.query_details().filter(
                  #State.status == State.STATUSES['active'],
                  #City.status == City.STATUSES['active'],
-                 City.name.ilike('%'+search+'%')
+                 or_(City.name.ilike('%'+search+'%'),
+                     State.name.ilike('%'+search+'%'))
              ).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
+
+     def get_all(self):
+         try:
+             from . import State
+             return self.query_details().order_by(City.created_at.desc()).all()
          except Exception as e:
              db.session.rollback()
              return []
