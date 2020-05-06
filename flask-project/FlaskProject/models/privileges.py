@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
-
+from sqlalchemy import or_
 
 class PrivilegeQuery(BaseQuery):
 
@@ -48,10 +48,20 @@ class PrivilegeQuery(BaseQuery):
                 #Role.status == Role.STATUSES['active'],
                 #Permission.status == Permission.STATUSES['active'],
                 #Privilege.status == Privilege.STATUSES['active'],
+                or_(Role.name.ilike('%' + search + '%'),
+                    Permission.name.ilike('%' + search + '%'))
             ).all()
         except Exception as e:
             db.session.rollback()
             return []
+
+    def get_all(self):
+         try:
+             from . import Role, Permission
+             return self.query_details().order_by(Privilege.created_at.desc()).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
 
     def get_all_by_filter(self, filter_data):
         try:

@@ -148,6 +148,26 @@ class PrivilegeController(BaseController):
         return list_data
 
     @staticmethod
+    def list_search(search):
+        """
+        Method for searching privileges
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            role_permission = Privilege.query.autocomplete_by_name(search)
+            for i in role_permission:
+                list_data.append(PrivilegeController.__custom_sql(i))
+
+        else:
+            role_permission = Privilege.query.get_all()
+            for i in role_permission:
+                list_data.append(PrivilegeController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all privileges by filter_data in pagination form

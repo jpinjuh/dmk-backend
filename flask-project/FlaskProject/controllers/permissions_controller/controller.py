@@ -136,6 +136,26 @@ class PermissionController(BaseController):
         return list_data
 
     @staticmethod
+    def list_search(search):
+        """
+        Method for searching permissions
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            permission = Permission.query.autocomplete_by_name(search)
+            for i in permission:
+                list_data.append(obj_to_dict(i))
+
+        else:
+            permission = Permission.query.get_all()
+            for i in permission:
+                list_data.append(obj_to_dict(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all permissions by filter_data in pagination form

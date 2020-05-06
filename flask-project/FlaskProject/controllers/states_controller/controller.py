@@ -142,11 +142,11 @@ class StateController(BaseController):
         """
         list_data = []
         if search:
-            state = State.query.search_by_name(search)
+            state = State.query.autocomplete_by_name(search)
             for i in state:
                 list_data.append(obj_to_dict(i))
 
-        if len(search) == 0:
+        else:
             state = State.query.get_all()
             for i in state:
                 list_data.append(obj_to_dict(i))

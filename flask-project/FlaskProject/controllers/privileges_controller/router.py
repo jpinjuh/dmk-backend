@@ -115,6 +115,20 @@ def privilege_autocomplete():
         status=Status.status_successfully_processed().__dict__)
 
 
+@bpp.route('/privilege/search', methods=['POST'])
+@jwt_required
+#@allow_access
+def privilege_search():
+    request_json = request.get_json()
+    search = request_json.get('search', None)
+
+    data = PrivilegeController.list_search(search)
+
+    return jsonify(
+        data=data,
+        status=Status.status_successfully_processed().__dict__)
+
+
 @bpp.route('/privilege', methods=['GET'])
 @jwt_required
 #@allow_access

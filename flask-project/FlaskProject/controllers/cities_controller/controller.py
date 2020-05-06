@@ -149,7 +149,7 @@ class CityController(BaseController):
             for i in city_state:
                 list_data.append(CityController.__custom_sql(i))
 
-        if len(search) == 0:
+        else:
             city_state = City.query.get_all()
             for i in city_state:
                 list_data.append(CityController.__custom_sql(i))

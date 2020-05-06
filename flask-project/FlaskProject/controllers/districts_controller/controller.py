@@ -157,7 +157,7 @@ class DistrictController(BaseController):
             for i in district_city:
                 list_data.append(DistrictController.__custom_sql(i))
 
-        if len(search) == 0:
+        else:
             district_city = District.query.get_all()
             for i in district_city:
                 list_data.append(DistrictController.__custom_sql(i))

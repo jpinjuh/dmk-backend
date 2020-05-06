@@ -43,15 +43,6 @@ class StateQuery(BaseQuery):
             db.session.rollback()
             return []
 
-    def search_by_name(self, search):
-        try:
-            return self.filter(
-                State.status == State.STATUSES['active'],
-                State.name.ilike('%' + search + '%')).all()
-        except Exception as e:
-            db.session.rollback()
-            return []
-
     def get_all(self):
         try:
             return self.order_by(State.created_at.desc()).all()

@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
-
+from sqlalchemy import or_
 
 class PermissionQuery(BaseQuery):
 
@@ -34,11 +34,21 @@ class PermissionQuery(BaseQuery):
             db.session.rollback()
             return False
 
+    def get_all(self):
+        try:
+            return self.order_by(Permission.created_at.desc()).all()
+        except Exception as e:
+            db.session.rollback()
+            return []
+
     def autocomplete_by_name(self, search):
         try:
             return self.filter(
-                Permission.status == Permission.STATUSES['active'],
-                Permission.name.ilike('%'+search+'%')).all()
+                #Permission.status == Permission.STATUSES['active'],
+                or_(Permission.name.ilike('%'+search+'%'),
+                    Permission.route.ilike('%'+search+'%'),
+                    Permission.method.ilike('%'+search+'%'))
+            ).all()
         except Exception as e:
             db.session.rollback()
             return []

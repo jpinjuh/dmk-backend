@@ -220,7 +220,7 @@ class UserController(BaseController):
             for i in user_role_district:
                 list_data.append(UserController.__custom_sql(i))
 
-        if len(search) == 0:
+        else:
             user_role_district = User.query.get_all()
             for i in user_role_district:
                 list_data.append(UserController.__custom_sql(i))
