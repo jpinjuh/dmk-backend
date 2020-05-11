@@ -178,6 +178,13 @@ class Status:
         """
         return cls(-1, 'Access denied!')
 
+    @classmethod
+    def status_pass_dont_match(cls):
+        """
+        :return: cls(-1, 'Passwords do not match!')
+        """
+        return cls(-1, 'Passwords do not match!')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,

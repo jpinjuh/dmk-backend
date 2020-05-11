@@ -1,4 +1,4 @@
-from flask import current_app
+from flask import current_app, url_for
 from flask_script import Command
 from ..controllers.states_controller.controller import StateController
 from ..controllers.cities_controller.controller import CityController
@@ -19,7 +19,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class Seed(Command):
     """Seeds database with fake but realistic data"""
-
 
     def run(self):
         current_app.logger.info('Seeding database with test data...')
@@ -71,6 +70,7 @@ class Seed(Command):
                 districts_id=district.id
             ))
         controller.create()
+        """
         controller = PermissionController(
             permission=Permission(
                 name='Pregled svih korisnika',
@@ -217,3 +217,28 @@ class Seed(Command):
 
             ))
         controller.create()
+"""
+        for rule in current_app.url_map.iter_rules():
+            for method in rule.methods:
+                if method == 'OPTIONS' or method == 'HEAD':
+                    pass
+                else:
+                    controller = PermissionController(
+                        permission=Permission(
+                            name=str(rule.rule[0].replace("/", "") + rule.rule[1:].replace("/", " ")),
+                            route=str(rule.rule),
+                            method=str(method)
+
+                        ))
+                    controller.create()
+
+        permissions = Permission.query.all()
+        for permission in permissions:
+            if any(path in permission.route for path in ['/permission', '/privilege', '/role', '/user', '/city', '/district', '/state']):
+                controller = PrivilegeController(
+                    privilege=Privilege(
+                        roles_id=role.id,
+                        permissions_id=permission.id
+
+                    ))
+                controller.create()

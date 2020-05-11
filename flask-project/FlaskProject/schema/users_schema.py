@@ -50,3 +50,28 @@ class UserSchema(Schema):
 
     district = fields.Nested(
         'DistrictSchema', only=['id'], required=False)
+
+
+class PasswordSchema(Schema):
+
+    id = fields.UUID(required=True,
+                     error_messages={
+                         "invalid_uuid": "Invalid data for UUID",
+                         "required": "Field is required",
+                         "null": "Field can not be null"})
+
+    password_change = fields.Str(required=True,
+                               error_messages={"required": "Field is required"},
+                               validate=[
+                                   validate.Length(min=6, max=30,
+                                                   error=
+                                                   'Field must be between 6 '
+                                                   'and 30 characters long')])
+
+    password_confirm = fields.Str(required=True,
+                               error_messages={"required": "Field is required"},
+                               validate=[
+                                   validate.Length(min=6, max=30,
+                                                   error=
+                                                   'Field must be between 6 '
+                                                   'and 30 characters long')])

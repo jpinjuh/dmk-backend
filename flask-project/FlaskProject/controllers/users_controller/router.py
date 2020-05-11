@@ -1,14 +1,15 @@
 from flask import request, jsonify
 #from ...flask_jwt import JWT, current_identity
+
 from ...flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
-    get_jwt_identity
+    get_jwt_identity, get_jwt_claims
 )
 from .controller import UserController
 from ... import bpp, User, FlaskProjectLogException
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
-from ...schema import UserSchema
+from ...schema import UserSchema, PasswordSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -64,6 +65,33 @@ def alter_user(user_id):
         data=UserController.get_one_details(controller.user.id),
         status=Status.status_update_success().__dict__)
 
+@bpp.route('/user/change_pass', methods=['PUT'])
+@jwt_required
+#@allow_access
+def change_password():
+    user_id = get_jwt_claims()['id']
+    
+    request_json = request.get_json()
+    schema = PasswordSchema(exclude=('id',))
+    params = schema.load(request_json)
+
+    password_change = (params['password_change'])
+    password_confirm = (params['password_confirm'])
+
+    if password_change == password_confirm:
+        controller = UserController(
+            user=User(
+                id=user_id,
+                password_hash=generate_password_hash(params['password_change'], method='sha256'),
+            ))
+
+        controller.change_password()
+        return jsonify(
+            data=UserController.get_one_details(controller.user.id),
+            status=Status.status_update_success().__dict__)
+
+    else:
+        return jsonify(status=Status.status_pass_dont_match().__dict__)
 
 @bpp.route('/user/<string:user_id>', methods=['DELETE'])
 @jwt_required
@@ -125,12 +153,26 @@ def user_autocomplete():
         status=Status.status_successfully_processed().__dict__)
 
 
+@bpp.route('/user/search', methods=['POST'])
+@jwt_required
+#@allow_access
+def user_search():
+    request_json = request.get_json()
+    search = request_json.get('search', None)
+
+    data = UserController.list_search(search)
+
+    return jsonify(
+        data=data,
+        status=Status.status_successfully_processed().__dict__)
+
+
 @bpp.route('/user', methods=['GET'])
 @jwt_required
 @allow_access
 def get_users():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 20, int)
+    limit = request.args.get('limit', 10, int)
 
     first_name = request.args.get('first_name', '', str)
     last_name = request.args.get('last_name', '', str)

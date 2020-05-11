@@ -42,6 +42,13 @@ class RoleQuery(BaseQuery):
             db.session.rollback()
             return []
 
+    def get_all(self):
+        try:
+            return self.order_by(Role.created_at.desc()).all()
+        except Exception as e:
+            db.session.rollback()
+            return []
+
 
 class Role(ModelsMixin, TimestampedModelMixin, db.Model):
 

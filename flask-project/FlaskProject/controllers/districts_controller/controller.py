@@ -145,6 +145,26 @@ class DistrictController(BaseController):
         return list_data
 
     @staticmethod
+    def list_search(search):
+        """
+        Method for searching districts
+        :param search:Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            district_city = District.query.autocomplete_by_name(search)
+            for i in district_city:
+                list_data.append(DistrictController.__custom_sql(i))
+
+        else:
+            district_city = District.query.get_all()
+            for i in district_city:
+                list_data.append(DistrictController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all districts by filter_data in pagination form

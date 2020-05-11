@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from sqlalchemy import or_
 
 class UserQuery(BaseQuery):
 
@@ -44,7 +44,6 @@ class UserQuery(BaseQuery):
              db.session.rollback()
              return False
 
-
      def check_if_email_is_taken(self, _id, email):
          try:
              return self.filter(
@@ -54,7 +53,6 @@ class UserQuery(BaseQuery):
          except Exception as e:
              db.session.rollback()
              return False
-
 
      @staticmethod
      def query_details():
@@ -77,13 +75,24 @@ class UserQuery(BaseQuery):
          try:
              from . import Role, District
              return self.query_details().filter(
-                 Role.status == Role.STATUSES['active'],
-                 District.status == District.STATUSES['active'],
-                 User.status == User.STATUSES['active'],
-                 User.first_name.ilike('%'+search+'%'),
-                 User.last_name.ilike('%'+search+'%'),
-                 User.username.ilike('%' + search + '%')
+                 #Role.status == Role.STATUSES['active'],
+                 #District.status == District.STATUSES['active'],
+                 #User.status == User.STATUSES['active'],
+                 or_(User.first_name.ilike('%'+search+'%'),
+                     User.last_name.ilike('%'+search+'%'),
+                     User.username.ilike('%' + search + '%'),
+                     User.email.ilike('%' + search + '%'),
+                     Role.name.ilike('%' + search + '%'),
+                     District.name.ilike('%' + search + '%'))
              ).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
+
+     def get_all(self):
+         try:
+             from . import Role, District
+             return self.query_details().order_by(User.created_at.desc()).all()
          except Exception as e:
              db.session.rollback()
              return []

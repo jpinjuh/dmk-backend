@@ -111,12 +111,25 @@ def district_autocomplete():
         status=Status.status_successfully_processed().__dict__)
 
 
+@bpp.route('/district/search', methods=['POST'])
+@jwt_required
+#@allow_access
+def district_search():
+    request_json = request.get_json()
+    search = request_json.get('search', None)
+
+    data = DistrictController.list_search(search)
+
+    return jsonify(
+        data=data,
+        status=Status.status_successfully_processed().__dict__)
+
 @bpp.route('/district', methods=['GET'])
 @jwt_required
 #@allow_access
 def get_districts():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 20, int)
+    limit = request.args.get('limit', 10, int)
 
     district_name = request.args.get('district_name', '', str)
     city_id = request.args.get('city_id', None, str)

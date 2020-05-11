@@ -134,6 +134,26 @@ class StateController(BaseController):
         return list_data
 
     @staticmethod
+    def list_search(search):
+        """
+        Method for searching states
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            state = State.query.autocomplete_by_name(search)
+            for i in state:
+                list_data.append(obj_to_dict(i))
+
+        else:
+            state = State.query.get_all()
+            for i in state:
+                list_data.append(obj_to_dict(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all states by filter_data in pagination form

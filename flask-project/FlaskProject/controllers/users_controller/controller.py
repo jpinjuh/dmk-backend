@@ -97,6 +97,27 @@ class UserController(BaseController):
 
         return Status.status_update_success().__dict__
 
+    def change_password(self):
+        """
+        Method used for changing password
+        :return: Status object or raise FlaskProjectLogException
+        """
+        user = User.query.get_one(self.user.id)
+
+        if user is None:
+            raise FlaskProjectLogException(
+                Status.status_user_not_exist())
+
+
+        user.password_hash = self.user.password_hash
+
+        user.update()
+        user.commit_or_rollback()
+
+        self.user = user
+
+        return Status.status_update_success().__dict__
+
     def inactivate(self):
         """
         Method used for setting user status to inactive (0)
@@ -188,6 +209,41 @@ class UserController(BaseController):
         if search:
             role_district = User.query.autocomplete_by_name(search)
             for i in role_district:
+                list_data.append(UserController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
+    def list_autocomplete(search):
+        """
+        Method for searching users with autocomplete
+        :param search:Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            role_district = User.query.autocomplete_by_name(search)
+            for i in role_district:
+                list_data.append(UserController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
+    def list_search(search):
+        """
+        Method for searching users
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            user_role_district = User.query.autocomplete_by_name(search)
+            for i in user_role_district:
+                list_data.append(UserController.__custom_sql(i))
+
+        else:
+            user_role_district = User.query.get_all()
+            for i in user_role_district:
                 list_data.append(UserController.__custom_sql(i))
 
         return list_data

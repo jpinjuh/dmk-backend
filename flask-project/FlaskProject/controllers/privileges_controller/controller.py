@@ -148,6 +148,26 @@ class PrivilegeController(BaseController):
         return list_data
 
     @staticmethod
+    def list_search(search):
+        """
+        Method for searching privileges
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            role_permission = Privilege.query.autocomplete_by_name(search)
+            for i in role_permission:
+                list_data.append(PrivilegeController.__custom_sql(i))
+
+        else:
+            role_permission = Privilege.query.get_all()
+            for i in role_permission:
+                list_data.append(PrivilegeController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all privileges by filter_data in pagination form
@@ -197,22 +217,24 @@ class PrivilegeController(BaseController):
     @staticmethod
     def get_role_permissions(role_id):
 
-        filter_main = and_()
-        if role_id:
-            filter_main = and_(
-                filter_main, Privilege.roles_id == role_id)
-
-        privileges = Privilege.query.get_all_by_filter(filter_main).filter(Privilege.status == Privilege.STATUSES['active'])
-        list_role_permissions = []
-        for i in privileges:
-            list_role_permissions.append(PrivilegeController.__custom_sql(i))
-
         list_method_route = []
-        for i in list_role_permissions:
-            method_role = {
-                'name': i['permission']['name'],
-                'route': i['permission']['route'],
-                'method': i['permission']['method']
-            }
-            list_method_route.append(method_role)
+
+        if role_id:
+            filter_main = and_()
+            if role_id:
+                filter_main = and_(
+                    filter_main, Privilege.roles_id == role_id)
+
+            privileges = Privilege.query.get_all_by_filter(filter_main).filter(Privilege.status == Privilege.STATUSES['active'])
+            list_role_permissions = []
+            for i in privileges:
+                list_role_permissions.append(PrivilegeController.__custom_sql(i))
+
+            for i in list_role_permissions:
+                method_role = {
+                    'name': i['permission']['name'],
+                    'route': i['permission']['route'],
+                    'method': i['permission']['method']
+                }
+                list_method_route.append(method_role)
         return list_method_route

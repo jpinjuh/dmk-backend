@@ -134,6 +134,26 @@ class RoleController(BaseController):
         return list_data
 
     @staticmethod
+    def list_search(search):
+        """
+        Method for searching roles
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            role = Role.query.autocomplete_by_name(search)
+            for i in role:
+                list_data.append(obj_to_dict(i))
+
+        else:
+            role = Role.query.get_all()
+            for i in role:
+                list_data.append(obj_to_dict(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all roles by filter_data in pagination form
@@ -163,15 +183,4 @@ class RoleController(BaseController):
             status=Status.status_successfully_processed().__dict__,
             total=total, data=list_data)
 
-    @staticmethod
-    def get_all():
-        roles = Role.query.order_by(Role.created_at.asc()).all()
 
-        list_data = []
-
-        for role in roles:
-            list_data.append(obj_to_dict(role))
-
-        return dict(
-            status=Status.status_successfully_processed().__dict__,
-            data=list_data)

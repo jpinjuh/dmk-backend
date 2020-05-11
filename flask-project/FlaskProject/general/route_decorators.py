@@ -36,14 +36,11 @@ def allow_access(function):
             if token:
                 current_role = get_jwt_claims()['roles_id']
                 permissions = PrivilegeController.get_role_permissions(current_role)
-                rule = request.url_rule
-                route = rule.rule
-                method = request.method
                 permission = None
                 for obj in permissions:
-                    if obj['route'] == route and obj['method'] == method:
+                    if obj['route'] == request.url_rule.rule and obj['method'] == request.method:
                         permission = obj['name']
-
+                        break
                 if permission is None:
                     return jsonify(status=Status.status_access_denied().__dict__)
 

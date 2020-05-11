@@ -110,12 +110,26 @@ def permission_autocomplete():
         data=data,
         status=Status.status_successfully_processed().__dict__)
 
+@bpp.route('/permission/search', methods=['POST'])
+@jwt_required
+#@allow_access
+def permission_search():
+    request_json = request.get_json()
+    search = request_json.get('search', None)
+
+    data = PermissionController.list_search(search)
+
+    return jsonify(
+        data=data,
+        status=Status.status_successfully_processed().__dict__)
+
+
 @bpp.route('/permission', methods=['GET'])
 @jwt_required
 #@allow_access
 def get_permission():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 20, int)
+    limit = request.args.get('limit', 10, int)
     name = request.args.get('name', None, str)
 
     pagination_result = PermissionController.get_list_pagination(

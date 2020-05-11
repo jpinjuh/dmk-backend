@@ -137,6 +137,26 @@ class CityController(BaseController):
         return list_data
 
     @staticmethod
+    def list_search(search):
+        """
+        Method for searching cities with autocomplete
+        :param search:Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            city_state = City.query.autocomplete_by_name(search)
+            for i in city_state:
+                list_data.append(CityController.__custom_sql(i))
+
+        else:
+            city_state = City.query.get_all()
+            for i in city_state:
+                list_data.append(CityController.__custom_sql(i))
+
+        return list_data
+
+    @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all cities by filter_data in pagination form

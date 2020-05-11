@@ -43,6 +43,13 @@ class StateQuery(BaseQuery):
             db.session.rollback()
             return []
 
+    def get_all(self):
+        try:
+            return self.order_by(State.created_at.desc()).all()
+        except Exception as e:
+            db.session.rollback()
+            return []
+
 
 class State(ModelsMixin, TimestampedModelMixin, db.Model):
 

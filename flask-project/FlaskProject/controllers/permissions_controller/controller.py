@@ -16,8 +16,8 @@ class PermissionController(BaseController):
         :return: Status object or raise FlaskProjectLogException
         """
 
-        if Permission.query.check_if_already_exist_by_name(
-                self.permission.name):
+        if Permission.query.check_if_already_exist(
+                self.permission.route, self.permission.method):
             raise FlaskProjectLogException(
                 Status.status_permission_already_exist())
 
@@ -130,6 +130,26 @@ class PermissionController(BaseController):
         list_data = []
         if search:
             permission = Permission.query.autocomplete_by_name(search)
+            for i in permission:
+                list_data.append(obj_to_dict(i))
+
+        return list_data
+
+    @staticmethod
+    def list_search(search):
+        """
+        Method for searching permissions
+        :param search: Data for search
+        :return: List of dicts
+        """
+        list_data = []
+        if search:
+            permission = Permission.query.autocomplete_by_name(search)
+            for i in permission:
+                list_data.append(obj_to_dict(i))
+
+        else:
+            permission = Permission.query.get_all()
             for i in permission:
                 list_data.append(obj_to_dict(i))
 
