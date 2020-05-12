@@ -15,6 +15,7 @@ from ..models.users import User
 from ..models.privileges import Privilege
 from ..models.permissions import Permission
 from werkzeug.security import generate_password_hash, check_password_hash
+import re
 
 
 class Seed(Command):
@@ -225,7 +226,8 @@ class Seed(Command):
                 else:
                     controller = PermissionController(
                         permission=Permission(
-                            name=str(rule.rule[0].replace("/", "") + rule.rule[1:].replace("/", " ")),
+                            name=re.sub(
+                                '<[^>]+>', "", str(rule.rule[0].replace("/", "") + rule.rule[1:].replace("/", " "))),
                             route=str(rule.rule),
                             method=str(method)
 

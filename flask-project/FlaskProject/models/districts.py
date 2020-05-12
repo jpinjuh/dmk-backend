@@ -54,7 +54,7 @@ class DistrictQuery(BaseQuery):
              from . import City
              return self.query_details().filter(
                  #City.status == City.STATUSES['active'],
-                 #District.status == District.STATUSES['active'],
+                 District.status == District.STATUSES['active'],
                  or_(District.name.ilike('%' + search + '%'),
                      City.name.ilike('%' + search + '%'))
              ).all()
@@ -65,7 +65,7 @@ class DistrictQuery(BaseQuery):
      def get_all(self):
          try:
              from . import City
-             return self.query_details().order_by(District.created_at.desc()).all()
+             return self.query_details().all()
          except Exception as e:
              db.session.rollback()
              return []

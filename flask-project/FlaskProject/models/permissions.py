@@ -28,7 +28,7 @@ class PermissionQuery(BaseQuery):
         try:
             return self.filter(
                 Permission.id != _id,
-                Permission.status == Permission.STATUSES['active'],
+                #Permission.status == Permission.STATUSES['active'],
                 Permission.name == name).first() is not None
         except Exception as e:
             db.session.rollback()
@@ -36,7 +36,7 @@ class PermissionQuery(BaseQuery):
 
     def get_all(self):
         try:
-            return self.order_by(Permission.created_at.desc()).all()
+            return self.all()
         except Exception as e:
             db.session.rollback()
             return []

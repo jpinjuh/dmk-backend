@@ -17,7 +17,7 @@ class RoleQuery(BaseQuery):
     def check_if_already_exist_by_name(self, name):
         try:
             return self.filter(
-                Role.status == Role.STATUSES['active'],
+                #Role.status == Role.STATUSES['active'],
                 Role.name == name).first() is not None
         except Exception as e:
             db.session.rollback()
@@ -27,7 +27,7 @@ class RoleQuery(BaseQuery):
         try:
             return self.filter(
                 Role.id != _id,
-                Role.status == Role.STATUSES['active'],
+                #Role.status == Role.STATUSES['active'],
                 Role.name == name).first() is not None
         except Exception as e:
             db.session.rollback()
@@ -44,7 +44,7 @@ class RoleQuery(BaseQuery):
 
     def get_all(self):
         try:
-            return self.order_by(Role.created_at.desc()).all()
+            return self.all()
         except Exception as e:
             db.session.rollback()
             return []

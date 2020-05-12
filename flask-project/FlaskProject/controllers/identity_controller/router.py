@@ -8,7 +8,7 @@ from ...controllers.users_controller.controller import UserController
 from ... import bpp, User, FlaskProjectLogException
 from ...general import Status, authenticate, identity
 from ...general.route_decorators import allow_access
-from ...schema import UserSchema
+from ...schema import UserSchema, PasswordSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import json
@@ -58,5 +58,29 @@ def refresh():
     return jsonify(
         access_token=access_token,
         status=Status.status_successfully_processed().__dict__)
+
+"""
+@bpp.route('/changePassword', methods=['POST'])
+@jwt_required
+def change_password():
+    user_id = get_jwt_claims()['id']
+
+    request_json = request.get_json()
+    schema = PasswordSchema()
+    params = schema.load(request_json)
+
+    controller = UserController(
+        user=User(
+            id=user_id,
+            password_hash=generate_password_hash(params['new_password'], method='sha256'),
+        ))
+    controller.change_password()
+
+    return jsonify(
+        data=UserController.get_one_details(controller.user.id),
+        status=Status.status_update_success().__dict__) """
+
+
+
 
 

@@ -58,7 +58,7 @@ class PrivilegeQuery(BaseQuery):
     def get_all(self):
          try:
              from . import Role, Permission
-             return self.query_details().order_by(Privilege.created_at.desc()).all()
+             return self.query_details().all()
          except Exception as e:
              db.session.rollback()
              return []

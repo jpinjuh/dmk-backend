@@ -18,7 +18,7 @@ class StateQuery(BaseQuery):
     def check_if_already_exist_by_name(self, name):
         try:
             return self.filter(
-                State.status == State.STATUSES['active'],
+                #State.status == State.STATUSES['active'],
                 State.name == name).first() is not None
         except Exception as e:
             db.session.rollback()
@@ -28,7 +28,7 @@ class StateQuery(BaseQuery):
         try:
             return self.filter(
                 State.id != _id,
-                State.status == State.STATUSES['active'],
+                #State.status == State.STATUSES['active'],
                 State.name == name).first() is not None
         except Exception as e:
             db.session.rollback()
@@ -45,7 +45,7 @@ class StateQuery(BaseQuery):
 
     def get_all(self):
         try:
-            return self.order_by(State.created_at.desc()).all()
+            return self.all()
         except Exception as e:
             db.session.rollback()
             return []

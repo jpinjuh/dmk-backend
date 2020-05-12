@@ -30,7 +30,7 @@ class UserSchema(Schema):
                                           error=
                                           'Field must be between 2 '
                                           'and 100 characters long')])
-    email = fields.Str(required=True,
+    email = fields.Email(required=True,
                       error_messages={"required": "Field is required"},
                       validate=[
                           validate.Length(min=2, max=100,

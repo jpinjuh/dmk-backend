@@ -18,7 +18,7 @@ class CityQuery(BaseQuery):
      def check_if_already_exist_by_name(self, name):
          try:
              return self.filter(
-                 City.status == City.STATUSES['active'],
+                 #City.status == City.STATUSES['active'],
                  City.name == name).first() is not None
          except Exception as e:
              db.session.rollback()
@@ -53,8 +53,8 @@ class CityQuery(BaseQuery):
          try:
              from . import State
              return self.query_details().filter(
-                 #State.status == State.STATUSES['active'],
-                 #City.status == City.STATUSES['active'],
+                 State.status == State.STATUSES['active'],
+                 City.status == City.STATUSES['active'],
                  or_(City.name.ilike('%'+search+'%'),
                      State.name.ilike('%'+search+'%'))
              ).all()
@@ -65,7 +65,7 @@ class CityQuery(BaseQuery):
      def get_all(self):
          try:
              from . import State
-             return self.query_details().order_by(City.created_at.desc()).all()
+             return self.query_details().all()
          except Exception as e:
              db.session.rollback()
              return []

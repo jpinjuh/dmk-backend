@@ -19,7 +19,7 @@ class UserQuery(BaseQuery):
      def check_if_already_exist_by_name(self, name):
          try:
              return self.filter(
-                 User.status == User.STATUSES['active'],
+                 #User.status == User.STATUSES['active'],
                  User.username == name).first() is not None
          except Exception as e:
              db.session.rollback()
@@ -28,7 +28,7 @@ class UserQuery(BaseQuery):
      def check_if_already_exist_by_email(self, email):
          try:
              return self.filter(
-                 User.status == User.STATUSES['active'],
+                 #User.status == User.STATUSES['active'],
                  User.email == email).first() is not None
          except Exception as e:
              db.session.rollback()
@@ -38,7 +38,7 @@ class UserQuery(BaseQuery):
          try:
              return self.filter(
                  User.id != _id,
-                 User.status == User.STATUSES['active'],
+                 #User.status == User.STATUSES['active'],
                  User.username == name).first() is not None
          except Exception as e:
              db.session.rollback()
@@ -48,7 +48,7 @@ class UserQuery(BaseQuery):
          try:
              return self.filter(
                  User.id != _id,
-                 User.status == User.STATUSES['active'],
+                 #User.status == User.STATUSES['active'],
                  User.email == email).first() is not None
          except Exception as e:
              db.session.rollback()
@@ -92,7 +92,7 @@ class UserQuery(BaseQuery):
      def get_all(self):
          try:
              from . import Role, District
-             return self.query_details().order_by(User.created_at.desc()).all()
+             return self.query_details().all()
          except Exception as e:
              db.session.rollback()
              return []
