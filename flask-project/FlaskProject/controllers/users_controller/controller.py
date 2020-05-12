@@ -88,7 +88,6 @@ class UserController(BaseController):
         user.last_name = self.user.last_name
         user.username = self.user.username
         user.email = self.user.email
-        user.password_hash = self.user.password_hash
         user.roles_id = self.user.roles_id
         user.districts_id = self.user.districts_id
         user.update()
@@ -98,9 +97,9 @@ class UserController(BaseController):
 
         return Status.status_update_success().__dict__
 
-    def change_password(self):
+    def alter_password(self):
         """
-        Method used for changing password
+        Method used (by an admin) for changing password
         :return: Status object or raise FlaskProjectLogException
         """
         user = User.query.get_one(self.user.id)
