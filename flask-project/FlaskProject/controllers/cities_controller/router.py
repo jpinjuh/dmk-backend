@@ -130,7 +130,7 @@ def city_search():
 @allow_access
 def get_cities():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 20, int)
+    limit = request.args.get('limit', 10, int)
 
     city_name = request.args.get('city_name', '', str)
     state_id = request.args.get('state_id', None, str)

@@ -98,6 +98,27 @@ class UserController(BaseController):
 
         return Status.status_update_success().__dict__
 
+    def change_password(self):
+        """
+        Method used for changing password
+        :return: Status object or raise FlaskProjectLogException
+        """
+        user = User.query.get_one(self.user.id)
+
+        if user is None:
+            raise FlaskProjectLogException(
+                Status.status_user_not_exist())
+
+
+        user.password_hash = self.user.password_hash
+
+        user.update()
+        user.commit_or_rollback()
+
+        self.user = user
+
+        return Status.status_update_success().__dict__
+
     def inactivate(self):
         """
         Method used for setting user status to inactive (0)

@@ -129,7 +129,7 @@ def district_search():
 #@allow_access
 def get_districts():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 20, int)
+    limit = request.args.get('limit', 10, int)
 
     district_name = request.args.get('district_name', '', str)
     city_id = request.args.get('city_id', None, str)

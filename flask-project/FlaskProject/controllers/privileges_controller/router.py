@@ -134,7 +134,7 @@ def privilege_search():
 #@allow_access
 def get_privileges():
     start = request.args.get('start', 0, int)
-    limit = request.args.get('limit', 70, int)
+    limit = request.args.get('limit', 10, int)
     privilege_name = request.args.get('privilege_name', '', str)
     role_id = request.args.get('role_id', None, str)
     permission_id = request.args.get('permission_id', None, str)
@@ -174,8 +174,5 @@ def check_access():
             return 'Access allowed!'
 
     return 'Access denied!'
-
-
-
 
 

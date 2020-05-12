@@ -238,4 +238,3 @@ class PrivilegeController(BaseController):
                 }
                 list_method_route.append(method_role)
         return list_method_route
-
