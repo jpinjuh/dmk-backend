@@ -4,6 +4,4 @@ from .districts_schema import DistrictSchema
 from .roles_schema import RoleSchema
 from .permissions_schema import PermissionSchema
 from .privileges_schema import PrivilegeSchema
-from .users_schema import UserSchema
-
-from .archdioceses_schema import ArchdioceseSchema
+from .users_schema import UserSchema, PasswordSchema

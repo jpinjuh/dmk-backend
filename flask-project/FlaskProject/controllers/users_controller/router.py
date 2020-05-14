@@ -45,7 +45,7 @@ def create_user():
 @allow_access
 def alter_user(user_id):
     request_json = request.get_json()
-    schema = UserSchema(exclude=('id',))
+    schema = UserSchema(exclude=('id', 'password_hash'))
 
     params = schema.load(request_json)
 
@@ -56,7 +56,6 @@ def alter_user(user_id):
             last_name=params['last_name'],
             username=params['username'],
             email=params['email'],
-            password_hash=generate_password_hash(params['password_hash'], method='sha256'),
             roles_id=params['role']['id'],
             districts_id=params['district']['id']
         ))
@@ -65,6 +64,31 @@ def alter_user(user_id):
         data=UserController.get_one_details(controller.user.id),
         status=Status.status_update_success().__dict__)
 
+@bpp.route('/user/alter_pass/<string:user_id>', methods=['PUT'])
+@jwt_required
+#@allow_access
+def alter_password(user_id):
+    request_json = request.get_json()
+    schema = PasswordSchema(exclude=('id',))
+    params = schema.load(request_json)
+
+    password_change = (params['password_change'])
+    password_confirm = (params['password_confirm'])
+
+    if password_change == password_confirm:
+        controller = UserController(
+            user=User(
+                id=user_id,
+                password_hash=generate_password_hash(params['password_change'], method='sha256'),
+            ))
+
+        controller.alter_password()
+        return jsonify(
+            data=UserController.get_one_details(controller.user.id),
+            status=Status.status_update_success().__dict__)
+
+    else:
+        return jsonify(status=Status.status_pass_dont_match().__dict__)
 
 @bpp.route('/user/<string:user_id>', methods=['DELETE'])
 @jwt_required
