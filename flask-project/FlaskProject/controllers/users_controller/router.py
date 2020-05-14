@@ -65,33 +65,6 @@ def alter_user(user_id):
         data=UserController.get_one_details(controller.user.id),
         status=Status.status_update_success().__dict__)
 
-@bpp.route('/user/change_pass', methods=['PUT'])
-@jwt_required
-#@allow_access
-def change_password():
-    user_id = get_jwt_claims()['id']
-    
-    request_json = request.get_json()
-    schema = PasswordSchema(exclude=('id',))
-    params = schema.load(request_json)
-
-    password_change = (params['password_change'])
-    password_confirm = (params['password_confirm'])
-
-    if password_change == password_confirm:
-        controller = UserController(
-            user=User(
-                id=user_id,
-                password_hash=generate_password_hash(params['password_change'], method='sha256'),
-            ))
-
-        controller.change_password()
-        return jsonify(
-            data=UserController.get_one_details(controller.user.id),
-            status=Status.status_update_success().__dict__)
-
-    else:
-        return jsonify(status=Status.status_pass_dont_match().__dict__)
 
 @bpp.route('/user/<string:user_id>', methods=['DELETE'])
 @jwt_required

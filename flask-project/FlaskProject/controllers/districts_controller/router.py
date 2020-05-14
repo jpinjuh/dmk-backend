@@ -23,7 +23,9 @@ def create_district():
     controller = DistrictController(
         district=District(
             name=params['name'],
-            city_id=params['city']['id']
+            address=params['address'],
+            city_id=params['city']['id'],
+            archdiocese_id=params['archdiocese']['id']
         ))
 
     controller.create()
@@ -31,6 +33,7 @@ def create_district():
     return jsonify(
         data=DistrictController.get_one_details(controller.district.id),
         status=Status.status_successfully_inserted().__dict__)
+
 
 @bpp.route('/district/<string:district_id>', methods=['PUT'])
 @jwt_required
@@ -45,13 +48,16 @@ def alter_district(district_id):
         district=District(
             id=district_id,
             name=params['name'],
-            city_id=params['city']['id']
+            address=params['address'],
+            city_id=params['city']['id'],
+            archdiocese_id=params['archdiocese']['id']
         ))
     controller.alter()
 
     return jsonify(
         data=DistrictController.get_one_details(controller.district.id),
         status=Status.status_update_success().__dict__)
+
 
 @bpp.route('/district/<string:district_id>', methods=['DELETE'])
 @jwt_required
@@ -65,6 +71,7 @@ def district_inactivate(district_id):
     return jsonify(
         data=obj_to_dict(controller.district),
         status=Status.status_successfully_processed().__dict__)
+
 
 @bpp.route('/district/activate', methods=['POST'])
 @jwt_required
@@ -82,6 +89,7 @@ def district_activate():
     return jsonify(
         data=obj_to_dict(controller.district),
         status=Status.status_successfully_processed().__dict__)
+
 
 @bpp.route('/district/<string:district_id>', methods=['GET'])
 @jwt_required
@@ -132,10 +140,12 @@ def get_districts():
     limit = request.args.get('limit', 10, int)
 
     district_name = request.args.get('district_name', '', str)
+    address = request.args.get('address', '', str)
     city_id = request.args.get('city_id', None, str)
+    archdiocese_id = request.args.get('archdiocese_id', None, str)
 
     pagination_result = DistrictController.get_list_pagination(
-        start=start, limit=limit, district_name=district_name,
-        city_id=city_id)
+        start=start, limit=limit, district_name=district_name, address=address,
+        city_id=city_id, archdiocese_id= archdiocese_id)
 
     return jsonify(pagination_result)

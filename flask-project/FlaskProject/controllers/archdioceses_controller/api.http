@@ -1,0 +1,60 @@
+###############################################################################
+#                               Archdioceses
+
+###
+#@name create_archdiocese
+POST http://0.0.0.0:5000/archdiocese
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name alter_archdiocese
+PUT http://0.0.0.0:5000/archdiocese/<string:archdiocese_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name archdiocese_inactivate
+DELETE http://0.0.0.0:5000/archdiocese/<string:archdiocese_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name archdiocese_activate
+POST http://0.0.0.0:5000/archdiocese/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
+
+###
+#@name get_one_archdiocese
+GET http://0.0.0.1:5000/archdiocese/<string:archdiocese_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name archdiocese_autocomplete
+POST http://0.0.0.0:5000/archdiocese/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
+#@name get_archdiocese
+GET http://0.0.0.1:5000/archdiocese?start=some_int&limit=some_int&name=some_string
+content-type: application/json
+Authorization: {{token}}

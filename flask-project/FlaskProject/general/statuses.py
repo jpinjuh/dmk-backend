@@ -74,6 +74,20 @@ class Status:
         return cls(-1, 'This state does not exist')
 
     @classmethod
+    def status_archdiocese_already_exist(cls):
+        """
+        :return: cls(-1, 'This archdiocese already exist')
+        """
+        return cls(-1, 'This archdiocese already exist')
+
+    @classmethod
+    def status_archdiocese_not_exist(cls):
+        """
+        :return: cls(-1, 'This archdiocese does not exist')
+        """
+        return cls(-1, 'This archdiocese does not exist')
+
+    @classmethod
     def status_city_already_exist(cls):
         """
         :return: cls(-1, 'This city already exist')
