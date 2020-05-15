@@ -99,7 +99,7 @@ class Seed(Command):
 
         permissions = Permission.query.all()
         for permission in permissions:
-            if any(path in permission.route for path in ['/permission', '/privilege', '/role', '/user', '/city', '/district', '/state']):
+            if any(path in permission.route for path in ['/permission', '/privilege', '/role', '/user', '/city', '/district', '/state', '/archdiocese']):
                 controller = PrivilegeController(
                     privilege=Privilege(
                         roles_id=role.id,

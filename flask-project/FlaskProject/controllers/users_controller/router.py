@@ -64,6 +64,7 @@ def alter_user(user_id):
         data=UserController.get_one_details(controller.user.id),
         status=Status.status_update_success().__dict__)
 
+
 @bpp.route('/user/alter_pass/<string:user_id>', methods=['PUT'])
 @jwt_required
 #@allow_access
@@ -89,6 +90,7 @@ def alter_password(user_id):
 
     else:
         return jsonify(status=Status.status_pass_dont_match().__dict__)
+
 
 @bpp.route('/user/<string:user_id>', methods=['DELETE'])
 @jwt_required
