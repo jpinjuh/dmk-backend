@@ -60,7 +60,7 @@ def refresh():
         status=Status.status_successfully_processed().__dict__)
 
 
-@bpp.route('/alter_your_password', methods=['POST'])
+@bpp.route('/alter_your_password', methods=['PUT'])
 @jwt_required
 def alter_your_password():
     user_id = get_jwt_claims()['id']
