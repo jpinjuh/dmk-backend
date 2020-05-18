@@ -41,7 +41,7 @@ def login():
         status=Status.status_successfully_processed().__dict__)
 
 
-@bpp.route('/renew', methods=['POST'])
+@bpp.route('/renew', methods=['GET'])
 @jwt_required
 def refresh():
     current_user = get_jwt_identity()

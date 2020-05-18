@@ -174,7 +174,7 @@ class CityController(BaseController):
 
         if state_id:
             filter_main = and_(
-                filter_main, State.id == state_id)
+                filter_main, City.state_id == state_id)
 
         data = City.query.get_all_by_filter(filter_main).paginate(
             page=start, error_out=False, per_page=limit)

@@ -179,6 +179,27 @@ class Status:
         return cls(-1, 'This user does not exist')
 
     @classmethod
+    def status_list_already_exist(cls):
+        """
+        :return: cls(-1, 'This list already exists')
+        """
+        return cls(-1, 'This list already exists')
+
+    @classmethod
+    def status_list_not_exist(cls):
+        """
+        :return: cls(-1, 'This list does not exist')
+        """
+        return cls(-1, 'This list does not exist')
+
+    @classmethod
+    def status_value_already_exists_in_list(cls):
+        """
+        :return: cls(-1, 'This value already exists in list')
+        """
+        return cls(-1, 'This value already exists in list')
+
+    @classmethod
     def status_success(cls):
         """
         :return: cls(-1, 'Allowed access!')

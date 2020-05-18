@@ -8,6 +8,8 @@ from ..controllers.users_controller.controller import UserController
 from ..controllers.permissions_controller.controller import PermissionController
 from ..controllers.privileges_controller.controller import PrivilegeController
 from ..controllers.archdioceses_controller.controller import ArchdioceseController
+from ..controllers.lists_controller.controller import ListController
+from ..controllers.listItems_controller.controller import ListItemController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -16,6 +18,8 @@ from ..models.users import User
 from ..models.privileges import Privilege
 from ..models.permissions import Permission
 from ..models.archdioceses import Archdiocese
+from ..models.lists import List
+from ..models.listItems import ListItem
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
@@ -107,3 +111,21 @@ class Seed(Command):
 
                     ))
                 controller.create()
+        controller = ListController(
+            list=List(
+                name='child'
+            ))
+        controller.create()
+        list = List.query.filter_by(name='child').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Sin',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Kći',
+                list_id=list.id
+            ))
+        controller.create()

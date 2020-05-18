@@ -6,3 +6,5 @@ from .permissions_schema import PermissionSchema
 from .privileges_schema import PrivilegeSchema
 from .users_schema import UserSchema, PasswordSchema, YourPasswordSchema
 from .archdioceses_schema import ArchdioceseSchema
+from .lists_schema import ListSchema
+from .list_items_schema import ListItemSchema

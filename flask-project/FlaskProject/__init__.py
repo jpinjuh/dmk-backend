@@ -21,6 +21,8 @@ from .controllers.privileges_controller import router
 from .controllers.users_controller import router
 from .controllers.identity_controller import router
 from .controllers.archdioceses_controller import router
+from .controllers.lists_controller import router
+from .controllers.listItems_controller import router
 
 
 def create_app(config_environment):
