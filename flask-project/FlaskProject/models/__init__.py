@@ -10,3 +10,5 @@ from .states import State
 from .archdioceses import Archdiocese
 from .lists import List
 from .listItems import ListItem
+from .persons import Person
+from .personsHistory import PersonsHistory
