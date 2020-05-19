@@ -15,7 +15,7 @@ class DocumentSchema(Schema):
     document_number = fields.Str(required=True,
                       error_messages={"required": "Field is required"},
                       validate=[
-                          validate.Length(min=2, max=100,
+                          validate.Length(min=2, max=30,
                                           error=
                                           'Field must be between 2 '
                                           'and 30 characters long')])
@@ -27,6 +27,10 @@ class DocumentSchema(Schema):
     year = fields.Integer()
     page = fields.Integer()
     number = fields.Integer()
+
+    document_type = fields.Nested(
+        'ListItemSchema', only=['id'], required=True)
+
     person = fields.Nested(
         'PersonSchema', only=['id'], required=True)
 

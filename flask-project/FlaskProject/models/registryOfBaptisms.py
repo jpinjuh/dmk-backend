@@ -85,21 +85,21 @@ class RegistryOfBaptisms(ModelsMixin, TimestampedModelMixin, db.Model):
         super().__init__(*args, **kwargs)
 
     id = db.Column(UUID(as_uuid=True), default=uuid4, primary_key=True)
-    #person_id = db.Column(UUID(as_uuid=True),
-     #                            db.ForeignKey('persons.id'),
-      #                           nullable=False)
-    #best_man = db.Column(UUID(as_uuid=True),
-     #                            db.ForeignKey('persons.id'),
-      #                          nullable=False)
+    person_id = db.Column(UUID(as_uuid=True),
+                                 db.ForeignKey('persons.id'),
+                                 nullable=False)
+    best_man = db.Column(UUID(as_uuid=True),
+                              db.ForeignKey('persons.id'),
+                                nullable=False)
     name = db.Column(db.String(255), nullable=False)
     surname = db.Column(db.String(255), nullable=False)
-    birth_date = db.Column(db.Date, nullable=False)
+    birth_date = db.Column(db.Date, nullable=True)
     birth_place = db.Column(UUID(as_uuid=True),
                                  db.ForeignKey('cities.id'),
-                                 nullable=False)
+                                 nullable=True)
     identity_number = db.Column(db.String(20), nullable=False)
     child = db.Column(UUID(as_uuid=True),
-                      db.ForeignKey("listItems.id"),
+                      db.ForeignKey("list_items.id"),
                       nullable=False)
     status = db.Column(
         db.SmallInteger, nullable=False,

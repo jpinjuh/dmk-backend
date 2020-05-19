@@ -87,7 +87,7 @@ class PersonsHistory(ModelsMixin, TimestampedModelMixin, db.Model):
         db.SmallInteger, nullable=False,
         default=STATUSES['active'], server_default=str(STATUSES['active']))
     religion = db.Column(UUID(as_uuid=True),
-                      db.ForeignKey("listItems.id"),
+                      db.ForeignKey("list_items.id"),
                       nullable=False)
     person_id = db.Column(UUID(as_uuid=True),
                           db.ForeignKey('persons.id'),

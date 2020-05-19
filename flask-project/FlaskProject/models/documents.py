@@ -91,7 +91,7 @@ class Document(ModelsMixin, TimestampedModelMixin, db.Model):
 
     id = db.Column(UUID(as_uuid=True), default=uuid4, primary_key=True)
     document_type = db.Column(UUID(as_uuid=True),
-                              db.ForeignKey('listItems.id'),
+                              db.ForeignKey('list_items.id'),
                               nullable=False)
     person_id = db.Column(UUID(as_uuid=True),
                                 db.ForeignKey('persons.id'),

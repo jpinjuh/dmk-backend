@@ -12,3 +12,5 @@ from .lists import List
 from .listItems import ListItem
 from .persons import Person
 from .personsHistory import PersonsHistory
+from .registryOfBaptisms import RegistryOfBaptisms
+from .documents import Document

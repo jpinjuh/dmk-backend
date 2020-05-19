@@ -34,6 +34,7 @@ class ListQuery(BaseQuery):
             db.session.rollback()
             return False
 
+
 class List(ModelsMixin, TimestampedModelMixin, db.Model):
 
     __tablename__ = 'lists'
@@ -49,7 +50,7 @@ class List(ModelsMixin, TimestampedModelMixin, db.Model):
         super().__init__(*args, **kwargs)
 
     id = db.Column(UUID(as_uuid=True), default=uuid4, primary_key=True)
-    name = db.Column(db.String(255), nullable=True)
+    name = db.Column(db.String(255), nullable=False)
     status = db.Column(
         db.SmallInteger, nullable=False,
         default=STATUSES['active'], server_default=str(STATUSES['active']))
