@@ -116,6 +116,21 @@ class Seed(Command):
                 name='child'
             ))
         controller.create()
+        controller = ListController(
+            list=List(
+                name='religions'
+            ))
+        controller.create()
+        controller = ListController(
+            list=List(
+                name='document_types'
+            ))
+        controller.create()
+        controller = ListController(
+            list=List(
+                name='yes/no list'
+            ))
+        controller.create()
         list = List.query.filter_by(name='child').first()
         controller = ListItemController(
             list_item=ListItem(
@@ -126,6 +141,51 @@ class Seed(Command):
         controller = ListItemController(
             list_item=ListItem(
                 value='Kći',
+                list_id=list.id
+            ))
+        controller.create()
+        list = List.query.filter_by(name='religions').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Kršćanstvo',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Islam',
+                list_id=list.id
+            ))
+        controller.create()
+        list = List.query.filter_by(name='yes/no list').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Da',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Ne',
+                list_id=list.id
+            ))
+        controller.create()
+        list = List.query.filter_by(name='document_types').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='matica_krštenih',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='matica_vjenčanih',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='matica_umrlih',
                 list_id=list.id
             ))
         controller.create()
