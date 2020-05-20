@@ -127,5 +127,3 @@ class ListController(BaseController):
         return dict(
             status=Status.status_successfully_processed().__dict__,
             total=total, data=list_data)
-
-

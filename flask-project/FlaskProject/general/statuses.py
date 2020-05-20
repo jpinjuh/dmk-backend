@@ -220,6 +220,20 @@ class Status:
         """
         return cls(-1, 'Passwords do not match!')
 
+    @classmethod
+    def status_id_number_already_exist(cls):
+        """
+        :return: cls(-1, 'Person with that identity number already exists!')
+        """
+        return cls(-1, 'Person with that identity number already exists!')
+
+    @classmethod
+    def status_person_not_exist(cls):
+        """
+        :return: cls(-1, 'This person does not exist')
+        """
+        return cls(-1, 'This person does not exist')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,
