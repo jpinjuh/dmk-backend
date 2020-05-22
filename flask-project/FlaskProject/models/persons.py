@@ -35,13 +35,14 @@ class PersonQuery(BaseQuery):
 
     @staticmethod
     def query_details():
-        from . import District, Person
+        from . import District, Person, ListItem
         mother = aliased(Person)
         father = aliased(Person)
-        return db.session.query(Person, District, mother, father) \
+        return db.session.query(Person, District, mother, father, ListItem) \
             .outerjoin(mother, Person.mother_id == mother.id)\
             .outerjoin(father, Person.father_id == father.id)\
-            .join(District, Person.district == District.id, isouter=False)
+            .join(District, Person.district == District.id, isouter=False)\
+            .join(ListItem, Person.religion == ListItem.id, isouter=False)
 
     def get_one_details(self, _id):
         try:
