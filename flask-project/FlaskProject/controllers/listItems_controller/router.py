@@ -36,7 +36,7 @@ def create_list_item():
 @bpp.route('/listItem', methods=['GET'])
 @jwt_required
 #@allow_access
-def get_list_items():
+def get_all_list_items():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 10, int)
 
@@ -49,4 +49,19 @@ def get_list_items():
         list_id=list_id)
 
     return jsonify(pagination_result)
+
+@bpp.route('/listItems', methods=['GET'])
+@jwt_required
+#@allow_access
+def get_list_items():
+    request_json = request.get_json()
+    list_id = request_json.get('list_id', None)
+
+    if list_id:
+        data = ListItemController.get_list_items(list_id)
+
+        return jsonify(
+            data=data,
+            status=Status.status_successfully_processed().__dict__)
+
 

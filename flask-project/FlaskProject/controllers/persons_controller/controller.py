@@ -1,5 +1,6 @@
 from sqlalchemy import and_
-
+from ..districts_controller.controller import DistrictController
+from ..listItems_controller.controller import ListItemController
 from ... import Person, FlaskProjectLogException, District, ListItem
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
@@ -20,6 +21,38 @@ class PersonController(BaseController):
                 self.person.identity_number):
             raise FlaskProjectLogException(
                 Status.status_id_number_already_exist())
+
+        if self.person.mother_id is not None:
+            mother = PersonController.get_one(
+                self.person.mother_id)
+
+            if mother.person is None:
+                raise FlaskProjectLogException(
+                    Status.status_person_not_exist())
+
+        if self.person.father_id is not None:
+            father = PersonController.get_one(
+                self.person.father_id)
+
+            if father.person is None:
+                raise FlaskProjectLogException(
+                    Status.status_person_not_exist())
+
+        if self.person.district is not None:
+            district = DistrictController.get_one(
+                self.person.district)
+
+            if district.district is None:
+                raise FlaskProjectLogException(
+                    Status.status_district_not_exist())
+
+        if self.person.religion is not None:
+            religion = ListItemController.get_one(
+                self.person.religion)
+
+            if religion.list_item is None:
+                raise FlaskProjectLogException(
+                    Status.status_list_item_not_exist())
 
         self.person.add()
         self.person.commit_or_rollback()
@@ -73,17 +106,16 @@ class PersonController(BaseController):
     def get_one(cls, identifier):
         """
         Use this method to get a person by identifier
-        :param identifier: Extras List identifier
-        :return: ListController object
+        :param identifier: Extras Person identifier
+        :return: PersonController object
         """
-
         return cls(person=Person.query.get_one(identifier))
 
     @staticmethod
     def get_one_details(identifier):
         """
         Use this method to get a person by identifier
-        :param identifier: List identifier
+        :param identifier: Person identifier
         :return: Dict object
         """
         return PersonController.__custom_sql(
@@ -108,7 +140,7 @@ class PersonController(BaseController):
         raise NotImplementedError("To be implemented")
 
     @staticmethod
-    def get_person_pagination(start, limit, **kwargs):
+    def get_list_pagination(start, limit, **kwargs):
         """
         Method for getting all persons by filter_data in pagination form
         :return: dict with total, data and status
@@ -180,8 +212,10 @@ class PersonController(BaseController):
     def __custom_sql(row_data):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.Person)
-            return_dict['father'] = obj_to_dict(row_data.Person)
-            return_dict['mother'] = obj_to_dict(row_data.Person)
+            mother = Person.query.filter_by(id=row_data.Person.mother_id).first()
+            father = Person.query.filter_by(id=row_data.Person.father_id).first()
+            return_dict['mother'] = obj_to_dict(mother)
+            return_dict['father'] = obj_to_dict(father)
             return_dict['district'] = obj_to_dict(row_data.District)
             return return_dict
         return None

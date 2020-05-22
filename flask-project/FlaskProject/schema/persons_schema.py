@@ -29,13 +29,16 @@ class PersonSchema(Schema):
                                           'and 50 characters long')])
     birth_date = fields.Date(required=True,
                              error_messages={"required": "Field is required"})
-    identity_number = fields.Str(validate=[
-                          validate.Length(min=13, max=20,
-                                          error=
-                                          'Field must be between 13'
-                                          'and 20 characters long')])
+
+    identity_number = fields.Str(required=True,
+                                 error_messages={"required": "Field is required"},
+                                 validate=[
+                                   validate.Length(min=13, max=20,
+                                                   error=
+                                                   'Field must be between 13'
+                                                   'and 20 characters long')])
     father = fields.Nested(
-        'PersonSchema', only=['id'], required=True)
+        'PersonSchema', only=['id'], required=False)
 
     mother = fields.Nested(
         'PersonSchema', only=['id'], required=False)

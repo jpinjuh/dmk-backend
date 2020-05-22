@@ -29,7 +29,7 @@ class DocumentSchema(Schema):
     number = fields.Integer()
 
     document_type = fields.Nested(
-        'ListItemSchema', only=['id'], required=True)
+        'ListItemSchema', only=['id'], required=False)
 
     person = fields.Nested(
         'PersonSchema', only=['id'], required=True)
@@ -44,4 +44,4 @@ class DocumentSchema(Schema):
         'DistrictSchema', only=['id'], required=True)
 
     user_created = fields.Nested(
-        'UserSchema', only=['id'], required=True)
+        'UserSchema', only=['id'], required=False)

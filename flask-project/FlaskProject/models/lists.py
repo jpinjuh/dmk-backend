@@ -34,6 +34,14 @@ class ListQuery(BaseQuery):
             db.session.rollback()
             return False
 
+    def get_list_items(self, id):
+        try:
+            from . import ListItem
+            return self.query_details().all()
+        except Exception as e:
+            db.session.rollback()
+            return []
+
 
 class List(ModelsMixin, TimestampedModelMixin, db.Model):
 

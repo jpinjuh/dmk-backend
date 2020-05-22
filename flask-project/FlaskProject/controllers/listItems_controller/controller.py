@@ -5,6 +5,7 @@ from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
 
+
 class ListItemController(BaseController):
 
     def __init__(self, list_item=ListItem()):
@@ -102,3 +103,15 @@ class ListItemController(BaseController):
             return_dict['list'] = obj_to_dict(row_data.List)
             return return_dict
         return None
+
+    @staticmethod
+    def get_list_items(list_id):
+
+        list_data = []
+        if list_id:
+            list_items = ListItem.query.get_list_items(list_id)
+            for i in list_items:
+                list_data.append(ListItemController.__custom_sql(i))
+
+        return list_data
+

@@ -33,6 +33,18 @@ class ListItemQuery(BaseQuery):
              ListItem.list_id == List.id,
              isouter=False)
 
+    def get_list_items(self, list_id):
+        try:
+            from . import List
+            return self.query_details().filter(
+                # List.status == List.STATUSES['active'],
+                # ListItem.status == ListItem.STATUSES['active'],
+                ListItem.list_id == list_id
+            ).order_by(ListItem.created_at.desc())
+        except Exception as e:
+            db.session.rollback()
+            return []
+
     def get_all_by_filter(self, filter_data):
         try:
             from . import List
@@ -44,7 +56,6 @@ class ListItemQuery(BaseQuery):
         except Exception as e:
             db.session.rollback()
             return []
-
 
 class ListItem(ModelsMixin, TimestampedModelMixin, db.Model):
 

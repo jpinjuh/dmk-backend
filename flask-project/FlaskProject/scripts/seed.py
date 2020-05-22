@@ -10,6 +10,7 @@ from ..controllers.privileges_controller.controller import PrivilegeController
 from ..controllers.archdioceses_controller.controller import ArchdioceseController
 from ..controllers.lists_controller.controller import ListController
 from ..controllers.listItems_controller.controller import ListItemController
+from ..controllers.persons_controller.controller import PersonController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -20,6 +21,7 @@ from ..models.permissions import Permission
 from ..models.archdioceses import Archdiocese
 from ..models.lists import List
 from ..models.listItems import ListItem
+from ..models.persons import Person
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
@@ -151,6 +153,7 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
+        religion = ListItem.query.filter_by(value='Kršćanstvo').first()
         controller = ListItemController(
             list_item=ListItem(
                 value='Islam',
@@ -173,19 +176,42 @@ class Seed(Command):
         list = List.query.filter_by(name='document_types').first()
         controller = ListItemController(
             list_item=ListItem(
-                value='matica_krštenih',
+                value='Matica krštenih',
                 list_id=list.id
             ))
         controller.create()
         controller = ListItemController(
             list_item=ListItem(
-                value='matica_vjenčanih',
+                value='Matica vjenčanih',
                 list_id=list.id
             ))
         controller.create()
         controller = ListItemController(
             list_item=ListItem(
-                value='matica_umrlih',
+                value='Matica umrlih',
                 list_id=list.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
+                first_name='Mirjana',
+                last_name='Bošnjak',
+                maiden_name='Marijanović',
+                birth_date='17/01/1973',
+                identity_number='1701973155631',
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        mother = Person.query.filter_by(identity_number='1701973155631').first()
+        controller = PersonController(
+            person=Person(
+                first_name='Marija',
+                last_name='Bošnjak',
+                birth_date='25/06/1998',
+                identity_number='2506998155631',
+                mother_id=mother.id,
+                district=district.id,
+                religion=religion.id
             ))
         controller.create()

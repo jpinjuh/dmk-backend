@@ -34,13 +34,14 @@ class RegistryOfBaptismsQuery(BaseQuery):
 
      @staticmethod
      def query_details():
-         from . import Person, City
-         return db.session.query(RegistryOfBaptisms, Person)\
+         from . import Person, City, ListItem
+         return db.session.query(RegistryOfBaptisms, Person, City, ListItem)\
              .join(
              Person,
              RegistryOfBaptisms.best_man == Person.id,
              isouter=False)\
-             .join(City, RegistryOfBaptisms.birth_place == City.id, isouter=False)
+             .join(City, RegistryOfBaptisms.birth_place == City.id, isouter=False)\
+             .join(ListItem, RegistryOfBaptisms.child == ListItem.id, isouter=False)
 
      def get_one_details(self, _id):
          try:

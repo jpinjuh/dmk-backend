@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
 from sqlalchemy import or_
+from sqlalchemy.orm import relationship, foreign, aliased
 
 
 class DocumentQuery(BaseQuery):
@@ -35,16 +36,18 @@ class DocumentQuery(BaseQuery):
 
      @staticmethod
      def query_details():
-         from . import Person, User, District
-         return db.session.query(Document, Person, User, District)\
-             .join(
-             Person,
-             Document.person_id == Person.id,
-             isouter=False)\
-             .join(Person, Document.person2_id == Person.id, isouter=False)\
-             .join(User, Document.act_performed == User.id, isouter=False) \
-             .join(User, Document.user_created == User.id, isouter=False) \
-             .join(District, Document.district == District.id, isouter=False)
+         from . import Person, User, District, ListItem
+         person1 = aliased(Person)
+         person2 = aliased(Person)
+         user1 = aliased(User)
+         user2 = aliased(User)
+         return db.session.query(Document, District, person1, person2, user1, user2, ListItem) \
+             .outerjoin(person1, Document.person_id == person1.id) \
+             .outerjoin(person2, Document.person2_id == person2.id) \
+             .outerjoin(user1, Document.act_performed == user1.id) \
+             .outerjoin(user2, Document.user_created == user2.id)\
+             .join(District, Document.district == District.id, isouter=False) \
+             .join(ListItem, Document.document_type == ListItem.id, isouter=False)
 
      def get_one_details(self, _id):
          try:

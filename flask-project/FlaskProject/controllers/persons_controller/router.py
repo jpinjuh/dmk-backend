@@ -27,16 +27,17 @@ def create_person():
             maiden_name=params['maiden_name'],
             birth_date=params['birth_date'],
             identity_number=params['identity_number'],
-            father_id=params['father_id'],
-            mother_id=params['mother_id'],
-            district=params['district'],
-            religion=params['religion']
+            father_id=params['father']['id'],
+            mother_id=params['mother']['id'],
+            district=params['district']['id'],
+            religion=params['religion']['id']
         ))
     controller.create()
 
     return jsonify(
-        data=obj_to_dict(controller.person),
+        data=PersonController.get_one_details(controller.person.id),
         status=Status.status_successfully_inserted().__dict__)
+
 
 @bpp.route('/person/<string:person_id>', methods=['GET'])
 @jwt_required
@@ -50,6 +51,7 @@ def get_one_person(person_id):
     return jsonify(
         data=controller,
         status=Status.status_successfully_processed().__dict__)
+
 
 @bpp.route('/person', methods=['GET'])
 @jwt_required
@@ -68,7 +70,7 @@ def get_persons():
     district = request.args.get('district', None, str)
     religion = request.args.get('religion', None, str)
 
-    pagination_result = PersonController.get_person_pagination(
+    pagination_result = PersonController.get_list_pagination(
         start=start, limit=limit, first_name=first_name, last_name=last_name,
         maiden_name=maiden_name, birth_date=birth_date, identity_number=identity_number,
         father_id=father_id, mother_id=mother_id, district=district, religion=religion)

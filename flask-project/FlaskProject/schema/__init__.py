@@ -10,3 +10,5 @@ from .lists_schema import ListSchema
 from .list_items_schema import ListItemSchema
 from .persons_schema import PersonSchema
 from .persons_history_schema import PersonsHistorySchema
+from .registry_of_baptisms_schema import RegistryOfBaptismsSchema
+from .documents_schema import DocumentSchema

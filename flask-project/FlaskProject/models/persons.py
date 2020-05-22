@@ -4,6 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
+from sqlalchemy.orm import relationship, foreign, aliased
 
 
 class PersonQuery(BaseQuery):
@@ -34,10 +35,12 @@ class PersonQuery(BaseQuery):
 
     @staticmethod
     def query_details():
-        from . import District
-        return db.session.query(Person, District) \
-            .join(Person, Person.mother_id == Person.id, isouter=False) \
-            .join(Person, Person.father_id == Person.id, isouter=False) \
+        from . import District, Person
+        mother = aliased(Person)
+        father = aliased(Person)
+        return db.session.query(Person, District, mother, father) \
+            .outerjoin(mother, Person.mother_id == mother.id)\
+            .outerjoin(father, Person.father_id == father.id)\
             .join(District, Person.district == District.id, isouter=False)
 
     def get_one_details(self, _id):
@@ -104,3 +107,5 @@ class Person(ModelsMixin, TimestampedModelMixin, db.Model):
     religion = db.Column(UUID(as_uuid=True),
                       db.ForeignKey("list_items.id"),
                       nullable=False)
+    mother = db.relationship("Person", foreign_keys=[mother_id])
+    father = db.relationship("Person", foreign_keys=[father_id])

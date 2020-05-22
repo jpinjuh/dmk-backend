@@ -34,7 +34,7 @@ class RegistryOfBaptismsSchema(Schema):
                                            'Field must be between 13 '
                                            'and 20 characters long')])
     person = fields.Nested(
-        'PersonSchema', only=['id'], required=True)
+        'PersonSchema', only=['id'], required=False)
 
     best_man = fields.Nested(
         'PersonSchema', only=['id'], required=True)

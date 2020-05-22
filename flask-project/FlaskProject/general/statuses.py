@@ -193,6 +193,13 @@ class Status:
         return cls(-1, 'This list does not exist')
 
     @classmethod
+    def status_list_item_not_exist(cls):
+        """
+        :return: cls(-1, 'This list item does not exist')
+        """
+        return cls(-1, 'This list item does not exist')
+
+    @classmethod
     def status_value_already_exists_in_list(cls):
         """
         :return: cls(-1, 'This value already exists in list')
@@ -233,6 +240,13 @@ class Status:
         :return: cls(-1, 'This person does not exist')
         """
         return cls(-1, 'This person does not exist')
+
+    @classmethod
+    def status_identity_number_already_exist(cls):
+        """
+        :return: cls(-1, 'Person with that identity number already exists in registry of baptisms!')
+        """
+        return cls(-1, 'Person with that identity number already exists in registry of baptisms!')
 
     def repr_print(self):
         return {
