@@ -89,7 +89,7 @@ class PersonsHistory(ModelsMixin, TimestampedModelMixin, db.Model):
     religion = db.Column(UUID(as_uuid=True),
                       db.ForeignKey("list_items.id"),
                       nullable=False)
-    person_id = db.Column(UUID(as_uuid=True),
+    person = db.Column(UUID(as_uuid=True),
                           db.ForeignKey('persons.id'),
                           nullable=True)
     user_created = db.Column(UUID(as_uuid=True),
