@@ -10,6 +10,8 @@ from ... import bpp, Person, FlaskProjectLogException
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import PersonSchema
+import datetime
+from sqlalchemy.sql import func
 
 
 @bpp.route('/person', methods=['POST'])
@@ -52,6 +54,41 @@ def get_one_person(person_id):
     return jsonify(
         data=controller,
         status=Status.status_successfully_processed().__dict__)
+
+
+@bpp.route('/person/autocomplete', methods=['POST'])
+@jwt_required
+#@allow_access
+def person_autocomplete():
+    request_json = request.get_json()
+    search = request_json.get('search', None)
+
+    data = PersonController.list_autocomplete(search)
+
+    return jsonify(
+        data=data,
+        status=Status.status_successfully_processed().__dict__)
+
+
+@bpp.route('/person/search', methods=['POST'])
+@jwt_required
+#@allow_access
+def search_persons():
+    request_json = request.get_json()
+
+    start = request_json.get('start', 0)
+    limit = request_json.get('limit', 10)
+
+    first_name = request_json.get('first_name', None)
+    last_name = request_json.get('last_name', None)
+    birth_date = request_json.get('birth_date', None)
+    identity_number = request_json.get('identity_number', None)
+
+    pagination_result = PersonController.get_list_search(
+        start=start, limit=limit, first_name=first_name, last_name=last_name,
+        birth_date=birth_date, identity_number=identity_number)
+
+    return jsonify(pagination_result)
 
 
 @bpp.route('/person', methods=['GET'])

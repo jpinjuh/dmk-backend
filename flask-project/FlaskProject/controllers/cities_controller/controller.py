@@ -145,7 +145,7 @@ class CityController(BaseController):
         """
         list_data = []
         if search:
-            city_state = City.query.autocomplete_by_name(search)
+            city_state = City.query.search_by_all_attributes(search)
             for i in city_state:
                 list_data.append(CityController.__custom_sql(i))
 

@@ -115,21 +115,25 @@ class Seed(Command):
                 controller.create()
         controller = ListController(
             list=List(
+                id='ea83b091-0bd1-465f-a2dd-79499fee4364',
                 name='child'
             ))
         controller.create()
         controller = ListController(
             list=List(
+                id='47a17b46-b37e-4639-98eb-fb3c3d347721',
                 name='religions'
             ))
         controller.create()
         controller = ListController(
             list=List(
+                id='afe25137-6e32-43d3-8957-8caa7365173b',
                 name='document_types'
             ))
         controller.create()
         controller = ListController(
             list=List(
+                id='a5e4d6d8-6f27-4094-b06a-79d00bb98859',
                 name='yes/no list'
             ))
         controller.create()

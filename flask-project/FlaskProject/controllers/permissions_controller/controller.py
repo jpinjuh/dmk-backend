@@ -144,7 +144,7 @@ class PermissionController(BaseController):
         """
         list_data = []
         if search:
-            permission = Permission.query.autocomplete_by_name(search)
+            permission = Permission.query.search_by_all_attributes(search)
             for i in permission:
                 list_data.append(obj_to_dict(i))
 

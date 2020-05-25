@@ -171,7 +171,7 @@ class DistrictController(BaseController):
         """
         list_data = []
         if search:
-            district_city = District.query.autocomplete_by_name(search)
+            district_city = District.query.search_by_all_attributes(search)
             for i in district_city:
                 list_data.append(DistrictController.__custom_sql(i))
 

@@ -7,6 +7,7 @@ from ..db import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import or_
 
+
 class UserQuery(BaseQuery):
 
      def get_one(self, _id):
@@ -72,6 +73,21 @@ class UserQuery(BaseQuery):
              return None
 
      def autocomplete_by_name(self, search):
+         try:
+             from . import Role, District
+             return self.query_details().filter(
+                 #Role.status == Role.STATUSES['active'],
+                 #District.status == District.STATUSES['active'],
+                 #User.status == User.STATUSES['active'],
+                 or_(User.first_name.ilike('%'+search+'%'),
+                     User.last_name.ilike('%'+search+'%'),
+                     User.username.ilike('%' + search + '%'))
+             ).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
+
+     def search_by_all_attributes(self, search):
          try:
              from . import Role, District
              return self.query_details().filter(

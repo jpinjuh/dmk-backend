@@ -45,6 +45,16 @@ class PermissionQuery(BaseQuery):
         try:
             return self.filter(
                 #Permission.status == Permission.STATUSES['active'],
+                Permission.name.ilike('%'+search+'%')
+            ).all()
+        except Exception as e:
+            db.session.rollback()
+            return []
+
+    def search_by_all_attributes(self, search):
+        try:
+            return self.filter(
+                #Permission.status == Permission.STATUSES['active'],
                 or_(Permission.name.ilike('%'+search+'%'),
                     Permission.route.ilike('%'+search+'%'),
                     Permission.method.ilike('%'+search+'%'))
@@ -52,7 +62,6 @@ class PermissionQuery(BaseQuery):
         except Exception as e:
             db.session.rollback()
             return []
-
 
 class Permission(ModelsMixin, TimestampedModelMixin, db.Model):
 
