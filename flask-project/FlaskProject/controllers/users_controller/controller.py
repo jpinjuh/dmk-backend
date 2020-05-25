@@ -221,7 +221,7 @@ class UserController(BaseController):
         """
         list_data = []
         if search:
-            user_role_district = User.query.autocomplete_by_name(search)
+            user_role_district = User.query.search_by_all_attributes(search)
             for i in user_role_district:
                 list_data.append(UserController.__custom_sql(i))
 

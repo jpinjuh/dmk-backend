@@ -55,6 +55,18 @@ class CityQuery(BaseQuery):
              return self.query_details().filter(
                  State.status == State.STATUSES['active'],
                  City.status == City.STATUSES['active'],
+                 or_(City.name.ilike('%'+search+'%'))
+             ).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
+
+     def search_by_all_attributes(self, search):
+         try:
+             from . import State
+             return self.query_details().filter(
+                 State.status == State.STATUSES['active'],
+                 City.status == City.STATUSES['active'],
                  or_(City.name.ilike('%'+search+'%'),
                      State.name.ilike('%'+search+'%'))
              ).all()

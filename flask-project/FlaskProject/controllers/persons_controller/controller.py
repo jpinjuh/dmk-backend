@@ -1,9 +1,10 @@
 from sqlalchemy import and_
 from ..districts_controller.controller import DistrictController
 from ..listItems_controller.controller import ListItemController
-from ... import Person, FlaskProjectLogException, District, ListItem
+from ... import Person, FlaskProjectLogException, District, ListItem, RegistryOfBaptisms
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
+import datetime
 
 
 class PersonController(BaseController):
@@ -125,19 +126,59 @@ class PersonController(BaseController):
     def list_autocomplete(search):
         """
         Method for searching persons with autocomplete
-        :param search: Data for search
+        :param search:Data for search
         :return: List of dicts
         """
-        raise NotImplementedError("To be implemented")
+        list_data = []
+        if search:
+            person = Person.query.autocomplete_by_name(search)
+            for i in person:
+                list_data.append(PersonController.__custom_sql(i))
+
+        return list_data
 
     @staticmethod
-    def list_search(search):
+    def get_list_search(start, limit, **kwargs):
         """
-        Method for searching persons
-        :param search: Data for search
-        :return: List of dicts
+        Method for getting all persons by filter_data in pagination form
+        :return: dict with total, data and status
         """
-        raise NotImplementedError("To be implemented")
+
+        filter_main = and_()
+
+        first_name = kwargs.get('first_name', None)
+        last_name = kwargs.get('last_name', None)
+        birth_date = kwargs.get('birth_date', None)
+        identity_number = kwargs.get('identity_number', None)
+
+        if first_name:
+            filter_main = and_(
+                filter_main, Person.first_name.ilike('%' + first_name + '%'))
+
+        if last_name:
+            filter_main = and_(
+                filter_main, Person.last_name.ilike('%' + last_name + '%'))
+
+        if birth_date:
+            filter_main = and_(
+                filter_main, Person.birth_date == birth_date)
+
+        if identity_number:
+            filter_main = and_(
+                filter_main, Person.identity_number.ilike('%' + identity_number + '%'))
+
+        data = Person.query.get_all_by_filter(filter_main).paginate(
+            page=start, error_out=False, per_page=limit)
+
+        total = data.total
+        list_data = []
+
+        for i in data.items:
+            list_data.append(PersonController.__custom_sql(i))
+
+        return dict(
+            status=Status.status_successfully_processed().__dict__,
+            total=total, data=list_data)
 
     @staticmethod
     def get_list_pagination(start, limit, **kwargs):

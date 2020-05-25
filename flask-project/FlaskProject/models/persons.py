@@ -5,6 +5,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
 from sqlalchemy.orm import relationship, foreign, aliased
+from sqlalchemy import or_
 
 
 class PersonQuery(BaseQuery):
@@ -61,12 +62,24 @@ class PersonQuery(BaseQuery):
 
     def get_all_by_filter(self, filter_data):
         try:
-            from . import District
+            from . import District, ListItem
             return self.query_details().filter(
                 # Person.status == Person.STATUSES['active'],
-                # District.status == District.STATUSES['active'],
                 filter_data
             ).order_by(Person.created_at.desc())
+        except Exception as e:
+            db.session.rollback()
+            return []
+
+    def autocomplete_by_name(self, search):
+        try:
+            from . import District, ListItem
+            return self.query_details().filter(
+                # Person.status == Person.STATUSES['active'],,
+                or_(Person.first_name.ilike('%' + search + '%'),
+                    Person.last_name.ilike('%' + search + '%'),
+                    Person.maiden_name.ilike('%' + search + '%'))
+            ).all()
         except Exception as e:
             db.session.rollback()
             return []

@@ -54,6 +54,16 @@ class DistrictQuery(BaseQuery):
 
      def autocomplete_by_name(self, search):
          try:
+             return self.query_details().filter(
+                 District.status == District.STATUSES['active'],
+                 District.name.ilike('%' + search + '%')
+             ).all()
+         except Exception as e:
+             db.session.rollback()
+             return []
+
+     def search_by_all_attributes(self, search):
+         try:
              from . import City, Archdiocese
              return self.query_details().filter(
                  #City.status == City.STATUSES['active'],
