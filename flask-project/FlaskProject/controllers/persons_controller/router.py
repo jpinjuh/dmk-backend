@@ -27,7 +27,7 @@ def create_person():
         person=Person(
             first_name=params['first_name'],
             last_name=params['last_name'],
-            maiden_name=params.get('maiden_name'),
+            maiden_name=params.get('maiden_name', None),
             birth_date=params['birth_date'],
             identity_number=params['identity_number'],
             father_id=params.get('father[id]', None),
