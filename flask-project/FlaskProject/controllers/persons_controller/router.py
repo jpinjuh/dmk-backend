@@ -26,11 +26,11 @@ def create_person():
         person=Person(
             first_name=params['first_name'],
             last_name=params['last_name'],
-            maiden_name=params['maiden_name'],
+            maiden_name=params.get('maiden_name'),
             birth_date=params['birth_date'],
             identity_number=params['identity_number'],
-            father_id=params['father']['id'],
-            mother_id=params['mother']['id'],
+            father_id=params.get('father[id]', None),
+            mother_id=params.get('mother[id]', None),
             district=params['district']['id'],
             religion=params['religion']['id']
         ))
