@@ -20,7 +20,6 @@ from sqlalchemy.sql import func
 def create_person():
     request_json = request.get_json()
     schema = PersonSchema(exclude=('id',))
-
     params = schema.load(request_json)
 
     controller = PersonController(
@@ -30,8 +29,9 @@ def create_person():
             maiden_name=params.get('maiden_name', None),
             birth_date=params['birth_date'],
             identity_number=params['identity_number'],
-            father_id=params.get('father[id]', None),
-            mother_id=params.get('mother[id]', None),
+            domicile=params['domicile'],
+            father_id=params['father']['id'],
+            mother_id=params['mother']['id'],
             district=params['district']['id'],
             religion=params['religion']['id']
         ))
@@ -82,11 +82,12 @@ def search_persons():
     first_name = request_json.get('first_name', None)
     last_name = request_json.get('last_name', None)
     birth_date = request_json.get('birth_date', None)
+    birth_place = request_json.get('birth_place', None)
     identity_number = request_json.get('identity_number', None)
 
     pagination_result = PersonController.get_list_search(
         start=start, limit=limit, first_name=first_name, last_name=last_name,
-        birth_date=birth_date, identity_number=identity_number)
+        birth_date=birth_date, birth_place=birth_place, identity_number=identity_number)
 
     return jsonify(pagination_result)
 

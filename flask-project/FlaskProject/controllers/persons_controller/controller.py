@@ -1,7 +1,8 @@
 from sqlalchemy import and_
 from ..districts_controller.controller import DistrictController
 from ..listItems_controller.controller import ListItemController
-from ... import Person, FlaskProjectLogException, District, ListItem, RegistryOfBaptisms
+from ..cities_controller.controller import CityController
+from ... import Person, FlaskProjectLogException, District, ListItem, RegistryOfBaptisms, City
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 import datetime
@@ -149,6 +150,7 @@ class PersonController(BaseController):
         first_name = kwargs.get('first_name', None)
         last_name = kwargs.get('last_name', None)
         birth_date = kwargs.get('birth_date', None)
+        birth_place = kwargs.get('birth_place', None)
         identity_number = kwargs.get('identity_number', None)
 
         if first_name:
@@ -162,6 +164,10 @@ class PersonController(BaseController):
         if birth_date:
             filter_main = and_(
                 filter_main, Person.birth_date == birth_date)
+
+        if birth_place:
+            filter_main = and_(
+                filter_main, City.name.ilike('%' + birth_place + '%'))
 
         if identity_number:
             filter_main = and_(
@@ -195,6 +201,7 @@ class PersonController(BaseController):
         maiden_name = kwargs.get('maiden_name', None)
         birth_date = kwargs.get('birth_date', None)
         identity_number = kwargs.get('identity_number', None)
+        domicile = kwargs.get('domicile', None)
         father_id = kwargs.get('father_id', None)
         mother_id = kwargs.get('mother_id', None)
         district = kwargs.get('district', None)
@@ -219,6 +226,10 @@ class PersonController(BaseController):
         if identity_number:
             filter_main = and_(
                 filter_main, Person.identity_number.ilike('%' + identity_number + '%'))
+
+        if domicile:
+            filter_main = and_(
+                filter_main, Person.domicile.ilike('%' + domicile + '%'))
 
         if father_id:
             filter_main = and_(
@@ -259,5 +270,6 @@ class PersonController(BaseController):
             return_dict['father'] = obj_to_dict(father)
             return_dict['religion'] = obj_to_dict(row_data.ListItem)
             return_dict['district'] = obj_to_dict(row_data.District)
+            return_dict['city'] = obj_to_dict(row_data.City)
             return return_dict
         return None

@@ -11,6 +11,8 @@ from ..controllers.archdioceses_controller.controller import ArchdioceseControll
 from ..controllers.lists_controller.controller import ListController
 from ..controllers.listItems_controller.controller import ListItemController
 from ..controllers.persons_controller.controller import PersonController
+from ..controllers.registryOfBaptisms_controller.controller import RegistryOfBaptismsController
+from ..controllers.documents_controller.controller import DocumentController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -22,6 +24,8 @@ from ..models.archdioceses import Archdiocese
 from ..models.lists import List
 from ..models.listItems import ListItem
 from ..models.persons import Person
+from ..models.registryOfBaptisms import RegistryOfBaptisms
+from ..models.documents import Document
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 
@@ -63,6 +67,11 @@ class Seed(Command):
                 name='admin'
             ))
         controller.create()
+        controller = RoleController(
+            role=Role(
+                name='fratar'
+            ))
+        controller.create()
         role = Role.query.filter_by(name='admin').first()
         district = District.query.filter_by(name='Gorica-Sovići').first()
         controller = UserController(
@@ -71,6 +80,18 @@ class Seed(Command):
                 last_name='Bošnjak',
                 username='andjelabosnjak',
                 email='andjela.bosnjak30@gmail.com',
+                password_hash=generate_password_hash('123456', method='sha256'),
+                roles_id=role.id,
+                districts_id=district.id
+            ))
+        controller.create()
+        role = Role.query.filter_by(name='fratar').first()
+        controller = UserController(
+            user=User(
+                first_name='Stipe',
+                last_name='Marković',
+                username='stipemarkovic',
+                email='stipemarkovic@gmail.com',
                 password_hash=generate_password_hash('123456', method='sha256'),
                 roles_id=role.id,
                 districts_id=district.id
@@ -184,6 +205,7 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
+        document_type_value = ListItem.query.filter_by(value='Matica krštenih').first()
         controller = ListItemController(
             list_item=ListItem(
                 value='Matica vjenčanih',
@@ -203,19 +225,65 @@ class Seed(Command):
                 maiden_name='Marijanović',
                 birth_date='17/01/1973',
                 identity_number='1701973155631',
+                domicile='Bobanova Draga bb, 88345 Sovići',
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
+                first_name='Ante',
+                last_name='Bošnjak',
+                birth_date='11/06/2005',
+                identity_number='11062005655131',
+                domicile='Bobanova Draga bb, 88345 Sovići',
                 district=district.id,
                 religion=religion.id
             ))
         controller.create()
         mother = Person.query.filter_by(identity_number='1701973155631').first()
+        best_man = Person.query.filter_by(identity_number='11062005655131').first()
         controller = PersonController(
             person=Person(
                 first_name='Marija',
                 last_name='Bošnjak',
                 birth_date='25/06/1998',
                 identity_number='2506998155631',
+                domicile='Bobanova Draga bb, 88345 Sovići',
                 mother_id=mother.id,
                 district=district.id,
                 religion=religion.id
+            ))
+        controller.create()
+        person = Person.query.filter_by(identity_number='2506998155631').first()
+        user = User.query.filter_by(username='stipemarkovic').first()
+        controller = DocumentController(
+            document=Document(
+                document_type=document_type_value.id,
+                person_id=person.id,
+                act_date='24/07/1998',
+                act_performed=user.id,
+                document_number='K240719981',
+                district=district.id,
+                volume=10,
+                year=1998,
+                page=1,
+                number=10,
+                user_created=user.id
+            ))
+        controller.create()
+        document = Document.query.filter_by(document_number='K240719981').first()
+        child = ListItem.query.filter_by(value='Kći').first()
+        controller = RegistryOfBaptismsController(
+            baptism=RegistryOfBaptisms(
+                id=document.id,
+                person_id=person.id,
+                best_man=best_man.id,
+                name=person.first_name,
+                surname=person.last_name,
+                birth_date=person.birth_date,
+                birth_place=city.id,
+                identity_number=person.identity_number,
+                child=child.id
             ))
         controller.create()

@@ -37,6 +37,7 @@ class PersonSchema(Schema):
                                                    error=
                                                    'Field must be between 13'
                                                    'and 20 characters long')])
+    domicile = fields.Str()
     father = fields.Nested(
         'PersonSchema', only=['id'], required=False)
 
