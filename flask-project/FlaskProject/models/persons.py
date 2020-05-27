@@ -107,7 +107,7 @@ class Person(ModelsMixin, TimestampedModelMixin, db.Model):
     maiden_name = db.Column(db.String(50), nullable=True)
     birth_date = db.Column(db.Date, nullable=False)
     identity_number = db.Column(db.String(20), nullable=False)
-    domicile = db.Column(db.Text(), nullable=True)
+    domicile = db.Column(db.Text(), nullable=False)
     father_id = db.Column(UUID(as_uuid=True),
                          db.ForeignKey('persons.id'),
                          nullable=True)
