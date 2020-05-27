@@ -1,8 +1,8 @@
-"""domicile column
+"""domicile column added
 
-Revision ID: 18b78aff471a
+Revision ID: aea578fb8e35
 Revises: fc40a04ac397
-Create Date: 2020-05-27 13:06:39.671059
+Create Date: 2020-05-27 13:37:50.478815
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '18b78aff471a'
+revision = 'aea578fb8e35'
 down_revision = 'fc40a04ac397'
 branch_labels = ()
 depends_on = None
