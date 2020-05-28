@@ -10,7 +10,7 @@ class CounterQuery(BaseQuery):
 
     def get_one(self, _id):
         try:
-            return self.filter(Archdiocese.id == _id).first()
+            return self.filter(Counter.id == _id).first()
         except Exception as e:
             db.session.rollback()
             return None
@@ -18,8 +18,8 @@ class CounterQuery(BaseQuery):
     def check_if_already_exist_by_name(self, name):
         try:
             return self.filter(
-                #Archiodese.status == Archdiocese.STATUSES['active'],
-                Archdiocese.name == name).first() is not None
+                #Counter.status == Counter.STATUSES['active'],
+                Counter.name == name).first() is not None
         except Exception as e:
             db.session.rollback()
             return False
@@ -27,21 +27,12 @@ class CounterQuery(BaseQuery):
     def check_if_name_is_taken(self, _id, name):
         try:
             return self.filter(
-                Archdiocese.id != _id,
-                #Archiodese.status == Archiodese.STATUSES['active'],
-                Archdiocese.name == name).first() is not None
+                Counter.id != _id,
+                #Counter.status == Counter.STATUSES['active'],
+                Counter.name == name).first() is not None
         except Exception as e:
             db.session.rollback()
             return False
-
-    def autocomplete_by_name(self, search):
-        try:
-            return self.filter(
-                Archdiocese.status == Archdiocese.STATUSES['active'],
-                Archdiocese.name.ilike('%'+search+'%')).all()
-        except Exception as e:
-            db.session.rollback()
-            return []
 
     def get_all(self):
         try:
