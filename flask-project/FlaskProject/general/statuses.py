@@ -248,6 +248,13 @@ class Status:
         """
         return cls(-1, 'Person with that identity number already exists in registry of baptisms!')
 
+    @classmethod
+    def status_counter_already_exist(cls):
+        """
+        :return: cls(-1, 'This counter already exists')
+        """
+        return cls(-1, 'This counter already exists')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,

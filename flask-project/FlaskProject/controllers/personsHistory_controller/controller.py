@@ -14,7 +14,7 @@ class PersonsHistoryController(BaseController):
 
     def create(self):
         """
-         Method used for creating document
+         Method used for creating persons history
         :return: Status object or raise FlaskProjectLogException
         """
         if self.personsHistory.mother_id is not None:
@@ -86,7 +86,7 @@ class PersonsHistoryController(BaseController):
     @staticmethod
     def get_one_details(identifier):
         """
-       Use this method to get an document by identifier
+       Use this method to get a persons history by identifier
        :param identifier: Document identifier
        :return: Dict object
        """
