@@ -14,3 +14,4 @@ from .persons import Person
 from .personsHistory import PersonsHistory
 from .registryOfBaptisms import RegistryOfBaptisms
 from .documents import Document
+from .counter import Counter
