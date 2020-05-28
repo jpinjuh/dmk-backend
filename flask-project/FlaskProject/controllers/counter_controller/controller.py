@@ -40,10 +40,10 @@ class CounterController(BaseController):
         """
         Use this method to get a counter by identifier
         :param identifier: Extras State identifier
-        :return: StateController object
+        :return: CounterController object
         """
 
-        return cls(state=Counter.query.get_one(identifier))
+        return cls(counter=Counter.query.get_one(identifier))
 
     @staticmethod
     def get_one_details(identifier):
