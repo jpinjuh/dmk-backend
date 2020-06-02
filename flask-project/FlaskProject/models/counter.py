@@ -42,14 +42,14 @@ class CounterQuery(BaseQuery):
             return []
 
 
-class Counter(ModelsMixin, db.Model):
+class Counter(ModelsMixin, TimestampedModelMixin, db.Model):
 
     __tablename__ = 'counter'
 
     query_class = CounterQuery
 
     counters = {
-        "document_name": 'ed33ab9d-3bb9-4251-b527-d897981df675'
+        "document_number": 'ed33ab9d-3bb9-4251-b527-d897981df675'
     }
 
     STATUSES = {

@@ -13,6 +13,7 @@ from ..controllers.listItems_controller.controller import ListItemController
 from ..controllers.persons_controller.controller import PersonController
 from ..controllers.registryOfBaptisms_controller.controller import RegistryOfBaptismsController
 from ..controllers.documents_controller.controller import DocumentController
+from ..controllers.counter_controller.controller import CounterController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -26,8 +27,10 @@ from ..models.listItems import ListItem
 from ..models.persons import Person
 from ..models.registryOfBaptisms import RegistryOfBaptisms
 from ..models.documents import Document
+from ..models.counter import Counter
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
+import datetime
 
 
 class Seed(Command):
@@ -255,6 +258,21 @@ class Seed(Command):
                 religion=religion.id
             ))
         controller.create()
+        controller = CounterController(
+            counter=Counter(
+                id='ed33ab9d-3bb9-4251-b527-d897981df675',
+                name='document_number',
+                expression='%d/%m/%y-%c',
+                description='Counter koji služi za generiranje broja dokumenata.',
+                day=datetime.datetime.today().day,
+                month=datetime.datetime.today().month,
+                restart_on='%y',
+                start_from=1,
+                year=datetime.datetime.today().year,
+                value=10,
+                restart_time=datetime.datetime.combine(datetime.datetime.today(), datetime.datetime.min.time())
+            ))
+        controller.create()
         person = Person.query.filter_by(identity_number='2506998155631').first()
         user = User.query.filter_by(username='stipemarkovic').first()
         controller = DocumentController(
@@ -263,7 +281,7 @@ class Seed(Command):
                 person_id=person.id,
                 act_date='24/07/1998',
                 act_performed=user.id,
-                document_number='K240719981',
+                document_number=CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
                 volume=10,
                 year=1998,
