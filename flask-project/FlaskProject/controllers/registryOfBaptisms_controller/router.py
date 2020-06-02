@@ -5,8 +5,9 @@ from ...flask_jwt_extended import (
 )
 from .controller import RegistryOfBaptismsController
 from ..documents_controller.controller import DocumentController
+from ..counter_controller.controller import CounterController
 from ..persons_controller.controller import PersonController
-from ... import bpp, RegistryOfBaptisms, FlaskProjectLogException, Document, Person, ListItem
+from ... import bpp, RegistryOfBaptisms, FlaskProjectLogException, Document, Person, ListItem, Counter
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import PersonSchema, RegistryOfBaptismsSchema, DocumentSchema
@@ -66,7 +67,7 @@ def create_registry_of_baptism():
             person_id=controller.person.id,
             act_date=params['act_date'],
             act_performed=params['act_performed']['id'],
-            document_number=params['document_number'],
+            document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
             district=params['district']['id'],
             volume=params['volume'],
             year=params['year'],

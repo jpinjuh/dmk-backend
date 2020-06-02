@@ -3,7 +3,7 @@ from sqlalchemy import and_
 from ... import Counter, FlaskProjectLogException
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
-
+import datetime
 
 class CounterController(BaseController):
 
@@ -48,6 +48,73 @@ class CounterController(BaseController):
     @staticmethod
     def get_one_details(identifier):
         raise NotImplementedError("To be implemented")
+
+    def check_restart(self):
+        """
+        Call this method to restart counter to start_from value
+        :return:
+        """
+        day = datetime.datetime.now().day
+        month = datetime.datetime.now().month
+        year = datetime.datetime.now().year
+        if self.counter.restart_time is None:
+            self.counter.restart_time = datetime.datetime.now()
+        if self.counter.restart_on is None:
+            return self
+        elif self.counter.restart_on == "$d":
+            if self.counter.day == day and (
+                    self.counter.restart_time + datetime.timedelta(days=1)) < datetime.datetime.now():
+                try:
+                    self.counter.restart_time = datetime.datetime.now().date()
+                    self.counter.value = self.counter.start_from
+                    self.counter.day = day
+                    self.counter.month = month
+                    self.counter.year = year
+                    self.counter.add()
+                    self.counter.commit_or_rollback()
+                except Exception as e:
+                    raise FlaskProjectLogException(Status(-101, str(e)).__dict__)
+        elif self.counter.restart_on == "$m":
+            if self.counter.month == month and (
+                    self.counter.restart_time + datetime.timedelta(days=1)) < datetime.datetime.now():
+                try:
+                    self.counter.restart_time = datetime.datetime.now().date()
+                    self.counter.value = self.counter.start_from
+                    self.counter.day = day
+                    self.counter.month = month
+                    self.counter.year = year
+                    self.counter.add()
+                    self.counter.commit_or_rollback()
+                except Exception as e:
+                    raise FlaskProjectLogException(Status(-101, str(e)).__dict__)
+        elif self.counter.restart_on == "$y":
+            if self.counter.year == year and (
+                    self.counter.restart_time + datetime.timedelta(days=1)) < datetime.datetime.now():
+                try:
+                    self.counter.restart_time = datetime.datetime.now().date()
+                    self.counter.value = self.counter.start_from
+                    self.counter.day = day
+                    self.counter.month = month
+                    self.counter.day = day
+                    self.counter.add()
+                    self.counter.commit_or_rollback()
+                except Exception as e:
+                    raise FlaskProjectLogException(Status(-101, str(e)).__dict__)
+        return
+
+    def replace_expression(self):
+        """
+        Call this method if you want custom counter defined in expression
+        :return:
+        """
+        day = datetime.datetime.now().day
+        month = datetime.datetime.now().month
+        year = datetime.datetime.now().year
+        expression = self.counter.expression.replace("$c", self.counter.value)
+        expression = expression.replace("$d", str(day))
+        expression = expression.replace("$m", str(month))
+        expression = expression.replace("$y", str(year))
+        return expression
 
     @staticmethod
     def generate(counter_id):

@@ -262,11 +262,11 @@ class Seed(Command):
             counter=Counter(
                 id='ed33ab9d-3bb9-4251-b527-d897981df675',
                 name='document_number',
-                expression='%d/%m/%y-%c',
+                expression='$d/$m/$y-$c',
                 description='Counter koji služi za generiranje broja dokumenata.',
                 day=datetime.datetime.today().day,
                 month=datetime.datetime.today().month,
-                restart_on='%y',
+                restart_on='$y',
                 start_from=1,
                 year=datetime.datetime.today().year,
                 value=10,
@@ -277,11 +277,12 @@ class Seed(Command):
         user = User.query.filter_by(username='stipemarkovic').first()
         controller = DocumentController(
             document=Document(
+                id='95e923dd-0121-4ac5-a321-c1de097a14d9',
                 document_type=document_type_value.id,
                 person_id=person.id,
                 act_date='24/07/1998',
                 act_performed=user.id,
-                document_number=CounterController.generate(Counter.counters['document_number']),
+                document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
                 volume=10,
                 year=1998,
@@ -290,7 +291,7 @@ class Seed(Command):
                 user_created=user.id
             ))
         controller.create()
-        document = Document.query.filter_by(document_number='K240719981').first()
+        document = Document.query.filter_by(id='95e923dd-0121-4ac5-a321-c1de097a14d9').first()
         child = ListItem.query.filter_by(value='Kći').first()
         controller = RegistryOfBaptismsController(
             baptism=RegistryOfBaptisms(
@@ -303,5 +304,21 @@ class Seed(Command):
                 birth_place=city.id,
                 identity_number=person.identity_number,
                 child=child.id
+            ))
+        controller.create()
+        controller = DocumentController(
+            document=Document(
+                id='80ef8962-bc5b-41b3-b81d-33d06d886fe9',
+                document_type=document_type_value.id,
+                person_id=person.id,
+                act_date='24/07/1998',
+                act_performed=user.id,
+                document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
+                district=district.id,
+                volume=10,
+                year=1998,
+                page=1,
+                number=10,
+                user_created=user.id
             ))
         controller.create()
