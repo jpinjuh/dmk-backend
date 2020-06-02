@@ -221,6 +221,37 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
+        controller = ListController(
+            list=List(
+                id='177eda0f-dd0c-4531-a7dc-c7c9ceb1756a',
+                name='methods'
+            ))
+        controller.create()
+        methods = List.query.filter_by(name='methods').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='GET',
+                list_id=methods.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='PUT',
+                list_id=methods.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='POST',
+                list_id=methods.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='DELETE',
+                list_id=methods.id
+            ))
+        controller.create()
         controller = PersonController(
             person=Person(
                 first_name='Mirjana',
