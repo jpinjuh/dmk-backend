@@ -5,6 +5,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
 from sqlalchemy import or_
+from sqlalchemy.orm import relationship, foreign, aliased
+
 
 class RegistryOfBaptismsQuery(BaseQuery):
 
@@ -34,14 +36,27 @@ class RegistryOfBaptismsQuery(BaseQuery):
 
      @staticmethod
      def query_details():
-         from . import Person, City, ListItem
-         return db.session.query(RegistryOfBaptisms, Person, City, ListItem)\
+         from . import Person, City, ListItem, Note, District, Archdiocese, Document
+         best_man = aliased(Person)
+         mother = aliased(Person)
+         father = aliased(Person)
+         parents_canonically_married = aliased(ListItem)
+         return db.session.query(RegistryOfBaptisms, Person, best_man, mother, father, City, ListItem, Note, District, Archdiocese, Document, parents_canonically_married)\
              .join(
              Person,
-             RegistryOfBaptisms.best_man == Person.id,
-             isouter=False)\
+             RegistryOfBaptisms.person_id == Person.id,
+             isouter=True) \
+             .join(best_man, RegistryOfBaptisms.best_man == best_man.id, isouter=True) \
+             .join(mother, Person.mother_id == mother.id, isouter=True) \
+             .join(father, Person.father_id == father.id, isouter=True) \
              .join(City, RegistryOfBaptisms.birth_place == City.id, isouter=False)\
-             .join(ListItem, RegistryOfBaptisms.child == ListItem.id, isouter=False)
+             .join(ListItem, RegistryOfBaptisms.child == ListItem.id, isouter=False) \
+             .join(parents_canonically_married, RegistryOfBaptisms.parents_canonically_married == parents_canonically_married.id, isouter=False) \
+             .join(District, Person.district == District.id, isouter=True) \
+             .join(Archdiocese, District.archdiocese_id == Archdiocese.id, isouter=True) \
+             .join(Document, RegistryOfBaptisms.id == Document.id, isouter=True) \
+             .join(Note, Note.id == RegistryOfBaptisms.id, isouter=True)
+
 
      def get_one_details(self, _id):
          try:
@@ -100,6 +115,9 @@ class RegistryOfBaptisms(ModelsMixin, TimestampedModelMixin, db.Model):
                                  nullable=True)
     identity_number = db.Column(db.String(20), nullable=False)
     child = db.Column(UUID(as_uuid=True),
+                      db.ForeignKey("list_items.id"),
+                      nullable=False)
+    parents_canonically_married = db.Column(UUID(as_uuid=True),
                       db.ForeignKey("list_items.id"),
                       nullable=False)
     status = db.Column(

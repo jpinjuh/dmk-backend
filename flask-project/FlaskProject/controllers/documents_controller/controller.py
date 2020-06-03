@@ -82,7 +82,8 @@ class DocumentController(BaseController):
        :param identifier: Document identifier
        :return: Dict object
        """
-        raise NotImplementedError("To be implemented")
+        return DocumentController.__custom_sql(
+            Document.query.get_one_details(identifier))
 
     @staticmethod
     def list_autocomplete(search):

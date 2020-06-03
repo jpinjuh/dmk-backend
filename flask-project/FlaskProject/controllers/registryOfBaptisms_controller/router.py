@@ -7,10 +7,11 @@ from .controller import RegistryOfBaptismsController
 from ..documents_controller.controller import DocumentController
 from ..counter_controller.controller import CounterController
 from ..persons_controller.controller import PersonController
+from ..notes_controller.controller import NoteController
 from ... import bpp, RegistryOfBaptisms, FlaskProjectLogException, Document, Person, ListItem, Counter
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
-from ...schema import PersonSchema, RegistryOfBaptismsSchema, DocumentSchema
+from ...schema import PersonSchema, RegistryOfBaptismsSchema, DocumentSchema, NoteSchema
 
 
 @bpp.route('/registry_of_baptism', methods=['POST'])
@@ -46,15 +47,14 @@ def create_registry_of_baptism():
         ))
     controller.create()
 
-    schema = DocumentSchema(exclude=('id', 'document_type', 'person', 'person2', 'user_created', ))
+    schema = DocumentSchema(exclude=('id', 'document_type', 'person', 'person2', 'user_created', 'document_number'))
     params = schema.load({
         'act_date': request_json['act_date'],
         'act_performed': request_json['act_performed'],
-        'document_number': request_json['document_number'],
-        'volume': request_json['volume'],
-        'year': request_json['year'],
-        'page': request_json['page'],
-        'number': request_json['number'],
+        'volume': request_json.get('volume', None),
+        'year': request_json.get('year', None),
+        'page': request_json.get('page', None),
+        'number': request_json.get('number', None),
         'district': request_json['district']
     })
 
@@ -85,7 +85,8 @@ def create_registry_of_baptism():
         'birth_date': request_json['birth_date'],
         'birth_place': request_json['birth_place'],
         'identity_number': request_json['identity_number'],
-        'child': request_json['child']
+        'child': request_json['child'],
+        'parents_canonically_married': request_json['parents_canonically_married']
     })
 
     controller = RegistryOfBaptismsController(
@@ -98,7 +99,21 @@ def create_registry_of_baptism():
             birth_date=params['birth_date'],
             birth_place=params['birth_place']['id'],
             identity_number=params['identity_number'],
-            child=params['child']['id']
+            child=params['child']['id'],
+            parents_canonically_married=params['parents_canonically_married']
+        ))
+    controller.create()
+
+    schema = NoteSchema(exclude=('id', 'person_id', 'chrism_place', 'chrism_date', 'marriage_district', 'marriage_date', 'spouse_name'))
+    params = schema.load({
+        'other_notes': request_json.get('other_notes', None)
+    })
+
+    controller = NoteController(
+        note=Note(
+            id=controller.document.id,
+            person_id=controller.document.person_id,
+            other_notes=params['other_notes']
         ))
     controller.create()
 
@@ -106,6 +121,19 @@ def create_registry_of_baptism():
         data=RegistryOfBaptismsController.get_one_details(controller.baptism.id),
         status=Status.status_successfully_inserted().__dict__)
 
+
+@bpp.route('/registry_of_baptism/<string:baptism_id>', methods=['GET'])
+@jwt_required
+#@allow_access
+def get_one_baptism(baptism_id):
+    controller = RegistryOfBaptismsController.get_one_details(baptism_id)
+
+    if controller is None:
+        raise FlaskProjectLogException(Status.status_baptism_not_exist())
+
+    return jsonify(
+        data=controller,
+        status=Status.status_successfully_processed().__dict__)
 
 
 

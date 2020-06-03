@@ -44,3 +44,6 @@ class RegistryOfBaptismsSchema(Schema):
 
     child = fields.Nested(
         'ListItemSchema', only=['id'], required=True)
+
+    parents_canonically_married = fields.Nested(
+        'ListItemSchema', only=['id'], required=True)

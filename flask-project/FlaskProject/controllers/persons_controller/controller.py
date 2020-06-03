@@ -271,5 +271,6 @@ class PersonController(BaseController):
             return_dict['religion'] = obj_to_dict(row_data.ListItem)
             return_dict['district'] = obj_to_dict(row_data.District)
             return_dict['city'] = obj_to_dict(row_data.City)
+            return_dict['document'] = obj_to_dict(row_data.Document)
             return return_dict
         return None

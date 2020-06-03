@@ -195,6 +195,7 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
+        list_item = ListItem.query.filter_by(value='Da').first()
         controller = ListItemController(
             list_item=ListItem(
                 value='Ne',
@@ -204,6 +205,7 @@ class Seed(Command):
         list = List.query.filter_by(name='document_types').first()
         controller = ListItemController(
             list_item=ListItem(
+                id='5faf077f-bd10-4136-8619-a41447e41871',
                 value='Matica krštenih',
                 list_id=list.id
             ))
@@ -211,12 +213,14 @@ class Seed(Command):
         document_type_value = ListItem.query.filter_by(value='Matica krštenih').first()
         controller = ListItemController(
             list_item=ListItem(
+                id='78c884e9-fb9a-4f0e-a9de-2e1ea53dd618',
                 value='Matica vjenčanih',
                 list_id=list.id
             ))
         controller.create()
         controller = ListItemController(
             list_item=ListItem(
+                id='8b90de67-3244-4f48-9136-6f4c7fd6b12c',
                 value='Matica umrlih',
                 list_id=list.id
             ))
@@ -334,7 +338,8 @@ class Seed(Command):
                 birth_date=person.birth_date,
                 birth_place=city.id,
                 identity_number=person.identity_number,
-                child=child.id
+                child=child.id,
+                parents_canonically_married=list_item.id
             ))
         controller.create()
         controller = DocumentController(

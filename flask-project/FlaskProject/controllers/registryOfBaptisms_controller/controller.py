@@ -2,7 +2,7 @@ from sqlalchemy import and_
 from ..cities_controller.controller import CityController
 from ..listItems_controller.controller import ListItemController
 from ..persons_controller.controller import PersonController
-from ... import RegistryOfBaptisms, Person, City, ListItem, FlaskProjectLogException
+from ... import RegistryOfBaptisms, Person, City, ListItem, FlaskProjectLogException, District, Archdiocese, Note, Document
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
@@ -102,10 +102,23 @@ class RegistryOfBaptismsController(BaseController):
     def __custom_sql(row_data):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.RegistryOfBaptisms)
-            return_dict['person'] = obj_to_dict(row_data.Person)
-            return_dict['best_man'] = obj_to_dict(row_data.Person)
+            person = Person.query.filter_by(id=row_data.RegistryOfBaptisms.person_id).first()
+            best_man = Person.query.filter_by(id=row_data.RegistryOfBaptisms.best_man).first()
+            mother = Person.query.filter_by(id=person.mother_id).first()
+            father = Person.query.filter_by(id=person.father_id).first()
+            child = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.child).first()
+            parents = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.parents_canonically_married).first()
+            return_dict['person'] = obj_to_dict(person)
+            return_dict['best_man'] = obj_to_dict(best_man)
+            return_dict['mother'] = obj_to_dict(mother)
+            return_dict['father'] = obj_to_dict(father)
             return_dict['birth_place'] = obj_to_dict(row_data.City)
-            return_dict['child'] = obj_to_dict(row_data.ListItem)
+            return_dict['child'] = obj_to_dict(child)
+            return_dict['parents_canonically_married'] = obj_to_dict(parents)
+            return_dict['district'] = obj_to_dict(row_data.District)
+            return_dict['archdiocese'] = obj_to_dict(row_data.Archdiocese)
+            return_dict['document'] = obj_to_dict(row_data.Document)
+            return_dict['note'] = obj_to_dict(row_data.Note)
             return return_dict
         return None
 

@@ -11,6 +11,20 @@ from ...general.route_decorators import allow_access
 from ...schema import PersonSchema, RegistryOfBaptismsSchema, DocumentSchema
 
 
+@bpp.route('/document/<string:document_id>', methods=['GET'])
+@jwt_required
+#@allow_access
+def get_one_document(document_id):
+    controller = DocumentController.get_one_details(document_id)
+
+    if controller is None:
+        raise FlaskProjectLogException(Status.status_document_not_exist())
+
+    return jsonify(
+        data=controller,
+        status=Status.status_successfully_processed().__dict__)
+
+
 @bpp.route('/document', methods=['GET'])
 @jwt_required
 #@allow_access

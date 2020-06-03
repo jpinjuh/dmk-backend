@@ -36,16 +36,17 @@ class PersonQuery(BaseQuery):
 
     @staticmethod
     def query_details():
-        from . import District, Person, ListItem, RegistryOfBaptisms, City
+        from . import District, Person, ListItem, RegistryOfBaptisms, City, Document
         mother = aliased(Person)
         father = aliased(Person)
-        return db.session.query(Person, District, mother, father, ListItem, RegistryOfBaptisms, City) \
+        return db.session.query(Person, District, mother, father, ListItem, RegistryOfBaptisms, City, Document) \
             .join(mother, Person.mother_id == mother.id, isouter=True)\
             .join(father, Person.father_id == father.id, isouter=True)\
             .join(District, Person.district == District.id, isouter=False)\
             .join(ListItem, Person.religion == ListItem.id, isouter=False)\
             .join(RegistryOfBaptisms, Person.id == RegistryOfBaptisms.person_id, isouter=True)\
-            .join(City, RegistryOfBaptisms.birth_place == City.id, isouter=True)
+            .join(City, RegistryOfBaptisms.birth_place == City.id, isouter=True)\
+            .join(Document, RegistryOfBaptisms.id == Document.id, isouter=True)
 
     def get_one_details(self, _id):
         try:

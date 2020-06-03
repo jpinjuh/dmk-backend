@@ -262,6 +262,20 @@ class Status:
         """
         return cls(-1, 'This note does not exist')
 
+    @classmethod
+    def status_baptism_not_exist(cls):
+        """
+        :return: cls(-1, 'This baptism does not exist')
+        """
+        return cls(-1, 'This baptism does not exist')
+
+    @classmethod
+    def status_document_not_exist(cls):
+        """
+        :return: cls(-1, 'This document does not exist')
+        """
+        return cls(-1, 'This document does not exist')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,
