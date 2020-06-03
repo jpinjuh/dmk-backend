@@ -23,7 +23,7 @@ def create_registry_of_baptism():
     params = schema.load({
         'first_name': request_json['first_name'],
         'last_name': request_json['last_name'],
-        'maiden_name': request_json['maiden_name'],
+        'maiden_name': request_json.get('maiden_name', None),
         'birth_date': request_json['birth_date'],
         'identity_number': request_json['identity_number'],
         'father': request_json['father'],
