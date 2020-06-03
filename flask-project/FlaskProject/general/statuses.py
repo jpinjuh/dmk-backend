@@ -255,6 +255,13 @@ class Status:
         """
         return cls(-1, 'This counter already exists')
 
+    @classmethod
+    def status_note_not_exist(cls):
+        """
+        :return: cls(-1, 'This note does not exist')
+        """
+        return cls(-1, 'This note does not exist')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,
