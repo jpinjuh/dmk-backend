@@ -33,9 +33,9 @@ class PersonSchema(Schema):
     identity_number = fields.Str(required=True,
                                  error_messages={"required": "Field is required"},
                                  validate=[
-                                   validate.Length(min=13, max=20,
+                                   validate.Length(min=10, max=20,
                                                    error=
-                                                   'Field must be between 13'
+                                                   'Field must be between 10'
                                                    'and 20 characters long')])
     domicile = fields.Str()
     father = fields.Nested(

@@ -24,9 +24,9 @@ def create_registry_of_baptism():
     params = schema.load({
         'first_name': request_json['first_name'],
         'last_name': request_json['last_name'],
-        'maiden_name': request_json.get('maiden_name', None),
         'birth_date': request_json['birth_date'],
         'identity_number': request_json['identity_number'],
+        'domicile': request_json.get('domicile', None),
         'father': request_json['father'],
         'mother': request_json['mother'],
         'district': request_json['district'],
@@ -37,9 +37,9 @@ def create_registry_of_baptism():
         person=Person(
             first_name=params['first_name'],
             last_name=params['last_name'],
-            maiden_name=params['maiden_name'],
             birth_date=params['birth_date'],
             identity_number=params['identity_number'],
+            domicile=params.get('domicile', None),
             father_id=params['father']['id'],
             mother_id=params['mother']['id'],
             district=params['district']['id'],
@@ -51,10 +51,10 @@ def create_registry_of_baptism():
     params = schema.load({
         'act_date': request_json['act_date'],
         'act_performed': request_json['act_performed'],
-        'volume': request_json.get('volume', None),
-        'year': request_json.get('year', None),
-        'page': request_json.get('page', None),
-        'number': request_json.get('number', None),
+        'volume': request_json['volume'],
+        'year': request_json['year'],
+        'page': request_json['page'],
+        'number': request_json['number'],
         'district': request_json['district']
     })
 
@@ -76,6 +76,21 @@ def create_registry_of_baptism():
             user_created=current_user
         ))
     controller.create()
+    document = controller.document
+
+    schema = NoteSchema(exclude=('id', 'person_id', 'chrism_place', 'chrism_date',
+                                 'marriage_district', 'marriage_date', 'spouse_name'))
+    params = schema.load({
+        'other_notes': request_json['other_notes']
+    })
+
+    controller = NoteController(
+        note=Note(
+            id=document.id,
+            person_id=document.person_id,
+            other_notes=params['other_notes']
+        ))
+    controller.create()
 
     schema = RegistryOfBaptismsSchema(exclude=('id', 'person'))
     params = schema.load({
@@ -91,8 +106,8 @@ def create_registry_of_baptism():
 
     controller = RegistryOfBaptismsController(
         baptism=RegistryOfBaptisms(
-            id=controller.document.id,
-            person_id=controller.document.person_id,
+            id=document.id,
+            person_id=document.person_id,
             best_man=params['best_man']['id'],
             name=params['name'],
             surname=params['surname'],
@@ -100,20 +115,7 @@ def create_registry_of_baptism():
             birth_place=params['birth_place']['id'],
             identity_number=params['identity_number'],
             child=params['child']['id'],
-            parents_canonically_married=params['parents_canonically_married']
-        ))
-    controller.create()
-
-    schema = NoteSchema(exclude=('id', 'person_id', 'chrism_place', 'chrism_date', 'marriage_district', 'marriage_date', 'spouse_name'))
-    params = schema.load({
-        'other_notes': request_json.get('other_notes', None)
-    })
-
-    controller = NoteController(
-        note=Note(
-            id=controller.document.id,
-            person_id=controller.document.person_id,
-            other_notes=params['other_notes']
+            parents_canonically_married=params['parents_canonically_married']['id']
         ))
     controller.create()
 
