@@ -31,6 +31,9 @@ class PersonSchema(Schema):
     birth_date = fields.Date(required=True,
                              error_messages={"required": "Field is required"})
 
+    birth_place = fields.Nested(
+        'CitySchema', only=['id'], required=True)
+
     identity_number = fields.Str(required=True,
                                  error_messages={"required": "Field is required"},
                                  validate=[
