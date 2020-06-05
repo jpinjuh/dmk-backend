@@ -44,7 +44,7 @@ class PersonQuery(BaseQuery):
             .join(father, Person.father_id == father.id, isouter=True)\
             .join(District, Person.district == District.id, isouter=False)\
             .join(ListItem, Person.religion == ListItem.id, isouter=False)\
-            .join(RegistryOfBaptisms, Person.id == RegistryOfBaptisms.person_id, isouter=True)\
+            .join(RegistryOfBaptisms, Person.id == RegistryOfBaptisms.person_id, isouter=False)\
             .join(City, RegistryOfBaptisms.birth_place == City.id, isouter=True)\
             .join(Document, RegistryOfBaptisms.id == Document.id, isouter=True)
 

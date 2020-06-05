@@ -22,7 +22,8 @@ class PersonSchema(Schema):
                                               error=
                                               'Field must be between 2 '
                                               'and 50 characters long')])
-    maiden_name = fields.Str(validate=[
+    maiden_name = fields.Str(required=False,
+                          validate=[
                           validate.Length(min=2, max=50,
                                           error=
                                           'Field must be between 2 '
