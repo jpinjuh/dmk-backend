@@ -13,3 +13,4 @@ from .persons_history_schema import PersonsHistorySchema
 from .registry_of_baptisms_schema import RegistryOfBaptismsSchema
 from .documents_schema import DocumentSchema
 from .notes_schema import NoteSchema
+from .registry_of_deaths_schema import RegistryOfDeathsSchema

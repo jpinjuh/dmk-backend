@@ -262,6 +262,7 @@ class Seed(Command):
                 last_name='Bošnjak',
                 maiden_name='Marijanović',
                 birth_date='17/01/1973',
+                birth_place=city.id,
                 identity_number='1701973155631',
                 domicile='Bobanova Draga bb, 88345 Sovići',
                 district=district.id,
@@ -273,6 +274,7 @@ class Seed(Command):
                 first_name='Ante',
                 last_name='Bošnjak',
                 birth_date='11/06/2005',
+                birth_place=city.id,
                 identity_number='11062005655131',
                 domicile='Bobanova Draga bb, 88345 Sovići',
                 district=district.id,
@@ -286,6 +288,7 @@ class Seed(Command):
                 first_name='Marija',
                 last_name='Bošnjak',
                 birth_date='25/06/1998',
+                birth_place=city.id,
                 identity_number='2506998155631',
                 domicile='Bobanova Draga bb, 88345 Sovići',
                 mother_id=mother.id,
@@ -340,21 +343,5 @@ class Seed(Command):
                 identity_number=person.identity_number,
                 child=child.id,
                 parents_canonically_married=list_item.id
-            ))
-        controller.create()
-        controller = DocumentController(
-            document=Document(
-                id='80ef8962-bc5b-41b3-b81d-33d06d886fe9',
-                document_type=document_type_value.id,
-                person_id=person.id,
-                act_date='24/07/1998',
-                act_performed=user.id,
-                document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
-                district=district.id,
-                volume=10,
-                year=1998,
-                page=1,
-                number=10,
-                user_created=user.id
             ))
         controller.create()

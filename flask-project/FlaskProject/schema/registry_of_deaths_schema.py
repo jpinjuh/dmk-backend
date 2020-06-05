@@ -19,4 +19,4 @@ class RegistryOfDeathsSchema(Schema):
         'CitySchema', only=['id'], required=True)
 
     place_of_burial = fields.Nested(
-        'ListItemSchema', only=['id'], required=True)
+        'ListItemSchema', only=['id'], required=False)
