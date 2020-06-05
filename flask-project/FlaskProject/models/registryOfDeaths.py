@@ -43,10 +43,6 @@ class RegistryOfDeaths(ModelsMixin, TimestampedModelMixin, db.Model):
     place_of_burial = db.Column(UUID(as_uuid=False),
                                  db.ForeignKey('list_items.id'),
                                  nullable=True)
-    date_of_burial = db.Column(db.Date, nullable=False)
-    act_performed = db.Column(UUID(as_uuid=True),
-                      db.ForeignKey("users.id"),
-                      nullable=False)
     status = db.Column(
         db.SmallInteger, nullable=False,
         default=STATUSES['active'], server_default=str(STATUSES['active']))

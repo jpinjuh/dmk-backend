@@ -28,6 +28,7 @@ def create_person():
             last_name=params['last_name'],
             maiden_name=params.get('maiden_name', None),
             birth_date=params['birth_date'],
+            birth_place=params['birth_place']['id'],
             identity_number=params['identity_number'],
             domicile=params['domicile'],
             father_id=params['father']['id'],
@@ -103,6 +104,7 @@ def get_persons():
     last_name = request.args.get('last_name', '', str)
     maiden_name = request.args.get('maiden_name', '', str)
     birth_date = request.args.get('birth_date', '', str)
+    birth_place = request.args.get('birth_place', None, str)
     identity_number = request.args.get('identity_number', '', str)
     father_id = request.args.get('father_id', None, str)
     mother_id = request.args.get('mother_id', None, str)
@@ -111,7 +113,8 @@ def get_persons():
 
     pagination_result = PersonController.get_list_pagination(
         start=start, limit=limit, first_name=first_name, last_name=last_name,
-        maiden_name=maiden_name, birth_date=birth_date, identity_number=identity_number,
-        father_id=father_id, mother_id=mother_id, district=district, religion=religion)
+        maiden_name=maiden_name, birth_date=birth_date, birth_place=birth_place,
+        identity_number=identity_number, father_id=father_id, mother_id=mother_id,
+        district=district, religion=religion)
 
     return jsonify(pagination_result)

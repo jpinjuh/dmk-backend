@@ -40,6 +40,14 @@ class PersonController(BaseController):
                 raise FlaskProjectLogException(
                     Status.status_person_not_exist())
 
+        if self.person.birth_place is not None:
+            birth_place = CityController.get_one(
+                self.person.birth_place)
+
+            if birth_place.city is None:
+                raise FlaskProjectLogException(
+                    Status.status_city_not_exist())
+
         if self.person.district is not None:
             district = DistrictController.get_one(
                 self.person.district)
@@ -82,6 +90,7 @@ class PersonController(BaseController):
         person.last_name = self.person.last_name
         person.maiden_name = self.person.maiden_name
         person.birth_date = self.person.birth_date
+        person.birth_place = self.person.birth_place
         person.identity_number = self.person.identity_number
         person.father_id = self.person.father_id
         person.mother_id = self.person.mother_id
@@ -200,6 +209,7 @@ class PersonController(BaseController):
         last_name = kwargs.get('last_name', None)
         maiden_name = kwargs.get('maiden_name', None)
         birth_date = kwargs.get('birth_date', None)
+        birth_place = kwargs.get('birth_place', None)
         identity_number = kwargs.get('identity_number', None)
         domicile = kwargs.get('domicile', None)
         father_id = kwargs.get('father_id', None)
@@ -222,6 +232,10 @@ class PersonController(BaseController):
         if birth_date:
             filter_main = and_(
                 filter_main, Person.birth_date.ilike('%' + birth_date + '%'))
+
+        if birth_place:
+            filter_main = and_(
+                filter_main, City.id == birth_place)
 
         if identity_number:
             filter_main = and_(
