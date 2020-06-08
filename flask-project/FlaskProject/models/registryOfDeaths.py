@@ -16,25 +16,25 @@ class RegistryOfDeathsQuery(BaseQuery):
              db.session.rollback()
              return None
 
-     def check_if_already_exist(self, id):
-         try:
-             return self.filter(
-                 RegistryOfDeaths.person_id == id).first() is not None
-         except Exception as e:
-             db.session.rollback()
-             return False
-
      @staticmethod
      def query_details():
-         from . import Person, City, ListItem, Document
-         return db.session.query(RegistryOfDeaths, Person, City, ListItem, Document)\
+         from . import Person, City, ListItem, Document, Note, District, Archdiocese, User
+         mother = aliased(Person)
+         father = aliased(Person)
+         return db.session.query(RegistryOfDeaths, Person, mother, father, City, ListItem, Document, Note, District, Archdiocese, User)\
              .join(
              Person,
              RegistryOfDeaths.person_id == Person.id,
-             isouter=False) \
+             isouter=True) \
              .join(City, RegistryOfDeaths.place_of_death == City.id, isouter=False) \
-             .join(ListItem, RegistryOfDeaths.place_of_burial == ListItem.id, isouter=False)\
-             .join(Document, RegistryOfDeaths.id == Document.id, isouter=False)
+             .join(ListItem, RegistryOfDeaths.place_of_burial == ListItem.id, isouter=False) \
+             .join(mother, Person.mother_id == mother.id, isouter=True) \
+             .join(father, Person.father_id == father.id, isouter=True) \
+             .join(District, Person.district == District.id, isouter=True) \
+             .join(Archdiocese, District.archdiocese_id == Archdiocese.id, isouter=True) \
+             .join(Document, RegistryOfDeaths.id == Document.id, isouter=True) \
+             .join(User, Document.act_performed == User.id, isouter=True) \
+             .join(Note, Note.id == RegistryOfDeaths.id, isouter=True)
 
      def get_one_details(self, _id):
          try:
@@ -42,7 +42,6 @@ class RegistryOfDeathsQuery(BaseQuery):
          except Exception as e:
              db.session.rollback()
              return None
-
 
 class RegistryOfDeaths(ModelsMixin, TimestampedModelMixin, db.Model):
 

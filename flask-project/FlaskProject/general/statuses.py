@@ -276,6 +276,13 @@ class Status:
         """
         return cls(-1, 'This document does not exist')
 
+    @classmethod
+    def status_death_not_exist(cls):
+        """
+        :return: cls(-1, 'This registry of death does not exist')
+        """
+        return cls(-1, 'This registry of death does not exist')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,
