@@ -16,6 +16,10 @@ class RegistryOfDeathsController(BaseController):
          Method used for creating registry of death
         :return: Status object or raise FlaskProjectLogException
         """
+        if RegistryOfDeaths.query.check_if_already_exist(
+                self.death.person_id):
+            raise FlaskProjectLogException(
+                Status.status_identity_number_already_exist())
 
         if self.death.person_id is not None:
             person = PersonController.get_one(
@@ -92,6 +96,7 @@ class RegistryOfDeathsController(BaseController):
             return_dict['person'] = obj_to_dict(row_data.Person)
             return_dict['place_of_death'] = obj_to_dict(row_data.City)
             return_dict['place_of_burial'] = obj_to_dict(row_data.ListItem)
+            return_dict['document'] = obj_to_dict(row_data.Document)
             return return_dict
         return None
 

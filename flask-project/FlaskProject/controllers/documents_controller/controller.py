@@ -49,6 +49,14 @@ class DocumentController(BaseController):
                 raise FlaskProjectLogException(
                     Status.status_district_not_exist())
 
+        if self.document.act_performed is not None:
+            act_performed = UserController.get_one(
+                self.document.act_performed)
+
+            if act_performed.user is None:
+                raise FlaskProjectLogException(
+                    Status.status_user_not_exist())
+
         if self.document.user_created is not None:
             user_created = UserController.get_one(
                 self.document.user_created)

@@ -70,6 +70,7 @@ def create_registry_of_death():
     params = schema.load({
         'date_of_death': request_json['date_of_death'],
         'place_of_death': request_json['place_of_death'],
+        'place_of_burial': request_json['place_of_burial']
     })
 
     controller = RegistryOfDeathsController(
@@ -78,6 +79,7 @@ def create_registry_of_death():
             person_id=document.person_id,
             date_of_death=params['date_of_death'],
             place_of_death=params['place_of_death']['id'],
+            place_of_burial=params['place_of_burial']['id']
         ))
     controller.create()
 

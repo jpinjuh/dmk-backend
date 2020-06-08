@@ -1,8 +1,8 @@
 """registry_of_deaths added
 
-Revision ID: 89a446a9dc4f
+Revision ID: bb6a37a26a69
 Revises: 9afc0721171c
-Create Date: 2020-06-05 10:52:51.747738
+Create Date: 2020-06-08 09:41:25.142532
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision = '89a446a9dc4f'
+revision = 'bb6a37a26a69'
 down_revision = '9afc0721171c'
 branch_labels = ()
 depends_on = None
@@ -23,7 +23,7 @@ def upgrade():
     sa.Column('person_id', postgresql.UUID(as_uuid=True), nullable=False),
     sa.Column('date_of_death', sa.Date(), nullable=False),
     sa.Column('place_of_death', postgresql.UUID(as_uuid=True), nullable=True),
-    sa.Column('place_of_burial', postgresql.UUID(), nullable=True),
+    sa.Column('place_of_burial', postgresql.UUID(as_uuid=True), nullable=True),
     sa.Column('status', sa.SmallInteger(), server_default='1', nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),

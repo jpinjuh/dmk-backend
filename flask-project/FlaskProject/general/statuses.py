@@ -244,9 +244,9 @@ class Status:
     @classmethod
     def status_identity_number_already_exist(cls):
         """
-        :return: cls(-1, 'Person with that identity number already exists in registry of baptisms!')
+        :return: cls(-1, 'Person with that identity number already exists in registry!')
         """
-        return cls(-1, 'Person with that identity number already exists in registry of baptisms!')
+        return cls(-1, 'Person with that identity number already exists in registry!')
 
     @classmethod
     def status_counter_already_exist(cls):

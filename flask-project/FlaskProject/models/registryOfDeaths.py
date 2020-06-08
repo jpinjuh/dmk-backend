@@ -16,16 +16,25 @@ class RegistryOfDeathsQuery(BaseQuery):
              db.session.rollback()
              return None
 
+     def check_if_already_exist(self, id):
+         try:
+             return self.filter(
+                 RegistryOfDeaths.person_id == id).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
      @staticmethod
      def query_details():
-         from . import Person, City, ListItem
-         return db.session.query(RegistryOfDeaths, Person, City, ListItem)\
+         from . import Person, City, ListItem, Document
+         return db.session.query(RegistryOfDeaths, Person, City, ListItem, Document)\
              .join(
              Person,
              RegistryOfDeaths.person_id == Person.id,
-             isouter=True) \
+             isouter=False) \
              .join(City, RegistryOfDeaths.place_of_death == City.id, isouter=False) \
-             .join(ListItem, RegistryOfDeaths.place_of_burial == ListItem.id, isouter=False)
+             .join(ListItem, RegistryOfDeaths.place_of_burial == ListItem.id, isouter=False)\
+             .join(Document, RegistryOfDeaths.id == Document.id, isouter=False)
 
      def get_one_details(self, _id):
          try:
@@ -33,6 +42,7 @@ class RegistryOfDeathsQuery(BaseQuery):
          except Exception as e:
              db.session.rollback()
              return None
+
 
 class RegistryOfDeaths(ModelsMixin, TimestampedModelMixin, db.Model):
 
@@ -56,7 +66,7 @@ class RegistryOfDeaths(ModelsMixin, TimestampedModelMixin, db.Model):
     place_of_death = db.Column(UUID(as_uuid=True),
                                  db.ForeignKey('cities.id'),
                                  nullable=True)
-    place_of_burial = db.Column(UUID(as_uuid=False),
+    place_of_burial = db.Column(UUID(as_uuid=True),
                                  db.ForeignKey('list_items.id'),
                                  nullable=True)
     status = db.Column(
