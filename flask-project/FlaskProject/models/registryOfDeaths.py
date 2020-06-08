@@ -16,6 +16,14 @@ class RegistryOfDeathsQuery(BaseQuery):
              db.session.rollback()
              return None
 
+     def check_if_already_exist(self, id):
+         try:
+             return self.filter(
+                 RegistryOfDeaths.person_id == id).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
      @staticmethod
      def query_details():
          from . import Person, City, ListItem, Document, Note, District, Archdiocese, User

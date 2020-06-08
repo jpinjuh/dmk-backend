@@ -271,6 +271,18 @@ class Seed(Command):
         controller.create()
         controller = PersonController(
             person=Person(
+                first_name='Ivo',
+                last_name='Ivić',
+                birth_date='10/05/1985',
+                birth_place=city.id,
+                identity_number='1005985997875',
+                domicile='Bobanova Draga bb, 88345 Sovići',
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
                 first_name='Ante',
                 last_name='Bošnjak',
                 birth_date='11/06/2005',
@@ -345,3 +357,37 @@ class Seed(Command):
                 parents_canonically_married=list_item.id
             ))
         controller.create()
+        person = Person.query.filter_by(identity_number='1005985997875').first()
+        controller = DocumentController(
+            document=Document(
+                id='13771757-26ef-4d08-bc62-6e3b172bfb38',
+                document_type=document_type_value.id,
+                person_id=person.id,
+                act_date='20/06/1985',
+                act_performed=user.id,
+                document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
+                district=district.id,
+                volume=10,
+                year=1998,
+                page=1,
+                number=10,
+                user_created=user.id
+            ))
+        controller.create()
+        document = Document.query.filter_by(id='13771757-26ef-4d08-bc62-6e3b172bfb38').first()
+        child = ListItem.query.filter_by(value='Sin').first()
+        controller = RegistryOfBaptismsController(
+            baptism=RegistryOfBaptisms(
+                id=document.id,
+                person_id=person.id,
+                best_man=best_man.id,
+                name=person.first_name,
+                surname=person.last_name,
+                birth_date=person.birth_date,
+                birth_place=city.id,
+                identity_number=person.identity_number,
+                child=child.id,
+                parents_canonically_married=list_item.id
+            ))
+        controller.create()
+

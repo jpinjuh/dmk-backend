@@ -57,7 +57,6 @@ class RegistryOfBaptismsQuery(BaseQuery):
              .join(Document, RegistryOfBaptisms.id == Document.id, isouter=True) \
              .join(Note, Note.id == RegistryOfBaptisms.id, isouter=True)
 
-
      def get_one_details(self, _id):
          try:
              return self.query_details().filter(RegistryOfBaptisms.id == _id).first()
