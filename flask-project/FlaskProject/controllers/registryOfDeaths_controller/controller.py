@@ -2,7 +2,7 @@ from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
 from ..cities_controller.controller import CityController
 from ..listItems_controller.controller import ListItemController
-from ... import RegistryOfDeaths, Person, City, ListItem, FlaskProjectLogException, Document
+from ... import RegistryOfDeaths, Person, City, ListItem, FlaskProjectLogException, Document, District, Archdiocese, User, Note, RegistryOfBaptisms
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
@@ -93,10 +93,27 @@ class RegistryOfDeathsController(BaseController):
     def __custom_sql(row_data):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.RegistryOfDeaths)
-            return_dict['person'] = obj_to_dict(row_data.Person)
-            return_dict['place_of_death'] = obj_to_dict(row_data.City)
+            person = Person.query.filter_by(id=row_data.RegistryOfDeaths.person_id).first()
+            mother = Person.query.filter_by(id=person.mother_id).first()
+            father = Person.query.filter_by(id=person.father_id).first()
+            death = City.query.filter_by(id=row_data.RegistryOfDeaths.place_of_death).first()
+            birth = City.query.filter_by(id=row_data.RegistryOfBaptisms.birth_place).first()
+            district_person = District.query.filter_by(id=row_data.Person.district).first()
+            district_baptism = District.query.filter_by(id=row_data.Document.district).first()
+            gender = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.child).first()
+            return_dict['person'] = obj_to_dict(person)
+            return_dict['place_of_death'] = obj_to_dict(death)
             return_dict['place_of_burial'] = obj_to_dict(row_data.ListItem)
+            return_dict['mother'] = obj_to_dict(mother)
+            return_dict['father'] = obj_to_dict(father)
+            return_dict['district_person'] = obj_to_dict(district_person)
+            return_dict['district_baptism'] = obj_to_dict(district_baptism)
+            return_dict['archdiocese'] = obj_to_dict(row_data.Archdiocese)
+            return_dict['gender'] = obj_to_dict(gender)
+            return_dict['act_performed'] = obj_to_dict(row_data.User)
             return_dict['document'] = obj_to_dict(row_data.Document)
+            return_dict['birth_place'] = obj_to_dict(birth)
+            return_dict['note'] = obj_to_dict(row_data.Note)
             return return_dict
         return None
 

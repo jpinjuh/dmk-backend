@@ -26,10 +26,10 @@ class RegistryOfDeathsQuery(BaseQuery):
 
      @staticmethod
      def query_details():
-         from . import Person, City, ListItem, Document, Note, District, Archdiocese, User
+         from . import Person, City, ListItem, Document, Note, District, Archdiocese, User, RegistryOfBaptisms
          mother = aliased(Person)
          father = aliased(Person)
-         return db.session.query(RegistryOfDeaths, Person, mother, father, City, ListItem, Document, Note, District, Archdiocese, User)\
+         return db.session.query(RegistryOfDeaths, Person, mother, father, City, ListItem, Document, Note, District, Archdiocese, User, RegistryOfBaptisms)\
              .join(
              Person,
              RegistryOfDeaths.person_id == Person.id,
