@@ -23,11 +23,5 @@ class PermissionSchema(Schema):
                                           error=
                                           'Field must be between 2 '
                                           'and 100 characters long')])
-    method = fields.Str(required=True,
-                        error_messages={"required": "Field is required"},
-                        validate=[
-                          validate.Length(min=2, max=100,
-                                          error=
-                                          'Field must be between 2 '
-                                          'and 100 characters long')])
+    method = fields.Str(required=True)
 

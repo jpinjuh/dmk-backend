@@ -51,6 +51,7 @@ class RegistryOfDeathsQuery(BaseQuery):
              db.session.rollback()
              return None
 
+
 class RegistryOfDeaths(ModelsMixin, TimestampedModelMixin, db.Model):
 
     __tablename__ = 'registry_of_deaths'
