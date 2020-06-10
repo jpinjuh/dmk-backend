@@ -24,6 +24,7 @@ def create_list_item():
         list_item=ListItem(
             value=params['value'],
             description=params['description'],
+            auxiliary_description=params['auxiliary_description'],
             list_id=params['list']['id']
         ))
     controller.create()
@@ -42,13 +43,15 @@ def get_all_list_items():
 
     list_value = request.args.get('list_value', '', str)
     description = request.args.get('description', '', str)
+    auxiliary_description = request.args.get('auxiliary_description', '', str)
     list_id = request.args.get('list_id', None, str)
 
     pagination_result = ListItemController.get_list_pagination(
         start=start, limit=limit, list_value=list_value, description=description,
-        list_id=list_id)
+        auxiliary_description=auxiliary_description, list_id=list_id)
 
     return jsonify(pagination_result)
+
 
 @bpp.route('/listItems', methods=['GET'])
 @jwt_required

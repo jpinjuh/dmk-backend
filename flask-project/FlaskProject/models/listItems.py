@@ -74,6 +74,7 @@ class ListItem(ModelsMixin, TimestampedModelMixin, db.Model):
     id = db.Column(UUID(as_uuid=True), default=uuid4, primary_key=True)
     value = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text(), nullable=True)
+    auxiliary_description = db.Column(UUID(as_uuid=True), nullable=True)
     list_id = db.Column(UUID(as_uuid=True),
                                 db.ForeignKey('lists.id'),
                                 nullable=True)

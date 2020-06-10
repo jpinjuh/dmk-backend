@@ -69,6 +69,7 @@ class ListItemController(BaseController):
 
         list_value = kwargs.get('list_value', None)
         description = kwargs.get('description', None)
+        auxiliary_description = kwargs.get('auxiliary_description', None)
         list_id = kwargs.get('list_id', None)
 
         if list_value:
@@ -78,6 +79,10 @@ class ListItemController(BaseController):
         if description:
             filter_main = and_(
                 filter_main, ListItem.description.ilike('%' + description + '%'))
+
+        if auxiliary_description:
+            filter_main = and_(
+                filter_main, ListItem.auxiliary_description == auxiliary_description)
 
         if list_id:
             filter_main = and_(

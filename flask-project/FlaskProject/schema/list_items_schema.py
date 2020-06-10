@@ -19,5 +19,7 @@ class ListItemSchema(Schema):
 
     description = fields.Str()
 
+    auxiliary_description = fields.UUID(required=False)
+
     list = fields.Nested(
         'ListSchema', only=['id'], required=True)

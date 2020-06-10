@@ -45,12 +45,28 @@ class Seed(Command):
                 name='BiH'
             ))
         controller.create()
+        state = State.query.filter_by(name='BiH').first()
+        controller = CityController(
+            city=City(
+                name='Široki Brijeg',
+                state_id=state.id
+            ))
+        controller.create()
         controller = ArchdioceseController(
             archdiocese=Archdiocese(
                 name='Mostarsko-duvanjska biskupija'
             ))
         controller.create()
-        state = State.query.filter_by(name='BiH').first()
+        city = City.query.filter_by(name='Široki Brijeg').first()
+        archdiocese = Archdiocese.query.filter_by(name='Mostarsko-duvanjska biskupija').first()
+        controller = DistrictController(
+            district=District(
+                name='Župa uznesenja BDM',
+                address='Kard. Stepinca 14',
+                city_id=city.id,
+                archdiocese_id=archdiocese.id
+            ))
+        controller.create()
         controller = CityController(
             city=City(
                 name='Grude',
@@ -58,10 +74,9 @@ class Seed(Command):
             ))
         controller.create()
         city = City.query.filter_by(name='Grude').first()
-        archdiocese = Archdiocese.query.filter_by(name='Mostarsko-duvanjska biskupija').first()
         controller = DistrictController(
             district=District(
-                name='Gorica-Sovići',
+                name='Župa sv. Stjepana Prvomučenika, Gorica-Sovići',
                 address='Podkrstina bb',
                 city_id=city.id,
                 archdiocese_id=archdiocese.id
@@ -78,13 +93,14 @@ class Seed(Command):
             ))
         controller.create()
         role = Role.query.filter_by(name='admin').first()
-        district = District.query.filter_by(name='Gorica-Sovići').first()
+        district = District.query.filter_by(name='Župa sv. Stjepana Prvomučenika, Gorica-Sovići').first()
         controller = UserController(
             user=User(
                 first_name='Anđela',
                 last_name='Bošnjak',
                 username='andjelabosnjak',
                 email='andjela.bosnjak30@gmail.com',
+                title='admin',
                 password_hash=generate_password_hash('123456', method='sha256'),
                 roles_id=role.id,
                 districts_id=district.id
@@ -97,6 +113,7 @@ class Seed(Command):
                 last_name='Marković',
                 username='stipemarkovic',
                 email='stipemarkovic@gmail.com',
+                title='fra',
                 password_hash=generate_password_hash('123456', method='sha256'),
                 roles_id=role.id,
                 districts_id=district.id
@@ -108,6 +125,7 @@ class Seed(Command):
                 last_name='Bošnjak',
                 username='marijabosnjak',
                 email='marijabosnjak998@gmail.com',
+                title='admin',
                 password_hash=generate_password_hash('123456', method='sha256'),
                 roles_id=role.id,
                 districts_id=district.id
@@ -161,6 +179,88 @@ class Seed(Command):
             list=List(
                 id='a5e4d6d8-6f27-4094-b06a-79d00bb98859',
                 name='yes/no list'
+            ))
+        controller.create()
+        controller = ListController(
+            list=List(
+                id='778bba91-813b-4c74-80b1-d0cde2f761ad',
+                name='titles'
+            ))
+        controller.create()
+        controller = ListController(
+            list=List(
+                id='1cb9f951-1059-4c17-ba30-b1846dd98b97',
+                name='cemetery'
+            ))
+        controller.create()
+        list = List.query.filter_by(name='titles').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='fra',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='admin',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='biskup',
+                list_id=list.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='don',
+                list_id=list.id
+            ))
+        controller.create()
+        list = List.query.filter_by(name='cemetery').first()
+        district = District.query.filter_by(name='Župa uznesenja BDM').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Mekovac',
+                list_id=list.id,
+                auxiliary_description=district.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Turčinovići',
+                list_id=list.id,
+                auxiliary_description=district.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Bili Brig',
+                list_id=list.id,
+                auxiliary_description=district.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Šarampovo',
+                list_id=list.id,
+                auxiliary_description=district.id
+            ))
+        controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Trn',
+                list_id=list.id,
+                auxiliary_description=district.id
+            ))
+        controller.create()
+        district = District.query.filter_by(name='Župa sv. Stjepana Prvomučenika, Gorica-Sovići').first()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Gorica-Sovići',
+                list_id=list.id,
+                auxiliary_description=district.id
             ))
         controller.create()
         list = List.query.filter_by(name='child').first()
@@ -410,14 +510,14 @@ class Seed(Command):
             ))
         controller.create()
         document = Document.query.filter_by(id='94a69e96-57a8-413c-be80-f52c390afc72').first()
-        child = ListItem.query.filter_by(value='Sin').first()
+        cemetery = ListItem.query.filter_by(value='Mekovac').first()
         controller = RegistryOfDeathsController(
             death=RegistryOfDeaths(
                 id=document.id,
                 person_id=person.id,
                 date_of_death='19/06/1999',
                 place_of_death=city.id,
-                place_of_burial=child.id
+                place_of_burial=cemetery.id
             ))
         controller.create()
 
