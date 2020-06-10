@@ -29,6 +29,7 @@ def create_user():
             username=params['username'],
             email=params['email'],
             password_hash=generate_password_hash(params['password_hash'], method='sha256'),
+            title=params['title'],
             roles_id=params['role']['id'],
             districts_id=params['district']['id']
         ))
@@ -56,6 +57,7 @@ def alter_user(user_id):
             last_name=params['last_name'],
             username=params['username'],
             email=params['email'],
+            title=params['title'],
             roles_id=params['role']['id'],
             districts_id=params['district']['id']
         ))
@@ -177,11 +179,12 @@ def get_users():
     last_name = request.args.get('last_name', '', str)
     username = request.args.get('username', '', str)
     email = request.args.get('email', '', str)
+    title = request.args.get('title', '', str)
     roles_id = request.args.get('roles_id', None, str)
     districts_id = request.args.get('districts_id', None, str)
 
     pagination_result = UserController.get_list_pagination(
         start=start, limit=limit, first_name=first_name, last_name=last_name,
-        username=username, email=email, roles_id=roles_id, districts_id=districts_id)
+        username=username, email=email, title=title, roles_id=roles_id, districts_id=districts_id)
 
     return jsonify(pagination_result)

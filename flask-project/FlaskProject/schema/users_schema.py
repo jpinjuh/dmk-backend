@@ -51,6 +51,14 @@ class UserSchema(Schema):
                                                 error=
                                                 'Field must be between 6 '
                                                 'and 30 characters long')])
+    title = fields.Str(required=True,
+                       error_messages={"required": "Field is required"},
+                       validate=[
+                                validate.Length(min=2, max=50,
+                                                error=
+                                                'Field must be between 2 '
+                                                'and 50 characters long')])
+
     role = fields.Nested(
         'RoleSchema', only=['id'], required=False)
 

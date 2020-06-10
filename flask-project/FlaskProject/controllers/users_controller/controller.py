@@ -88,6 +88,7 @@ class UserController(BaseController):
         user.last_name = self.user.last_name
         user.username = self.user.username
         user.email = self.user.email
+        user.title = self.user.title
         user.roles_id = self.user.roles_id
         user.districts_id = self.user.districts_id
         user.update()
@@ -245,6 +246,7 @@ class UserController(BaseController):
         last_name = kwargs.get('last_name', None)
         username = kwargs.get('username', None)
         email = kwargs.get('email', None)
+        title = kwargs.get('title', None)
         roles_id = kwargs.get('roles_id', None)
         districts_id = kwargs.get('districts_id', None)
 
@@ -263,6 +265,10 @@ class UserController(BaseController):
         if email:
             filter_main = and_(
                 filter_main, User.email.ilike('%' + email + '%'))
+
+        if title:
+            filter_main = and_(
+                filter_main, User.title.ilike('%' + title + '%'))
 
         if roles_id:
             filter_main = and_(

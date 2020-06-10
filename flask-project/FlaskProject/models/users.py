@@ -98,6 +98,7 @@ class UserQuery(BaseQuery):
                      User.last_name.ilike('%'+search+'%'),
                      User.username.ilike('%' + search + '%'),
                      User.email.ilike('%' + search + '%'),
+                     User.title.ilike('%' + search + '%'),
                      Role.name.ilike('%' + search + '%'),
                      District.name.ilike('%' + search + '%'))
              ).all()
@@ -153,6 +154,7 @@ class User(ModelsMixin, TimestampedModelMixin, db.Model):
     username = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
+    title = db.Column(db.String(255), nullable=False)
     status = db.Column(
         db.SmallInteger, nullable=False,
         default=STATUSES['active'], server_default=str(STATUSES['active']))
