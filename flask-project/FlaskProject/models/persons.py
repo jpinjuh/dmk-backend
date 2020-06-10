@@ -36,21 +36,18 @@ class PersonQuery(BaseQuery):
 
     @staticmethod
     def query_details():
-        from . import District, Person, ListItem, RegistryOfBaptisms, City, Document, RegistryOfDeaths
+        from . import District, Person, ListItem, City, Document, RegistryOfBaptisms, RegistryOfDeaths
         mother = aliased(Person)
         father = aliased(Person)
-        registry_of_baptism_doc=aliased(Document)
-        registry_of_death_doc=aliased(Document)
-        return db.session.query(Person, District, mother, father, ListItem, RegistryOfBaptisms, City, Document, registry_of_death_doc, registry_of_baptism_doc, RegistryOfDeaths) \
+        return db.session.query(Person, District, mother, father, ListItem, City, Document, RegistryOfBaptisms, RegistryOfDeaths) \
             .join(mother, Person.mother_id == mother.id, isouter=True) \
             .join(father, Person.father_id == father.id, isouter=True) \
             .join(District, Person.district == District.id, isouter=False) \
             .join(ListItem, Person.religion == ListItem.id, isouter=False) \
-            .join(RegistryOfBaptisms, Person.id == RegistryOfBaptisms.person_id, isouter=True) \
-            .join(RegistryOfDeaths, Person.id == RegistryOfDeaths.person_id, isouter=True) \
-            .join(City, Person.birth_place == City.id, isouter=True) \
-            .join(registry_of_baptism_doc, registry_of_baptism_doc.id == RegistryOfBaptisms.id, isouter=True) \
-            .join(registry_of_death_doc, registry_of_death_doc.id == RegistryOfDeaths.id, isouter=True)
+            .join(City, Person.birth_place == City.id, isouter=False)\
+            .join(Document, Person.id == Document.id, isouter=True)\
+            .join(RegistryOfBaptisms, Document.id == RegistryOfBaptisms.id, isouter=True)\
+            .join(RegistryOfDeaths, Document.id == RegistryOfDeaths.id, isouter=True)
 
     def get_one_details(self, _id):
         try:
@@ -69,7 +66,7 @@ class PersonQuery(BaseQuery):
 
     def get_all_by_filter(self, filter_data):
         try:
-            from . import District, ListItem, City, RegistryOfBaptisms, Document
+            from . import District, ListItem, City, RegistryOfBaptisms, Document, RegistryOfDeaths
             return self.query_details().filter(
                 # Person.status == Person.STATUSES['active'],
                 filter_data
