@@ -2,7 +2,7 @@ from sqlalchemy import and_
 from ..districts_controller.controller import DistrictController
 from ..listItems_controller.controller import ListItemController
 from ..cities_controller.controller import CityController
-from ... import Person, FlaskProjectLogException, District, ListItem, RegistryOfBaptisms, City
+from ... import Person, FlaskProjectLogException, District, ListItem, RegistryOfBaptisms, City, Document, RegistryOfDeaths
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 import datetime
@@ -280,11 +280,13 @@ class PersonController(BaseController):
             return_dict = obj_to_dict(row_data.Person)
             mother = Person.query.filter_by(id=row_data.Person.mother_id).first()
             father = Person.query.filter_by(id=row_data.Person.father_id).first()
+            document_baptism = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%K%')).first()
+            document_death = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%U%')).first()
             return_dict['mother'] = obj_to_dict(mother)
             return_dict['father'] = obj_to_dict(father)
             return_dict['religion'] = obj_to_dict(row_data.ListItem)
             return_dict['district'] = obj_to_dict(row_data.District)
             return_dict['birth_place'] = obj_to_dict(row_data.City)
-            return_dict['document'] = obj_to_dict(row_data.Document)
+            return_dict['documents'] =[obj_to_dict(document_baptism), obj_to_dict(document_death)]
             return return_dict
         return None

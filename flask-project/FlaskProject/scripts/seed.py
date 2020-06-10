@@ -14,6 +14,7 @@ from ..controllers.persons_controller.controller import PersonController
 from ..controllers.registryOfBaptisms_controller.controller import RegistryOfBaptismsController
 from ..controllers.documents_controller.controller import DocumentController
 from ..controllers.counter_controller.controller import CounterController
+from ..controllers.registryOfDeaths_controller.controller import RegistryOfDeathsController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -28,6 +29,7 @@ from ..models.persons import Person
 from ..models.registryOfBaptisms import RegistryOfBaptisms
 from ..models.documents import Document
 from ..models.counter import Counter
+from ..models.registryOfDeaths import RegistryOfDeaths
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
@@ -390,4 +392,34 @@ class Seed(Command):
                 parents_canonically_married=list_item.id
             ))
         controller.create()
+        document_type_value = ListItem.query.filter_by(value='Matica umrlih').first()
+        controller = DocumentController(
+            document=Document(
+                id='94a69e96-57a8-413c-be80-f52c390afc72',
+                document_type=document_type_value.id,
+                person_id=person.id,
+                act_date='20/06/1999',
+                act_performed=user.id,
+                document_number='U - ' + CounterController.generate(Counter.counters['document_number']),
+                district=district.id,
+                volume=10,
+                year=1999,
+                page=1,
+                number=10,
+                user_created=user.id
+            ))
+        controller.create()
+        document = Document.query.filter_by(id='94a69e96-57a8-413c-be80-f52c390afc72').first()
+        child = ListItem.query.filter_by(value='Sin').first()
+        controller = RegistryOfDeathsController(
+            death=RegistryOfDeaths(
+                id=document.id,
+                person_id=person.id,
+                date_of_death='19/06/1999',
+                place_of_death=city.id,
+                place_of_burial=child.id
+            ))
+        controller.create()
+
+
 
