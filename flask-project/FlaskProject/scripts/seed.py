@@ -263,6 +263,13 @@ class Seed(Command):
                 auxiliary_description=district.id
             ))
         controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                value='Škevnja Njiva',
+                list_id=list.id,
+                auxiliary_description=district.id
+            ))
+        controller.create()
         list = List.query.filter_by(name='child').first()
         controller = ListItemController(
             list_item=ListItem(

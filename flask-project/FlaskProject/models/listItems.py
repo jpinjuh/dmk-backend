@@ -33,14 +33,26 @@ class ListItemQuery(BaseQuery):
              ListItem.list_id == List.id,
              isouter=False)
 
-    def get_list_items(self, list_id):
+    def get_list_items_by_user_district(self, list_id, current_user_district):
         try:
             from . import List
             return self.query_details().filter(
                 # List.status == List.STATUSES['active'],
                 # ListItem.status == ListItem.STATUSES['active'],
-                ListItem.list_id == list_id
-            ).order_by(ListItem.created_at.desc())
+                ListItem.list_id == list_id, ListItem.auxiliary_description == current_user_district
+            ).order_by(ListItem.value)
+        except Exception as e:
+            db.session.rollback()
+            return []
+
+    def get_list_items_by_other_districts(self, list_id, current_user_district):
+        try:
+            from . import List
+            return self.query_details().filter(
+                # List.status == List.STATUSES['active'],
+                # ListItem.status == ListItem.STATUSES['active'],
+                ListItem.list_id == list_id, ListItem.auxiliary_description != current_user_district
+            ).order_by(ListItem.value)
         except Exception as e:
             db.session.rollback()
             return []
@@ -57,9 +69,11 @@ class ListItemQuery(BaseQuery):
             db.session.rollback()
             return []
 
+
 class ListItem(ModelsMixin, TimestampedModelMixin, db.Model):
 
     __tablename__ = 'list_items'
+
 
     query_class = ListItemQuery
 

@@ -53,15 +53,13 @@ def get_all_list_items():
     return jsonify(pagination_result)
 
 
-@bpp.route('/listItems', methods=['GET'])
+@bpp.route('/listItems/<string:list_id>', methods=['GET'])
 @jwt_required
 #@allow_access
-def get_list_items():
-    request_json = request.get_json()
-    list_id = request_json.get('list_id', None)
-
+def get_list_items(list_id):
+    current_user_district = get_jwt_claims()['districts_id']
     if list_id:
-        data = ListItemController.get_list_items(list_id)
+        data = ListItemController.get_list_items(list_id, current_user_district)
 
         return jsonify(
             data=data,

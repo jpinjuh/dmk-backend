@@ -110,11 +110,14 @@ class ListItemController(BaseController):
         return None
 
     @staticmethod
-    def get_list_items(list_id):
+    def get_list_items(list_id, current_user_district):
 
         list_data = []
         if list_id:
-            list_items = ListItem.query.get_list_items(list_id)
+            list_items = ListItem.query.get_list_items_by_user_district(list_id, current_user_district)
+            for i in list_items:
+                list_data.append(ListItemController.__custom_sql(i))
+            list_items = ListItem.query.get_list_items_by_other_districts(list_id, current_user_district)
             for i in list_items:
                 list_data.append(ListItemController.__custom_sql(i))
 

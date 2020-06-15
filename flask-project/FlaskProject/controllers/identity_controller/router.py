@@ -32,6 +32,7 @@ def login():
         'username': user.username,
         'email': user.email,
         'roles_id': user.roles_id.__str__(),
+        'districts_id': user.districts_id.__str__(),
     }
 
     access_token = create_access_token(identity=user.username, expires_delta=datetime.timedelta(minutes=30),
@@ -51,7 +52,8 @@ def refresh():
         'last_name': get_jwt_claims()['last_name'],
         'username': get_jwt_claims()['username'],
         'email': get_jwt_claims()['email'],
-        'roles_id': get_jwt_claims()['roles_id'].__str__()
+        'roles_id': get_jwt_claims()['roles_id'].__str__(),
+        'districts_id': get_jwt_claims()['districts_id'].__str__()
     }
     access_token = create_access_token(identity=current_user, expires_delta=datetime.timedelta(minutes=30),
                                        user_claims=payload)
