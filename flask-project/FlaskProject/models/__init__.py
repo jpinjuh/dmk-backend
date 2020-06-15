@@ -17,3 +17,4 @@ from .documents import Document
 from .counter import Counter
 from .notes import Note
 from .registryOfDeaths import RegistryOfDeaths
+from .chrismNotes import ChrismNote
