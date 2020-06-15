@@ -19,14 +19,14 @@ class DocumentSchema(Schema):
                                           error=
                                           'Field must be between 2 '
                                           'and 30 characters long')])
-    volume = fields.Str(validate=[
+    volume = fields.Str(required=False, validate=[
                           validate.Length(min=1, max=10,
                                           error=
                                           'Field must be between 1 '
                                           'and 10 characters long')])
-    year = fields.Integer()
-    page = fields.Integer()
-    number = fields.Integer()
+    year = fields.Integer(required=False)
+    page = fields.Integer(required=False)
+    number = fields.Integer(required=False)
 
     document_type = fields.Nested(
         'ListItemSchema', only=['id'], required=False)

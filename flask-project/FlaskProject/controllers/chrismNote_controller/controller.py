@@ -1,6 +1,6 @@
 from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
-from ... import Person, City, FlaskProjectLogException, District, ChrismNote
+from ... import Person, City, FlaskProjectLogException, District, ChrismNote, Document, User
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
@@ -11,7 +11,7 @@ class ChrismNoteController(BaseController):
 
     def create(self):
         """
-         Method used for creating registry of death
+         Method used for creating chrism note
         :return: Status object or raise FlaskProjectLogException
         """
         if ChrismNote.query.check_if_already_exist(
@@ -74,7 +74,7 @@ class ChrismNoteController(BaseController):
     @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         """
-        Method for getting all registry of death by filter_data in pagination form
+        Method for getting all chrism notes by filter_data in pagination form
         :return: dict with total, data and status
         """
         raise NotImplementedError("To be implemented")
@@ -82,23 +82,28 @@ class ChrismNoteController(BaseController):
     @staticmethod
     def __custom_sql(row_data):
         if row_data is not None:
-            return_dict = obj_to_dict(row_data.RegistryOfDeaths)
-            person = Person.query.filter_by(id=row_data.RegistryOfDeaths.person_id).first()
+            return_dict = obj_to_dict(row_data.ChrismNote)
+            person = Person.query.filter_by(id=row_data.ChrismNote.person_id).first()
             mother = Person.query.filter_by(id=person.mother_id).first()
             father = Person.query.filter_by(id=person.father_id).first()
-            birth = City.query.filter_by(id=row_data.RegistryOfBaptisms.birth_place).first()
-            district_person = District.query.filter_by(id=row_data.Person.district).first()
-            district_baptism = District.query.filter_by(id=row_data.Document.district).first()
+            best_man = Person.query.filter_by(id=row_data.ChrismNote.best_man).first()
+            birth_place = City.query.filter_by(id=person.birth_place).first()
+            district_best_man = District.query.filter_by(id=best_man.district).first()
+            document_baptism = Document.query.filter_by(person_id=row_data.ChrismNote.person_id).filter(Document.document_number.ilike('%K%')).first()
+            baptism_district = District.query.filter_by(id=document_baptism.district).first()
+            document_chrism = Document.query.filter_by(id=row_data.ChrismNote.id).first()
+            chrism_district = District.query.filter_by(id=document_chrism.district).first()
             return_dict['person'] = obj_to_dict(person)
+            return_dict['birth_place'] = obj_to_dict(birth_place)
             return_dict['mother'] = obj_to_dict(mother)
             return_dict['father'] = obj_to_dict(father)
-            return_dict['district_person'] = obj_to_dict(district_person)
-            return_dict['district_baptism'] = obj_to_dict(district_baptism)
-            return_dict['archdiocese'] = obj_to_dict(row_data.Archdiocese)
+            return_dict['best_man'] = obj_to_dict(best_man)
+            return_dict['best_man_district'] = obj_to_dict(district_best_man)
+            return_dict['document_baptism'] = obj_to_dict(document_baptism)
+            return_dict['baptism_district'] = obj_to_dict(baptism_district)
+            return_dict['document_chrism'] = obj_to_dict(document_chrism)
+            return_dict['chrism_district'] = obj_to_dict(chrism_district)
             return_dict['act_performed'] = obj_to_dict(row_data.User)
-            return_dict['document'] = obj_to_dict(row_data.Document)
-            return_dict['birth_place'] = obj_to_dict(birth)
-            return_dict['note'] = obj_to_dict(row_data.Note)
             return return_dict
         return None
 

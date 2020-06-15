@@ -29,13 +29,15 @@ def create_chrism_note():
     })
 
     current_user = get_jwt_claims()['id']
+    document_type_value = ListItem.query.filter_by(value='Matica krštenih').first()
 
     controller = DocumentController(
         document=Document(
             person_id=params['person']['id'],
+            document_type=document_type_value.id,
             act_date=params['act_date'],
             act_performed=params['act_performed']['id'],
-            document_number='KC - ' + CounterController.generate(Counter.counters['document_number']),
+            document_number='P - ' + CounterController.generate(Counter.counters['document_number']),
             district=params['district']['id'],
             user_created=current_user
         ))

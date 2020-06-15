@@ -15,6 +15,7 @@ from ..controllers.registryOfBaptisms_controller.controller import RegistryOfBap
 from ..controllers.documents_controller.controller import DocumentController
 from ..controllers.counter_controller.controller import CounterController
 from ..controllers.registryOfDeaths_controller.controller import RegistryOfDeathsController
+from ..controllers.chrismNote_controller.controller import ChrismNoteController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -30,6 +31,7 @@ from ..models.registryOfBaptisms import RegistryOfBaptisms
 from ..models.documents import Document
 from ..models.counter import Counter
 from ..models.registryOfDeaths import RegistryOfDeaths
+from ..models.chrismNotes import ChrismNote
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
@@ -527,6 +529,30 @@ class Seed(Command):
                 place_of_burial=cemetery.id
             ))
         controller.create()
+        user = User.query.filter_by(username='stipemarkovic').first()
+        person = Person.query.filter_by(identity_number='1005985997875').first()
+        district = District.query.filter_by(name='Župa sv. Stjepana Prvomučenika, Gorica-Sovići').first()
+        controller = DocumentController(
+            document=Document(
+                id='75053a32-362b-4ddf-b087-5865fd7aea4b',
+                document_type=document_type_value.id,
+                person_id=person.id,
+                act_date='20/08/2005',
+                act_performed=user.id,
+                document_number='P - ' + CounterController.generate(Counter.counters['document_number']),
+                district=district.id,
+                user_created=user.id
+            ))
+        controller.create()
+        document = Document.query.filter_by(id='75053a32-362b-4ddf-b087-5865fd7aea4b').first()
+        controller = ChrismNoteController(
+            chrism=ChrismNote(
+                id=document.id,
+                person_id=person.id,
+                best_man=best_man.id
+            ))
+        controller.create()
+
 
 
 
