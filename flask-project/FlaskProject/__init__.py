@@ -28,6 +28,7 @@ from .controllers.documents_controller import router
 from .controllers.registryOfBaptisms_controller import router
 from .controllers.notes_controller import router
 from .controllers.registryOfDeaths_controller import router
+from .controllers.chrismNote_controller import router
 
 
 def create_app(config_environment):
