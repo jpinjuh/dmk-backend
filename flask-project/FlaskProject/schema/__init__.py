@@ -15,3 +15,5 @@ from .documents_schema import DocumentSchema
 from .notes_schema import NoteSchema
 from .registry_of_deaths_schema import RegistryOfDeathsSchema
 from .chrism_notes_schema import ChrismNoteSchema
+from .registry_of_marriages_schema import RegistryOfMarriagesSchema
+from .person_extra_info_schema import PersonExtraInfoSchema
