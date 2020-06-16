@@ -321,6 +321,13 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
+        controller = ListItemController(
+            list_item=ListItem(
+                id='e3c85d45-9c9d-4c52-9ff1-52e8f0e9725f',
+                value='Matica krizmanih',
+                list_id=list.id
+            ))
+        controller.create()
         document_type_value = ListItem.query.filter_by(value='Matica krštenih').first()
         controller = ListItemController(
             list_item=ListItem(
@@ -532,6 +539,7 @@ class Seed(Command):
         user = User.query.filter_by(username='stipemarkovic').first()
         person = Person.query.filter_by(identity_number='1005985997875').first()
         district = District.query.filter_by(name='Župa sv. Stjepana Prvomučenika, Gorica-Sovići').first()
+        document_type_value = ListItem.query.filter_by(value='Matica krizmanih').first()
         controller = DocumentController(
             document=Document(
                 id='75053a32-362b-4ddf-b087-5865fd7aea4b',
