@@ -39,7 +39,7 @@ class RegistryOfMarriagesQuery(BaseQuery):
         registry_of_baptism2 = aliased(RegistryOfBaptisms)
         baptism_district1 = aliased(District)
         baptism_district2 = aliased(District)
-        return db.session.query(RegistryOfMarriages, person2, mother1, father1,
+        return db.session.query(Person, RegistryOfMarriages, person2, mother1, father1,
                                 mother2, father2, best_man, best_man2, city1, city2, religion1, religion2,
                                 document_marriage, document_baptism1, document_baptism2, registry_of_baptism1,
                                 registry_of_baptism2, parents_canonically_married1, parents_canonically_married2,

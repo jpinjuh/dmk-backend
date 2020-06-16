@@ -16,6 +16,7 @@ from ..controllers.documents_controller.controller import DocumentController
 from ..controllers.counter_controller.controller import CounterController
 from ..controllers.registryOfDeaths_controller.controller import RegistryOfDeathsController
 from ..controllers.chrismNote_controller.controller import ChrismNoteController
+from ..controllers.registryOfMarriages_controller.controller import RegistryOfMarriagesController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -32,6 +33,7 @@ from ..models.documents import Document
 from ..models.counter import Counter
 from ..models.registryOfDeaths import RegistryOfDeaths
 from ..models.chrismNotes import ChrismNote
+from ..models.registryOfMarriages import RegistryOfMarriages
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
@@ -560,7 +562,34 @@ class Seed(Command):
                 best_man=best_man.id
             ))
         controller.create()
-
-
+        document_type_value = ListItem.query.filter_by(value='Matica vjenčanih').first()
+        person2 = Person.query.filter_by(first_name='Marija').first()
+        controller = DocumentController(
+            document=Document(
+                id='474d4590-202a-44b6-9977-b0ae8213994d',
+                document_type=document_type_value.id,
+                person_id=person.id,
+                person2_id=person2.id,
+                act_date='20/02/2020',
+                act_performed=user.id,
+                document_number='V - ' + CounterController.generate(Counter.counters['document_number']),
+                district=district.id,
+                volume=10,
+                year=2020,
+                page=1,
+                number=10,
+                user_created=user.id
+            ))
+        controller.create()
+        document = Document.query.filter_by(id='474d4590-202a-44b6-9977-b0ae8213994d').first()
+        controller = RegistryOfMarriagesController(
+            marriage=RegistryOfMarriages(
+                id=document.id,
+                person_id=person.id,
+                person2_id=person2.id,
+                best_man=best_man.id,
+                best_man2=best_man.id
+            ))
+        controller.create()
 
 

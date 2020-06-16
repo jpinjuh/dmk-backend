@@ -1,6 +1,6 @@
 from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
-from ... import Person, City, FlaskProjectLogException, District, Document, RegistryOfMarriages
+from ... import Person, City, FlaskProjectLogException, District, Document, RegistryOfMarriages, Archdiocese, RegistryOfBaptisms, ListItem, User, Note
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
@@ -95,7 +95,51 @@ class RegistryOfMarriagesController(BaseController):
     def __custom_sql(row_data):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.RegistryOfMarriages)
-            return_dict['person'] = obj_to_dict(row_data.Person)
+            person2 = Person.query.filter_by(id=row_data.RegistryOfMarriages.person2_id).first()
+            person1_birth_place = City.query.filter_by(id=row_data.Person.birth_place).first()
+            person2_birth_place = City.query.filter_by(id=person2.birth_place).first()
+            person1_mother = Person.query.filter_by(id=row_data.Person.mother_id).first()
+            person1_father = Person.query.filter_by(id=row_data.Person.father_id).first()
+            person2_mother = Person.query.filter_by(id=person2.mother_id).first()
+            person2_father = Person.query.filter_by(id=person2.father_id).first()
+            best_man1 = Person.query.filter_by(id=row_data.RegistryOfMarriages.best_man).first()
+            best_man2 = Person.query.filter_by(id=row_data.RegistryOfMarriages.best_man2).first()
+            document_marriage = Document.query.filter_by(id=row_data.RegistryOfMarriages.id).first()
+            marriage_district = District.query.filter_by(id=document_marriage.district).first()
+            marriage_archdiocese = Archdiocese.query.filter_by(id=marriage_district.archdiocese_id).first()
+            person1_baptism_document = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%K%')).first()
+            person1_baptism_district = District.query.filter_by(id=person1_baptism_document.district).first()
+            person2_baptism_document = Document.query.filter_by(person_id=person2.id).filter(Document.document_number.ilike('%K%')).first()
+            person2_baptism_district = District.query.filter_by(id=person2_baptism_document.district).first()
+            person1_religion = ListItem.query.filter_by(id=Person.religion).first()
+            person2_religion = ListItem.query.filter_by(id=person2.religion).first()
+            person1_baptism = RegistryOfBaptisms.query.filter_by(person_id=row_data.Person.id).first()
+            person1_parents_canonically_married = ListItem.query.filter_by(id=person1_baptism.parents_canonically_married).first()
+            person2_baptism = RegistryOfBaptisms.query.filter_by(person_id=person2.id).first()
+            person2_parents_canonically_married = ListItem.query.filter_by(id=person2_baptism.parents_canonically_married).first()
+            return_dict['person1'] = obj_to_dict(row_data.Person)
+            return_dict['person2'] = obj_to_dict(person2)
+            return_dict['person1_birth_place'] = obj_to_dict(person1_birth_place)
+            return_dict['person2_birth_place'] = obj_to_dict(person2_birth_place)
+            return_dict['person1_mother'] = obj_to_dict(person1_mother)
+            return_dict['person1_father'] = obj_to_dict(person1_father)
+            return_dict['person2_mother'] = obj_to_dict(person2_mother)
+            return_dict['person2_father'] = obj_to_dict(person2_father)
+            return_dict['best_man1'] = obj_to_dict(best_man1)
+            return_dict['best_man2'] = obj_to_dict(best_man2)
+            return_dict['document_marriage'] = obj_to_dict(document_marriage)
+            return_dict['marriage_district'] = obj_to_dict(marriage_district)
+            return_dict['marriage_archdiocese'] = obj_to_dict(marriage_archdiocese)
+            return_dict['person1_baptism_document'] = obj_to_dict(person1_baptism_document)
+            return_dict['person1_baptism_district'] = obj_to_dict(person1_baptism_district)
+            return_dict['person2_baptism_document'] = obj_to_dict(person2_baptism_document)
+            return_dict['person2_baptism_district'] = obj_to_dict(person2_baptism_district)
+            return_dict['person1_religion'] = obj_to_dict(person1_religion)
+            return_dict['person2_religion'] = obj_to_dict(person2_religion)
+            return_dict['person1_parents_canonically_married'] = obj_to_dict(person1_parents_canonically_married)
+            return_dict['person2_parents_canonically_married'] = obj_to_dict(person2_parents_canonically_married)
+            return_dict['act_performed'] = obj_to_dict(row_data.User)
+            return_dict['note'] = obj_to_dict(row_data.Note)
             return return_dict
         return None
 
