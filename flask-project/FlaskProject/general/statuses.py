@@ -290,6 +290,13 @@ class Status:
         """
         return cls(-1, 'This chrism note does not exist')
 
+    @classmethod
+    def status_marriage_not_exist(cls):
+        """
+        :return: cls(-1, 'This marriage does not exist')
+        """
+        return cls(-1, 'This marriage does not exist')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,

@@ -94,22 +94,8 @@ class RegistryOfMarriagesController(BaseController):
     @staticmethod
     def __custom_sql(row_data):
         if row_data is not None:
-            return_dict = obj_to_dict(row_data.ChrismNote)
-            person = Person.query.filter_by(id=row_data.ChrismNote.person_id).first()
-            mother = Person.query.filter_by(id=person.mother_id).first()
-            father = Person.query.filter_by(id=person.father_id).first()
-            best_man = Person.query.filter_by(id=row_data.ChrismNote.best_man).first()
-            birth_place = City.query.filter_by(id=person.birth_place).first()
-            document_baptism = Document.query.filter_by(person_id=row_data.ChrismNote.person_id).filter(Document.document_number.ilike('%K%')).first()
-            baptism_district = District.query.filter_by(id=document_baptism.district).first()
-            return_dict['person'] = obj_to_dict(person)
-            return_dict['birth_place'] = obj_to_dict(birth_place)
-            return_dict['mother'] = obj_to_dict(mother)
-            return_dict['father'] = obj_to_dict(father)
-            return_dict['best_man'] = obj_to_dict(best_man)
-            return_dict['document_baptism'] = obj_to_dict(document_baptism)
-            return_dict['baptism_district'] = obj_to_dict(baptism_district)
-            return_dict['act_performed'] = obj_to_dict(row_data.User)
+            return_dict = obj_to_dict(row_data.RegistryOfMarriages)
+            return_dict['person'] = obj_to_dict(row_data.Person)
             return return_dict
         return None
 

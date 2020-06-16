@@ -36,12 +36,12 @@ class RegistryOfBaptismsQuery(BaseQuery):
 
      @staticmethod
      def query_details():
-         from . import Person, City, ListItem, Note, District, Archdiocese, Document
+         from . import Person, City, ListItem, Note, District, Archdiocese, Document, User
          best_man = aliased(Person)
          mother = aliased(Person)
          father = aliased(Person)
          parents_canonically_married = aliased(ListItem)
-         return db.session.query(RegistryOfBaptisms, Person, best_man, mother, father, City, ListItem, Note, District, Archdiocese, Document, parents_canonically_married)\
+         return db.session.query(RegistryOfBaptisms, Person, best_man, mother, father, City, ListItem, Note, District, Archdiocese, Document, parents_canonically_married, User)\
              .join(
              Person,
              RegistryOfBaptisms.person_id == Person.id,
@@ -55,6 +55,7 @@ class RegistryOfBaptismsQuery(BaseQuery):
              .join(District, Person.district == District.id, isouter=True) \
              .join(Archdiocese, District.archdiocese_id == Archdiocese.id, isouter=True) \
              .join(Document, RegistryOfBaptisms.id == Document.id, isouter=True) \
+             .join(User, Document.act_performed == User.id, isouter=True) \
              .join(Note, Note.id == RegistryOfBaptisms.id, isouter=True)
 
      def get_one_details(self, _id):

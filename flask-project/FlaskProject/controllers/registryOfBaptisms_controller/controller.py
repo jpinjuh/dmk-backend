@@ -118,6 +118,7 @@ class RegistryOfBaptismsController(BaseController):
             return_dict['district'] = obj_to_dict(row_data.District)
             return_dict['archdiocese'] = obj_to_dict(row_data.Archdiocese)
             return_dict['document'] = obj_to_dict(row_data.Document)
+            return_dict['act_performed'] = obj_to_dict(row_data.User)
             return_dict['note'] = obj_to_dict(row_data.Note)
             return return_dict
         return None
