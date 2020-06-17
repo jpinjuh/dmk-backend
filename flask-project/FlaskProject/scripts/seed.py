@@ -18,6 +18,7 @@ from ..controllers.registryOfDeaths_controller.controller import RegistryOfDeath
 from ..controllers.chrismNote_controller.controller import ChrismNoteController
 from ..controllers.registryOfMarriages_controller.controller import RegistryOfMarriagesController
 from ..controllers.personExtraInfo_controller.controller import PersonExtraInfoController
+from ..controllers.notes_controller.controller import NoteController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -36,6 +37,7 @@ from ..models.registryOfDeaths import RegistryOfDeaths
 from ..models.chrismNotes import ChrismNote
 from ..models.registryOfMarriages import RegistryOfMarriages
 from ..models.personExtraInfo import PersonExtraInfo
+from ..models.notes import Note
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
@@ -464,6 +466,12 @@ class Seed(Command):
             ))
         controller.create()
         document = Document.query.filter_by(id='95e923dd-0121-4ac5-a321-c1de097a14d9').first()
+        controller = NoteController(
+            note=Note(
+                id=document.id,
+                person_id=document.person_id
+            ))
+        controller.create()
         child = ListItem.query.filter_by(value='Kći').first()
         controller = RegistryOfBaptismsController(
             baptism=RegistryOfBaptisms(
@@ -497,6 +505,12 @@ class Seed(Command):
             ))
         controller.create()
         document = Document.query.filter_by(id='13771757-26ef-4d08-bc62-6e3b172bfb38').first()
+        controller = NoteController(
+            note=Note(
+                id=document.id,
+                person_id=document.person_id
+            ))
+        controller.create()
         child = ListItem.query.filter_by(value='Sin').first()
         controller = RegistryOfBaptismsController(
             baptism=RegistryOfBaptisms(
@@ -530,6 +544,12 @@ class Seed(Command):
             ))
         controller.create()
         document = Document.query.filter_by(id='94a69e96-57a8-413c-be80-f52c390afc72').first()
+        controller = NoteController(
+            note=Note(
+                id=document.id,
+                person_id=document.person_id
+            ))
+        controller.create()
         cemetery = ListItem.query.filter_by(value='Mekovac').first()
         controller = RegistryOfDeathsController(
             death=RegistryOfDeaths(
@@ -601,6 +621,12 @@ class Seed(Command):
                 baptism_district=district.id,
                 baptism_date='25/05/1985',
                 parents_canonically_married=list_item.id
+            ))
+        controller.create()
+        controller = NoteController(
+            note=Note(
+                id=document.id,
+                person_id=document.person_id
             ))
         controller.create()
 

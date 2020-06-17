@@ -112,7 +112,7 @@ class RegistryOfBaptismsController(BaseController):
                 chrism_city = City.query.filter_by(id=row_data.Note.chrism_place).first()
             else:
                 chrism_city = None
-            if row_data.Note is not None:
+            if row_data.Note is not None and row_data.Note.marriage_district is not None:
                 marriage_district = District.query.filter_by(id=row_data.Note.marriage_district).first()
             else:
                 marriage_district = None
@@ -129,7 +129,7 @@ class RegistryOfBaptismsController(BaseController):
             return_dict['act_performed'] = obj_to_dict(row_data.User)
             return_dict['note'] = obj_to_dict(row_data.Note)
             return_dict['chrism_city'] = obj_to_dict(chrism_city)
-            return_dict['marriage_district'] = obj_to_dict(chrism_city)
+            return_dict['marriage_district'] = obj_to_dict(marriage_district)
             return return_dict
         return None
 
