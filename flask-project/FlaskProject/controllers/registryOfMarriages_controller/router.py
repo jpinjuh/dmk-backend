@@ -82,7 +82,9 @@ def create_registry_of_marriage():
                 person_id=document.person_id,
                 marriage_district=district_marriage.id,
                 marriage_date=document.act_date,
-                spouse_name=spouse.first_name
+                spouse_name=spouse.first_name,
+                chrism_place=baptism_note.chrism_place,
+                chrism_date=baptism_note.chrism_date
             ))
         controller.alter()
     if baptism_document is not None and baptism_note is None:
@@ -121,9 +123,7 @@ def create_registry_of_marriage():
                 person_id=document.person2_id,
                 marriage_district=district_marriage.id,
                 marriage_date=document.act_date,
-                spouse_name=spouse.first_name,
-                chrism_place=baptism_note.chrism_place,
-                chrism_date=baptism_note.chrism_date
+                spouse_name=spouse.first_name
             ))
         controller.create()
 
