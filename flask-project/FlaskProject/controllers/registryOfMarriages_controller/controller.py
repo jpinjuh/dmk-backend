@@ -1,8 +1,9 @@
 from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
-from ... import Person, City, FlaskProjectLogException, District, Document, RegistryOfMarriages, Archdiocese, RegistryOfBaptisms, ListItem, User, Note
+from ... import Person, City, FlaskProjectLogException, District, Document, RegistryOfMarriages, Archdiocese, RegistryOfBaptisms, ListItem, User, Note, PersonExtraInfo
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
+from sqlalchemy.orm import relationship, foreign, aliased
 
 
 class RegistryOfMarriagesController(BaseController):
@@ -108,15 +109,37 @@ class RegistryOfMarriagesController(BaseController):
             marriage_district = District.query.filter_by(id=document_marriage.district).first()
             marriage_archdiocese = Archdiocese.query.filter_by(id=marriage_district.archdiocese_id).first()
             person1_baptism_document = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%K%')).first()
-            person1_baptism_district = District.query.filter_by(id=person1_baptism_document.district).first()
+            person1_extra_info = PersonExtraInfo.query.filter_by(person_id=row_data.Person.id).first()
+            if person1_baptism_document is not None:
+                person1_baptism_district = District.query.filter_by(id=person1_baptism_document.district).first()
+            elif person1_extra_info is not None:
+                person1_baptism_district = District.query.filter_by(id=person1_extra_info.baptism_district).first()
+            else:
+                person1_baptism_district = None
             person2_baptism_document = Document.query.filter_by(person_id=person2.id).filter(Document.document_number.ilike('%K%')).first()
-            person2_baptism_district = District.query.filter_by(id=person2_baptism_document.district).first()
+            person2_extra_info = PersonExtraInfo.query.filter_by(person_id=person2.id).first()
+            if person2_baptism_document is not None:
+                person2_baptism_district = District.query.filter_by(id=person2_baptism_document.district).first()
+            elif person2_extra_info is not None:
+                person2_baptism_district = District.query.filter_by(id=person2_extra_info.baptism_district).first()
+            else:
+                person2_baptism_district = None
             person1_religion = ListItem.query.filter_by(id=Person.religion).first()
             person2_religion = ListItem.query.filter_by(id=person2.religion).first()
             person1_baptism = RegistryOfBaptisms.query.filter_by(person_id=row_data.Person.id).first()
-            person1_parents_canonically_married = ListItem.query.filter_by(id=person1_baptism.parents_canonically_married).first()
+            if person1_baptism is not None:
+                person1_parents_canonically_married = ListItem.query.filter_by(id=person1_baptism.parents_canonically_married).first()
+            elif person1_extra_info is not None:
+                person1_parents_canonically_married = ListItem.query.filter_by(id=person1_extra_info.parents_canonically_married).first()
+            else:
+                person1_parents_canonically_married = None
             person2_baptism = RegistryOfBaptisms.query.filter_by(person_id=person2.id).first()
-            person2_parents_canonically_married = ListItem.query.filter_by(id=person2_baptism.parents_canonically_married).first()
+            if person2_baptism is not None:
+                person2_parents_canonically_married = ListItem.query.filter_by(id=person2_baptism.parents_canonically_married).first()
+            elif person2_extra_info is not None:
+                person2_parents_canonically_married = ListItem.query.filter_by(id=person2_extra_info.parents_canonically_married).first()
+            else:
+                person2_parents_canonically_married = None
             return_dict['person1'] = obj_to_dict(row_data.Person)
             return_dict['person2'] = obj_to_dict(person2)
             return_dict['person1_birth_place'] = obj_to_dict(person1_birth_place)

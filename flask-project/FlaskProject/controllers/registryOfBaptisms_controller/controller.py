@@ -108,6 +108,14 @@ class RegistryOfBaptismsController(BaseController):
             father = Person.query.filter_by(id=person.father_id).first()
             child = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.child).first()
             parents = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.parents_canonically_married).first()
+            if row_data.Note is not None:
+                chrism_city = City.query.filter_by(id=row_data.Note.chrism_place).first()
+            else:
+                chrism_city = None
+            if row_data.Note is not None:
+                marriage_district = District.query.filter_by(id=row_data.Note.marriage_district).first()
+            else:
+                marriage_district = None
             return_dict['person'] = obj_to_dict(person)
             return_dict['best_man'] = obj_to_dict(best_man)
             return_dict['mother'] = obj_to_dict(mother)
@@ -120,6 +128,8 @@ class RegistryOfBaptismsController(BaseController):
             return_dict['document'] = obj_to_dict(row_data.Document)
             return_dict['act_performed'] = obj_to_dict(row_data.User)
             return_dict['note'] = obj_to_dict(row_data.Note)
+            return_dict['chrism_city'] = obj_to_dict(chrism_city)
+            return_dict['marriage_district'] = obj_to_dict(chrism_city)
             return return_dict
         return None
 

@@ -17,6 +17,7 @@ from ..controllers.counter_controller.controller import CounterController
 from ..controllers.registryOfDeaths_controller.controller import RegistryOfDeathsController
 from ..controllers.chrismNote_controller.controller import ChrismNoteController
 from ..controllers.registryOfMarriages_controller.controller import RegistryOfMarriagesController
+from ..controllers.personExtraInfo_controller.controller import PersonExtraInfoController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -34,6 +35,7 @@ from ..models.counter import Counter
 from ..models.registryOfDeaths import RegistryOfDeaths
 from ..models.chrismNotes import ChrismNote
 from ..models.registryOfMarriages import RegistryOfMarriages
+from ..models.personExtraInfo import PersonExtraInfo
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
 import datetime
@@ -589,6 +591,16 @@ class Seed(Command):
                 person2_id=person2.id,
                 best_man=best_man.id,
                 best_man2=best_man.id
+            ))
+        controller.create()
+        person = Person.query.filter_by(first_name='Mirjana').first()
+        list_item = ListItem.query.filter_by(value='Da').first()
+        controller = PersonExtraInfoController(
+            extra_info=PersonExtraInfo(
+                person_id=person.id,
+                baptism_district=district.id,
+                baptism_date='25/05/1985',
+                parents_canonically_married=list_item.id
             ))
         controller.create()
 

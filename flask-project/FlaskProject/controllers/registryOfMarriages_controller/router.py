@@ -8,10 +8,10 @@ from ..documents_controller.controller import DocumentController
 from ..counter_controller.controller import CounterController
 from ..persons_controller.controller import PersonController
 from ..notes_controller.controller import NoteController
-from ... import bpp, RegistryOfMarriages, FlaskProjectLogException, Document, Person, ListItem, Counter, Note
+from ... import bpp, RegistryOfMarriages, FlaskProjectLogException, Document, Person, ListItem, Counter, Note, District, RegistryOfBaptisms
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
-from ...schema import PersonSchema, RegistryOfDeathsSchema, NoteSchema, DocumentSchema
+from ...schema import PersonSchema, NoteSchema, DocumentSchema, RegistryOfMarriagesSchema
 
 
 @bpp.route('/registry_of_marriage', methods=['POST'])
@@ -67,6 +67,65 @@ def create_registry_of_marriage():
             other_notes=params['other_notes']
         ))
     controller.create()
+
+    district_marriage = District.query.filter_by(id=document.district).first()
+    spouse = Person.query.filter_by(id=document.person2_id).first()
+    baptism_document = RegistryOfBaptisms.query.filter_by(person_id=document.person_id).first()
+    if baptism_document is not None:
+        baptism_note = Note.query.filter_by(id=baptism_document.id).first()
+    else:
+        baptism_note = None
+    if baptism_document is not None and baptism_note is not None:
+        controller = NoteController(
+            note=Note(
+                id=baptism_document.id,
+                person_id=document.person_id,
+                marriage_district=district_marriage.id,
+                marriage_date=document.act_date,
+                spouse_name=spouse.first_name
+            ))
+        controller.alter()
+    if baptism_document is not None and baptism_note is None:
+        controller = NoteController(
+            note=Note(
+                id=baptism_document.id,
+                person_id=document.person_id,
+                marriage_district=district_marriage.id,
+                marriage_date=document.act_date,
+                spouse_name=spouse.first_name
+            ))
+        controller.create()
+
+    spouse = Person.query.filter_by(id=document.person_id).first()
+    baptism_document = RegistryOfBaptisms.query.filter_by(person_id=document.person2_id).first()
+    if baptism_document is not None:
+        baptism_note = Note.query.filter_by(id=baptism_document.id).first()
+    else:
+        baptism_note = None
+    if baptism_document is not None and baptism_note is not None:
+        controller = NoteController(
+            note=Note(
+                id=baptism_document.id,
+                person_id=document.person2_id,
+                marriage_district=district_marriage.id,
+                marriage_date=document.act_date,
+                spouse_name=spouse.first_name,
+                chrism_place=baptism_note.chrism_place,
+                chrism_date=baptism_note.chrism_date
+            ))
+        controller.alter()
+    if baptism_document is not None and baptism_note is None:
+        controller = NoteController(
+            note=Note(
+                id=baptism_document.id,
+                person_id=document.person2_id,
+                marriage_district=district_marriage.id,
+                marriage_date=document.act_date,
+                spouse_name=spouse.first_name,
+                chrism_place=baptism_note.chrism_place,
+                chrism_date=baptism_note.chrism_date
+            ))
+        controller.create()
 
     schema = RegistryOfMarriagesSchema(exclude=('id', 'person_id', 'person2_id'))
     params = schema.load({

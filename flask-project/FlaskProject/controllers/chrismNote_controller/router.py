@@ -8,7 +8,7 @@ from ..documents_controller.controller import DocumentController
 from ..counter_controller.controller import CounterController
 from ..persons_controller.controller import PersonController
 from ..notes_controller.controller import NoteController
-from ... import bpp, RegistryOfDeaths, FlaskProjectLogException, Document, Person, ListItem, Counter, ChrismNote
+from ... import bpp, RegistryOfDeaths, FlaskProjectLogException, Document, Person, ListItem, Counter, ChrismNote, Note, City, District, RegistryOfBaptisms
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import PersonSchema, ChrismNoteSchema, NoteSchema, DocumentSchema
@@ -29,7 +29,7 @@ def create_chrism_note():
     })
 
     current_user = get_jwt_claims()['id']
-    document_type_value = ListItem.query.filter_by(value='Matica krštenih').first()
+    document_type_value = ListItem.query.filter_by(value='Matica krizmanih').first()
 
     controller = DocumentController(
         document=Document(
@@ -42,8 +42,37 @@ def create_chrism_note():
             user_created=current_user
         ))
     controller.create()
+
     document = controller.document
 
+    district = District.query.filter_by(id=document.district).first()
+    city = City.query.filter_by(id=district.city_id).first()
+    baptism_document = RegistryOfBaptisms.query.filter_by(person_id=document.person_id).first()
+    if baptism_document is not None:
+        baptism_note = Note.query.filter_by(id=baptism_document.id).first()
+    else:
+        baptism_note = None
+    if baptism_document is not None and baptism_note is not None:
+        controller = NoteController(
+            note=Note(
+                id=baptism_document.id,
+                person_id=document.person_id,
+                chrism_place=city.id,
+                chrism_date=document.act_date,
+                marriage_district=baptism_note.marriage_district,
+                marriage_date=baptism_note.marriage_date,
+                spouse_name=baptism_note.spouse_name
+            ))
+        controller.alter()
+    if baptism_document is not None and baptism_note is None:
+        controller = NoteController(
+            note=Note(
+                id=baptism_document.id,
+                person_id=document.person_id,
+                chrism_place=city.id,
+                chrism_date=document.act_date
+            ))
+        controller.create()
     schema = ChrismNoteSchema(exclude=('id',))
     params = schema.load({
         'person': request_json['person'],
@@ -61,6 +90,7 @@ def create_chrism_note():
     return jsonify(
         data=ChrismNoteController.get_one_details(controller.chrism.id),
         status=Status.status_successfully_inserted().__dict__)
+
 
 @bpp.route('/chrism_note/<string:chrism_id>', methods=['GET'])
 @jwt_required
