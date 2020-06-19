@@ -20,10 +20,13 @@ def alter_note(note_id):
 
     params = schema.load(request_json)
 
+    note = Note.query.filter_by(id=note_id).first()
+
     controller = NoteController(
         note=Note(
             id=note_id,
-            other_notes=params['other_notes']
+            person_id=note.person_id,
+            other_notes=params.get('other_notes', None)
         ))
     controller.alter()
 

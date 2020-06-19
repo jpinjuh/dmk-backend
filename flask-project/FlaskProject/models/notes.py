@@ -21,9 +21,9 @@ class NoteQuery(BaseQuery):
          return db.session.query(Note, Person, City, District).join(
              Person,
              Note.person_id == Person.id,
-             isouter=False)\
-             .join(City, Note.chrism_place == City.id, isouter=False)\
-             .join(District, Note.marriage_district == District.id, isouter=False)
+             isouter=True)\
+             .join(City, Note.chrism_place == City.id, isouter=True)\
+             .join(District, Note.marriage_district == District.id, isouter=True)
 
      def get_one_details(self, _id):
          try:

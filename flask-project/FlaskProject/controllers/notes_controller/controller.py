@@ -4,6 +4,7 @@ from ... import Note, FlaskProjectLogException
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
+
 class NoteController(BaseController):
 
     def __init__(self, note=Note()):
@@ -78,3 +79,10 @@ class NoteController(BaseController):
     @staticmethod
     def get_list_pagination(start, limit, **kwargs):
         raise NotImplementedError("To be implemented")
+
+    @staticmethod
+    def __custom_sql(row_data):
+        if row_data is not None:
+            return_dict = obj_to_dict(row_data.Note)
+            return return_dict
+        return None

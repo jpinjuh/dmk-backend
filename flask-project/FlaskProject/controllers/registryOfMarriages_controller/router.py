@@ -57,14 +57,14 @@ def create_registry_of_marriage():
     schema = NoteSchema(exclude=('id', 'person_id', 'chrism_place', 'chrism_date',
                                  'marriage_district', 'marriage_date', 'spouse_name'))
     params = schema.load({
-        'other_notes': request_json['other_notes']
+        'other_notes': request_json.get('other_notes', '')
     })
 
     controller = NoteController(
         note=Note(
             id=document.id,
             person_id=document.person_id,
-            other_notes=params['other_notes']
+            other_notes=params.get('other_notes', None)
         ))
     controller.create()
 

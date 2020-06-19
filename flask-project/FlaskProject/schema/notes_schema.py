@@ -15,27 +15,14 @@ class NoteSchema(Schema):
     chrism_place = fields.Nested(
         'CitySchema', only=['id'], required=False)
 
-    chrism_date = fields.Date(required=True,
-                              error_messages={"required": "Field is required"})
+    chrism_date = fields.Date(required=False)
 
     marriage_district = fields.Nested(
         'DistrictSchema', only=['id'], required=False)
 
-    marriage_date = fields.Date(required=True,
-                                error_messages={"required": "Field is required"})
+    marriage_date = fields.Date(required=False)
 
-    spouse_name = fields.Str(required=True,
-                             error_messages={"required": "Field is required"},
-                             validate=[
-                              validate.Length(min=2, max=50,
-                                              error=
-                                              'Field must be between 2 '
-                                              'and 50 characters long')])
-    other_notes = fields.Str(required=True,
-                             error_messages={"required": "Field is required"},
-                             validate=[
-                              validate.Length(min=2, max=50,
-                                              error=
-                                              'Field must be between 2 '
-                                              'and 50 characters long')])
+    spouse_name = fields.Str(required=False)
+
+    other_notes = fields.Str(required=False)
 
