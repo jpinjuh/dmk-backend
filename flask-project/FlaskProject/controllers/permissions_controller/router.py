@@ -32,6 +32,7 @@ def create_permission():
         data=obj_to_dict(controller.permission),
         status=Status.status_successfully_inserted().__dict__)
 
+
 @bpp.route('/permission/<string:permission_id>', methods=['PUT'])
 @jwt_required
 #@allow_access
@@ -54,6 +55,7 @@ def alter_permission(permission_id):
         data=obj_to_dict(controller.permission),
         status=Status.status_update_success().__dict__)
 
+
 @bpp.route('/permission/<string:permission_id>', methods=['DELETE'])
 @jwt_required
 #@allow_access
@@ -66,6 +68,7 @@ def permission_inactivate(permission_id):
     return jsonify(
         data=obj_to_dict(controller.permission),
         status=Status.status_successfully_processed().__dict__)
+
 
 @bpp.route('/permission/activate', methods=['POST'])
 @jwt_required
@@ -83,6 +86,7 @@ def permission_activate():
     return jsonify(
         data=obj_to_dict(controller.permission),
         status=Status.status_successfully_processed().__dict__)
+
 
 @bpp.route('/permission/<string:permission_id>', methods=['GET'])
 @jwt_required
@@ -109,6 +113,7 @@ def permission_autocomplete():
     return jsonify(
         data=data,
         status=Status.status_successfully_processed().__dict__)
+
 
 @bpp.route('/permission/search', methods=['POST'])
 @jwt_required

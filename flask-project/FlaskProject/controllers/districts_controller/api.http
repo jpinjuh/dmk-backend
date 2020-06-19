@@ -9,7 +9,9 @@ Authorization: {{token}}
 
 {
   "name": "Some string",
-  "city": {"id":  "UUID as string"}
+  "address": "Some string",
+  "city": {"id":  "UUID as string"},
+  "archdiocese": {"id":  "UUID as string"}
 }
 
 ###
@@ -20,7 +22,9 @@ Authorization: {{token}}
 
 {
   "name": "Some string",
-  "city": {"id":  "UUID as string"}
+  "address": "Some string",
+  "city": {"id":  "UUID as string"},
+  "archdiocese": {"id":  "UUID as string"}
 }
 
 ###
@@ -58,7 +62,17 @@ Authorization: {{token}}
 
 
 ###
+#@name district_search
+POST http://0.0.0.0:5000/district/search
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
 #@name get_districts
-GET http://0.0.0.1:5000/district?start=some_int&limit=some_int&district_name=some_string&city_id=some_string
+GET http://0.0.0.1:5000/district?start=some_int&limit=some_int&district_name=some_string&address=some_string&city_id=some_string&archdiocese_id=some_string
 content-type: application/json
 Authorization: {{token}}

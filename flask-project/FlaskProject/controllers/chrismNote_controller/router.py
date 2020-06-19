@@ -8,7 +8,8 @@ from ..documents_controller.controller import DocumentController
 from ..counter_controller.controller import CounterController
 from ..persons_controller.controller import PersonController
 from ..notes_controller.controller import NoteController
-from ... import bpp, RegistryOfDeaths, FlaskProjectLogException, Document, Person, ListItem, Counter, ChrismNote, Note, City, District, RegistryOfBaptisms
+from ... import bpp, RegistryOfDeaths, FlaskProjectLogException,\
+    Document, Person, ListItem, Counter, ChrismNote, Note, City, District, RegistryOfBaptisms
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import PersonSchema, ChrismNoteSchema, NoteSchema, DocumentSchema

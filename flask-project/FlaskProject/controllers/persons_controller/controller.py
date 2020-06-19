@@ -2,7 +2,8 @@ from sqlalchemy import and_
 from ..districts_controller.controller import DistrictController
 from ..listItems_controller.controller import ListItemController
 from ..cities_controller.controller import CityController
-from ... import Person, FlaskProjectLogException, District, ListItem, RegistryOfBaptisms, City, Document, RegistryOfDeaths
+from ... import Person, FlaskProjectLogException, District, ListItem, \
+    RegistryOfBaptisms, City, Document, RegistryOfDeaths, RegistryOfMarriages, ChrismNote
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 import datetime
@@ -273,6 +274,21 @@ class PersonController(BaseController):
         return dict(
             status=Status.status_successfully_processed().__dict__,
             total=total, data=list_data)
+
+    @staticmethod
+    def get_person_sacraments(person_id):
+        sacrament_list = ['krštenje', 'potvrda', 'ženidba']
+        list_data = []
+        if person_id:
+            sacraments = Person.query.get_one_details(person_id)
+            if sacraments.RegistryOfBaptisms is not None:
+                list_data.append(sacrament_list[0])
+            if sacraments.ChrismNote is not None:
+                list_data.append(sacrament_list[1])
+            if sacraments.RegistryOfMarriages is not None:
+                list_data.append(sacrament_list[2])
+
+        return list_data
 
     @staticmethod
     def __custom_sql(row_data):

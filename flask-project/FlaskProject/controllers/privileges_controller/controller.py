@@ -176,13 +176,8 @@ class PrivilegeController(BaseController):
 
         filter_main = and_()
 
-        privilege_name = kwargs.get('privilege_name', None)
         role_id = kwargs.get('role_id', None)
         permission_id = kwargs.get('role_id', None)
-
-        if privilege_name:
-            filter_main = and_(
-                filter_main, Privilege.name.ilike('%' + city_name + '%'))
 
         if role_id:
             filter_main = and_(
@@ -237,4 +232,5 @@ class PrivilegeController(BaseController):
                     'method': i['permission']['method']
                 }
                 list_method_route.append(method_role)
+
         return list_method_route

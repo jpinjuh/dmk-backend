@@ -11,3 +11,21 @@ content-type: application/json
   "password": "Some string"
 }
 
+###
+#@name refresh
+GET http://0.0.0.1:5000/renew
+content-type: application/json
+Authorization: {{token}}
+
+###
+###
+#@name alter_your_password
+PUT http://0.0.0.0:5000/alter_your_password
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "old_password": "Some string",
+  "new_password": "Some string",
+  "password_confirm": "Some string",
+}

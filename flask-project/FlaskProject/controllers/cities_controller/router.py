@@ -66,6 +66,7 @@ def city_inactivate(city_id):
         data=obj_to_dict(controller.city),
         status=Status.status_successfully_processed().__dict__)
 
+
 @bpp.route('/city/activate', methods=['POST'])
 @jwt_required
 #@allow_access
@@ -82,6 +83,7 @@ def city_activate():
     return jsonify(
         data=obj_to_dict(controller.city),
         status=Status.status_successfully_processed().__dict__)
+
 
 @bpp.route('/city/<string:city_id>', methods=['GET'])
 @jwt_required

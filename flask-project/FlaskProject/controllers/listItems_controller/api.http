@@ -1,0 +1,28 @@
+###############################################################################
+#                               List Items
+
+###
+#@name create_list_item
+POST http://0.0.0.0:5000/listItem
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "value": "Some string",
+  "description": "Some text",
+  "auxiliary_description": "Some UUID",
+  "list": {"id":  "UUID as string"}
+
+}
+
+###
+#@name get_all_list_items
+GET http://0.0.0.1:5000/listItem?start=some_int&limit=some_int&value=some_string&description=some_string&auxiliary_description=some_string&list_id=some_string
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name get_list_items
+GET http://0.0.0.1:5000/listItems/<string:list_id>
+content-type: application/json
+Authorization: {{token}}

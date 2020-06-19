@@ -1,0 +1,15 @@
+###############################################################################
+#                               Documents
+
+###
+#@name get_one_document
+GET http://0.0.0.1:5000/document/<string:document_id>
+content-type: application/json
+Authorization: {{token}}
+
+
+###
+#@name get_documents
+GET http://0.0.0.1:5000/document?start=some_int&limit=some_int&document_number=some_string&act_date=some_string&act_performed=some_string&volume=some_string&year=some_string&page=some_string&number=some_string&document_type=some_string&person_id=some_string&person2_id=some_string&district=some_string
+content-type: application/json
+Authorization: {{token}}

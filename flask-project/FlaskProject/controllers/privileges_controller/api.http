@@ -14,6 +14,35 @@ Authorization: {{token}}
 
 
 ###
+#@name alter_privilege
+PUT http://0.0.0.0:5000/privilege/<string:privilege_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "role": {"id":  "UUID as string"},
+  "permission": {"id":  "UUID as string"}
+}
+
+
+###
+#@name privilege_inactivate
+DELETE http://0.0.0.0:5000/privilege/<string:privilege_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name privilege_activate
+POST http://0.0.0.0:5000/privilege/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
+
+
+###
 #@name get_one_privilege
 GET http://0.0.0.1:5000/privilege/<string:privilege_id>
 content-type: application/json
@@ -32,7 +61,28 @@ Authorization: {{token}}
 
 
 ###
-#@name get_privileges
-GET http://0.0.0.1:5000/privilege?start=some_int&limit=some_int&city_name=some_string&state_id=some_string
+#@name privilege_search
+POST http://0.0.0.0:5000/privilege/search
 content-type: application/json
 Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+
+###
+#@name get_privileges
+GET http://0.0.0.1:5000/privilege?start=some_int&limit=some_int&role_id=some_string&permission_id=some_string
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name get_role_permissions
+GET, POST http://0.0.0.1:5000/role_permissions
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "role_id": "UUID as string"
+}

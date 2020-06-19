@@ -8,7 +8,9 @@ content-type: application/json
 Authorization: {{token}}
 
 {
-  "name": "Some string"
+  "name": "Some string",
+  "route": "Some string",
+  "method": "Some string"
 }
 
 ###
@@ -18,7 +20,9 @@ content-type: application/json
 Authorization: {{token}}
 
 {
-  "name": "Some string"
+  "name": "Some string",
+   "route": "Some string",
+  "method": "Some string"
 }
 
 ###
@@ -38,13 +42,13 @@ Authorization: {{token}}
 }
 
 ###
-#@name permission_get_one
+#@name get_one_permission
 GET http://0.0.0.1:5000/permission/<string:permission_id>
 content-type: application/json
 Authorization: {{token}}
 
 ###
-#@name permission_autocomplete_by_name
+#@name permission_autocomplete
 POST http://0.0.0.0:5000/permission/autocomplete
 content-type: application/json
 Authorization: {{token}}
@@ -54,7 +58,18 @@ Authorization: {{token}}
 }
 
 ###
-#@name permission_pagination
+
+#@name permission_search
+POST http://0.0.0.0:5000/permission/search
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
+#@name get_permission
 GET http://0.0.0.1:5000/permission?start=some_int&limit=some_int&name=some_string
 content-type: application/json
 Authorization: {{token}}

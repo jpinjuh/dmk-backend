@@ -1,0 +1,12 @@
+###############################################################################
+#                               Notes
+
+###
+#@name alter_note
+PUT http://0.0.0.0:5000/note/<string:note_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "other_notes": "Some text"
+}

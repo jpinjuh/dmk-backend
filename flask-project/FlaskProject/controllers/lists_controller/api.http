@@ -1,0 +1,18 @@
+###############################################################################
+#                               Lists
+
+###
+#@name create_list
+POST http://0.0.0.0:5000/list
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "name": "Some string"
+}
+
+###
+#@name get_lists
+GET http://0.0.0.1:5000/list?start=some_int&limit=some_int&name=some_string
+content-type: application/json
+Authorization: {{token}}

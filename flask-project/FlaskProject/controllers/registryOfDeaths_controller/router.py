@@ -87,6 +87,7 @@ def create_registry_of_death():
         data=RegistryOfDeathsController.get_one_details(controller.death.id),
         status=Status.status_successfully_inserted().__dict__)
 
+
 @bpp.route('/registry_of_deaths/<string:death_id>', methods=['GET'])
 @jwt_required
 #@allow_access
@@ -99,5 +100,4 @@ def get_one_death(death_id):
     return jsonify(
         data=controller,
         status=Status.status_successfully_processed().__dict__)
-
 

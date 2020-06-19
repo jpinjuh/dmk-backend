@@ -6,6 +6,7 @@ from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
 from sqlalchemy import or_
 
+
 class PrivilegeQuery(BaseQuery):
 
     def get_one(self, _id):

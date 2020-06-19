@@ -162,3 +162,4 @@ def get_one_marriage(marriage_id):
         status=Status.status_successfully_processed().__dict__)
 
 
+

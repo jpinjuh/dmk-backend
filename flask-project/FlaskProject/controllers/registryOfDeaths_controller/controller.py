@@ -5,6 +5,7 @@ from ..listItems_controller.controller import ListItemController
 from ... import RegistryOfDeaths, Person, City, ListItem, FlaskProjectLogException, Document, District, Archdiocese, User, Note, RegistryOfBaptisms
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
+from flask import jsonify
 
 
 class RegistryOfDeathsController(BaseController):
@@ -114,6 +115,7 @@ class RegistryOfDeathsController(BaseController):
             return_dict['document'] = obj_to_dict(row_data.Document)
             return_dict['birth_place'] = obj_to_dict(birth)
             return_dict['note'] = obj_to_dict(row_data.Note)
+            return_dict['sacraments'] = PersonController.get_person_sacraments(row_data.RegistryOfDeaths.person_id)
             return return_dict
         return None
 

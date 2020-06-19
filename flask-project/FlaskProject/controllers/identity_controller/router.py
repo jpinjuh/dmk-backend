@@ -1,5 +1,4 @@
 from flask import request, jsonify, make_response, current_app, Flask
-#from ...flask_jwt import JWT, jwt_required, current_identity, JWTError
 from ...flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity, get_jwt_claims

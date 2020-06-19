@@ -58,6 +58,17 @@ Authorization: {{token}}
 
 
 ###
+
+#@name city_search
+POST http://0.0.0.0:5000/city/search
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
 #@name get_cities
 GET http://0.0.0.1:5000/city?start=some_int&limit=some_int&city_name=some_string&state_id=some_string
 content-type: application/json

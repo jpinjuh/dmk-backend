@@ -1,5 +1,4 @@
 from flask import request, jsonify, redirect
-#from ...flask_jwt import JWT, jwt_required, current_identity
 from ...flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity, get_jwt_claims
@@ -135,15 +134,15 @@ def privilege_search():
 def get_privileges():
     start = request.args.get('start', 0, int)
     limit = request.args.get('limit', 10, int)
-    privilege_name = request.args.get('privilege_name', '', str)
     role_id = request.args.get('role_id', None, str)
     permission_id = request.args.get('permission_id', None, str)
 
     pagination_result = PrivilegeController.get_list_pagination(
-        start=start, limit=limit, privilege_name=privilege_name,
+        start=start, limit=limit,
         role_id=role_id, permission_id=permission_id)
 
     return jsonify(pagination_result)
+
 
 @bpp.route('/role_permissions', methods=['GET', 'POST'])
 @jwt_required
@@ -155,24 +154,3 @@ def get_role_permissions():
     permissions = PrivilegeController.get_role_permissions(role_id)
 
     return jsonify(permissions)
-
-@bpp.route('/check_access', methods=['POST',])
-@jwt_required
-def check_access():
-
-    current_role = get_jwt_claims()['roles_id']
-    permissions = PrivilegeController.get_role_permissions(current_role)
-
-    rule = request.url_rule
-    route = rule.rule
-    method = request.method
-    #route = '/user'
-    #method = 'GET'
-
-    for i in permissions:
-        if i['route'] == route and i['method'] == method:
-            return 'Access allowed!'
-
-    return 'Access denied!'
-
-

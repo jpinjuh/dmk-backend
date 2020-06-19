@@ -43,6 +43,8 @@ def create_persons_history():
         data=PersonsHistoryController.get_one_details(controller.personsHistory.id),
         status=Status.status_successfully_inserted().__dict__)
 """
+
+
 @bpp.route('/persons_history', methods=['GET'])
 @jwt_required
 #@allow_access

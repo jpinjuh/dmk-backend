@@ -1,0 +1,8 @@
+###############################################################################
+#                               Persons History
+
+###
+#@name get_persons_history
+GET http://0.0.0.1:5000/persons_history?start=some_int&limit=some_int&first_name=some_string&last_name=some_string&maiden_name=some_string&birth_date=some_string&birth_place=some_string&identity_number=some_string&father_id=some_string&mother_id=some_string&district=some_string&religion=some_string
+content-type: application/json
+Authorization: {{token}}

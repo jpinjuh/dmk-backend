@@ -1,0 +1,61 @@
+###############################################################################
+#                               Persons
+
+###
+#@name create_person
+POST http://0.0.0.0:5000/person
+content-type: application/json
+Authorization: {{token}}
+
+{
+   "first_name": "Some string",
+   "last_name": "Some string",
+   "maiden_name: "Some string",
+   "birth_date": "Some date",
+   "birth_place": {"id":  "UUID as string"},
+   "identity_number": "Some string",
+   "domicile": "Some string",
+   "father": {"id":  "UUID as string"}
+   "mother": {"id":  "UUID as string"}
+   "district": {"id":  "UUID as string"}
+   "religion": {"id":  "UUID as string"}
+}
+
+###
+#@name get_one_person
+GET http://0.0.0.1:5000/person/<string:person_id>
+content-type: application/json
+Authorization: {{token}}
+
+
+###
+#@name person_autocomplete
+POST http://0.0.0.0:5000/person/autocomplete
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+
+###
+#@name person_search
+POST http://0.0.0.0:5000/person/search
+content-type: application/json
+Authorization: {{token}}
+
+{
+   "first_name": "Some string",
+   "last_name": "Some string",
+   "birth_date": "Some date",
+   "birth_place": "Some string",
+   "identity_number": "Some string"
+}
+
+
+###
+#@name get_persons
+GET http://0.0.0.1:5000/person?start=some_int&limit=some_int&first_name=some_string&last_name=some_string&maiden_name=some_string&birth_date=some_string&birth_place=some_string&identity_number=some_string&father_id=some_string&mother_id=some_string&district=some_string&religion=some_string&person=some_string
+content-type: application/json
+Authorization: {{token}}

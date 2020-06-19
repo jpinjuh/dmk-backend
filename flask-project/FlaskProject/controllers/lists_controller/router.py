@@ -1,6 +1,5 @@
 from flask import request, jsonify
 from .controller import ListController
-#from ...flask_jwt import JWT, current_identity,jwt_required
 from ...flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity, get_jwt_claims

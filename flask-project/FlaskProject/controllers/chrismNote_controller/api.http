@@ -1,0 +1,22 @@
+###############################################################################
+#                               Chrism Notes
+
+###
+#@name create_chrism_note
+POST http://0.0.0.0:5000/chrism_note
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "person": {"id":  "UUID as string"},
+  "act_date": "Some date",
+  "act_performed": {"id":  "UUID as string"},
+  "district": {"id":  "UUID as string"},
+  "best_man": {"id":  "UUID as string"}
+}
+
+###
+#@name get_one_chrism
+GET http://0.0.0.1:5000/chrism_note/<string:chrism_id>
+content-type: application/json
+Authorization: {{token}}

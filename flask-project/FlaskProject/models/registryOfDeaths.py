@@ -5,6 +5,7 @@ from . import TimestampedModelMixin, ModelsMixin
 from ..db import db
 from sqlalchemy import or_
 from sqlalchemy.orm import relationship, foreign, aliased
+from sqlalchemy import or_
 
 
 class RegistryOfDeathsQuery(BaseQuery):
