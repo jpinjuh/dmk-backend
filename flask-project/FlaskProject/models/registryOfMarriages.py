@@ -16,6 +16,14 @@ class RegistryOfMarriagesQuery(BaseQuery):
              db.session.rollback()
              return None
 
+     def check_if_already_exist(self, person_id, person2_id):
+         try:
+             return self.filter(
+                 RegistryOfMarriages.person_id == person_id, RegistryOfMarriages.person2_id == person2_id).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
      @staticmethod
      def query_details():
         from . import Person, City, ListItem, Document, District, Archdiocese, Note, RegistryOfBaptisms, User

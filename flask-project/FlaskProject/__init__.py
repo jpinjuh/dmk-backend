@@ -30,6 +30,7 @@ from .controllers.notes_controller import router
 from .controllers.registryOfDeaths_controller import router
 from .controllers.chrismNote_controller import router
 from .controllers.registryOfMarriages_controller import router
+from .controllers.personExtraInfo_controller import router
 
 
 def create_app(config_environment):

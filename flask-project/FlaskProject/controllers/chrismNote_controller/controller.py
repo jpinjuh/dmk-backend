@@ -14,10 +14,10 @@ class ChrismNoteController(BaseController):
          Method used for creating chrism note
         :return: Status object or raise FlaskProjectLogException
         """
-       # if ChrismNote.query.check_if_already_exist(
-        #        self.chrism.person_id):
-         #   raise FlaskProjectLogException(
-          #      Status.status_identity_number_already_exist())
+        if ChrismNote.query.check_if_already_exist(
+                self.chrism.person_id):
+            raise FlaskProjectLogException(
+                Status.status_identity_number_already_exist())
 
         if self.chrism.person_id is not None:
             person = PersonController.get_one(

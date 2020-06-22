@@ -15,6 +15,10 @@ class RegistryOfMarriagesController(BaseController):
          Method used for creating registry of marriage
         :return: Status object or raise FlaskProjectLogException
         """
+        if RegistryOfMarriages.query.check_if_already_exist(
+                self.marriage.person_id, self.marriage.person2_id):
+            raise FlaskProjectLogException(
+                Status.status_marriage_already_exists())
 
         if self.marriage.person_id is not None:
             person = PersonController.get_one(

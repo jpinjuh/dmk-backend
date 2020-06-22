@@ -16,6 +16,28 @@ class PersonExtraInfoQuery(BaseQuery):
              db.session.rollback()
              return None
 
+     def check_if_already_exist(self, person_id):
+         try:
+             return self.filter(
+                 PersonExtraInfo.person_id == person_id).first() is not None
+         except Exception as e:
+             db.session.rollback()
+             return False
+
+     @staticmethod
+     def query_details():
+        from . import District, Person, ListItem
+        return db.session.query(PersonExtraInfo, Person, District, ListItem) \
+            .join(Person, PersonExtraInfo.person_id == Person.id, isouter=True) \
+            .join(District, PersonExtraInfo.baptism_district == District.id, isouter=False) \
+            .join(ListItem, PersonExtraInfo.parents_canonically_married == ListItem.id, isouter=False)
+
+     def get_one_details(self, _id):
+        try:
+            return self.query_details().filter(PersonExtraInfo.id == _id).first()
+        except Exception as e:
+            db.session.rollback()
+            return None
 
 class PersonExtraInfo(ModelsMixin, TimestampedModelMixin, db.Model):
 

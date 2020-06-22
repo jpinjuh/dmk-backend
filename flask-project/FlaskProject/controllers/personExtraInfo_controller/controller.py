@@ -1,6 +1,6 @@
 from sqlalchemy import and_
 
-from ... import PersonExtraInfo, FlaskProjectLogException, Person
+from ... import PersonExtraInfo, FlaskProjectLogException, Person, District, ListItem
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 
@@ -15,6 +15,10 @@ class PersonExtraInfoController(BaseController):
         Method used for creating person extra info
         :return: Status object or raise FlaskProjectLogException
         """
+        if PersonExtraInfo.query.check_if_already_exist(
+                self.extra_info.person_id):
+            raise FlaskProjectLogException(
+                Status.status_person_extra_info_already_exists())
 
         self.extra_info.add()
         self.extra_info.commit_or_rollback()
@@ -41,7 +45,8 @@ class PersonExtraInfoController(BaseController):
        :param identifier: List item identifier
        :return: Dict object
        """
-        raise NotImplementedError("To be implemented")
+        return PersonExtraInfoController.__custom_sql(
+            PersonExtraInfo.query.get_one_details(identifier))
 
     @staticmethod
     def list_autocomplete(search):
@@ -60,5 +65,8 @@ class PersonExtraInfoController(BaseController):
     def __custom_sql(row_data):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.PersonExtraInfo)
+            return_dict['person'] = obj_to_dict(row_data.Person)
+            return_dict['baptism_district'] = obj_to_dict(row_data.District)
+            return_dict['parents_canonically_married'] = obj_to_dict(row_data.ListItem)
             return return_dict
         return None

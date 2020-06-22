@@ -297,6 +297,20 @@ class Status:
         """
         return cls(-1, 'This marriage does not exist')
 
+    @classmethod
+    def status_marriage_already_exists(cls):
+        """
+        :return: cls(-1, 'This registry of marriage already exists')
+        """
+        return cls(-1, 'This registry of marriage already exists')
+
+    @classmethod
+    def status_person_extra_info_already_exists(cls):
+        """
+        :return: cls(-1, 'This person already has extra info')
+        """
+        return cls(-1, 'This person already has extra info')
+
     def repr_print(self):
         return {
             "errorCode": self.errorCode,
