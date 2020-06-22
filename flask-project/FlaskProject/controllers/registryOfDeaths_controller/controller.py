@@ -2,7 +2,7 @@ from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
 from ..cities_controller.controller import CityController
 from ..listItems_controller.controller import ListItemController
-from ... import RegistryOfDeaths, Person, City, ListItem, FlaskProjectLogException, Document, District, Archdiocese, User, Note, RegistryOfBaptisms
+from ... import RegistryOfDeaths, Person, City, ListItem, FlaskProjectLogException, Document, District, Archdiocese, User, Note, RegistryOfBaptisms, RegistryOfMarriages
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 from flask import jsonify
@@ -91,6 +91,32 @@ class RegistryOfDeathsController(BaseController):
         raise NotImplementedError("To be implemented")
 
     @staticmethod
+    def get_spouses(person_id):
+        spouse_list=[]
+        if person_id:
+            document_marriage1 = RegistryOfMarriages.query.filter_by(person_id=person_id).all()
+            if document_marriage1 is not None:
+                for i in document_marriage1:
+                    spouse = Person.query.filter_by(id=i.person2_id).first()
+                    spouse_name = {
+                        'first_name': spouse.first_name,
+                        'last_name': spouse.last_name
+                    }
+                    spouse_list.append(spouse_name)
+
+            document_marriage2 = RegistryOfMarriages.query.filter_by(person2_id=person_id).all()
+            if document_marriage2 is not None:
+                for i in document_marriage2:
+                    spouse = Person.query.filter_by(id=i.person_id).first()
+                    spouse_name = {
+                        'first_name': spouse.first_name,
+                        'last_name': spouse.last_name
+                    }
+                    spouse_list.append(spouse_name)
+
+        return spouse_list
+
+    @staticmethod
     def __custom_sql(row_data):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.RegistryOfDeaths)
@@ -119,6 +145,7 @@ class RegistryOfDeathsController(BaseController):
             return_dict['document'] = obj_to_dict(row_data.Document)
             return_dict['birth_place'] = obj_to_dict(birth)
             return_dict['note'] = obj_to_dict(row_data.Note)
+            return_dict['spouses'] = RegistryOfDeathsController.get_spouses(row_data.RegistryOfDeaths.person_id)
             return_dict['sacraments'] = PersonController.get_person_sacraments(row_data.RegistryOfDeaths.person_id)
             return return_dict
         return None

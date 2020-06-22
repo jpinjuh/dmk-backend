@@ -100,4 +100,3 @@ def get_one_death(death_id):
     return jsonify(
         data=controller,
         status=Status.status_successfully_processed().__dict__)
-
