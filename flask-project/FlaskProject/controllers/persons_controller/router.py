@@ -117,3 +117,4 @@ def get_persons():
         district=district, religion=religion)
 
     return jsonify(pagination_result)
+

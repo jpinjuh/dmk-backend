@@ -285,7 +285,9 @@ class PersonController(BaseController):
                 list_data.append(sacrament_list[0])
             if sacraments.ChrismNote is not None:
                 list_data.append(sacrament_list[1])
-            if sacraments.RegistryOfMarriages is not None:
+            marriage_person1 = RegistryOfMarriages.query.filter_by(person_id=person_id).first()
+            marriage_person2 = RegistryOfMarriages.query.filter_by(person2_id=person_id).first()
+            if marriage_person1 or marriage_person2 is not None:
                 list_data.append(sacrament_list[2])
 
         return list_data
