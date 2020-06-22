@@ -106,6 +106,14 @@ class RegistryOfBaptismsController(BaseController):
             best_man = Person.query.filter_by(id=row_data.RegistryOfBaptisms.best_man).first()
             mother = Person.query.filter_by(id=person.mother_id).first()
             father = Person.query.filter_by(id=person.father_id).first()
+            if mother is not None:
+                mother_religion = ListItem.query.filter_by(id=mother.religion).first()
+            else:
+                mother_religion = None
+            if father is not None:
+                father_religion = ListItem.query.filter_by(id=father.religion).first()
+            else:
+                father_religion = None
             child = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.child).first()
             parents = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.parents_canonically_married).first()
             if row_data.Note is not None:
@@ -119,7 +127,9 @@ class RegistryOfBaptismsController(BaseController):
             return_dict['person'] = obj_to_dict(person)
             return_dict['best_man'] = obj_to_dict(best_man)
             return_dict['mother'] = obj_to_dict(mother)
+            return_dict['mother_religion'] = obj_to_dict(mother_religion)
             return_dict['father'] = obj_to_dict(father)
+            return_dict['father_religion'] = obj_to_dict(father_religion)
             return_dict['birth_place'] = obj_to_dict(row_data.City)
             return_dict['child'] = obj_to_dict(child)
             return_dict['parents_canonically_married'] = obj_to_dict(parents)
