@@ -128,10 +128,7 @@ class RegistryOfDeathsController(BaseController):
             district_person = District.query.filter_by(id=row_data.Person.district).first()
             district_baptism = District.query.filter_by(id=row_data.Document.district).first()
             registry_of_baptism = RegistryOfBaptisms.query.filter_by(person_id=person.id).first()
-            if registry_of_baptism is not None:
-                gender = ListItem.query.filter_by(id=registry_of_baptism.child).first()
-            else:
-                gender = None
+            gender = ListItem.query.filter_by(id=registry_of_baptism.child).first() if registry_of_baptism is not None else None
             return_dict['person'] = obj_to_dict(person)
             return_dict['place_of_death'] = obj_to_dict(death)
             return_dict['place_of_burial'] = obj_to_dict(row_data.ListItem)

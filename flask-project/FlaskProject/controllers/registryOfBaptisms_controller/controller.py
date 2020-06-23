@@ -106,24 +106,12 @@ class RegistryOfBaptismsController(BaseController):
             best_man = Person.query.filter_by(id=row_data.RegistryOfBaptisms.best_man).first()
             mother = Person.query.filter_by(id=person.mother_id).first()
             father = Person.query.filter_by(id=person.father_id).first()
-            if mother is not None:
-                mother_religion = ListItem.query.filter_by(id=mother.religion).first()
-            else:
-                mother_religion = None
-            if father is not None:
-                father_religion = ListItem.query.filter_by(id=father.religion).first()
-            else:
-                father_religion = None
+            mother_religion = ListItem.query.filter_by(id=mother.religion).first() if mother is not None else None
+            father_religion = ListItem.query.filter_by(id=father.religion).first() if father is not None else None
             child = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.child).first()
             parents = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.parents_canonically_married).first()
-            if row_data.Note is not None:
-                chrism_city = City.query.filter_by(id=row_data.Note.chrism_place).first()
-            else:
-                chrism_city = None
-            if row_data.Note is not None and row_data.Note.marriage_district is not None:
-                marriage_district = District.query.filter_by(id=row_data.Note.marriage_district).first()
-            else:
-                marriage_district = None
+            chrism_city = City.query.filter_by(id=row_data.Note.chrism_place).first() if row_data.Note is not None else None
+            marriage_district = District.query.filter_by(id=row_data.Note.marriage_district).first() if row_data.Note and row_data.Note.marriage_district is not None else None
             return_dict['person'] = obj_to_dict(person)
             return_dict['best_man'] = obj_to_dict(best_man)
             return_dict['mother'] = obj_to_dict(mother)

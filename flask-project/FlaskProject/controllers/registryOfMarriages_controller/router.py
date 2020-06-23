@@ -8,7 +8,8 @@ from ..documents_controller.controller import DocumentController
 from ..counter_controller.controller import CounterController
 from ..persons_controller.controller import PersonController
 from ..notes_controller.controller import NoteController
-from ... import bpp, RegistryOfMarriages, FlaskProjectLogException, Document, Person, ListItem, Counter, Note, District, RegistryOfBaptisms
+from ..personsHistory_controller.controller import PersonsHistoryController
+from ... import bpp, RegistryOfMarriages, FlaskProjectLogException, Document, Person, ListItem, Counter, Note, District, RegistryOfBaptisms, PersonsHistory
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import PersonSchema, NoteSchema, DocumentSchema, RegistryOfMarriagesSchema
@@ -142,9 +143,46 @@ def create_registry_of_marriage():
             best_man2=params['best_man2']['id']
         ))
     controller.create()
+    marriage = controller.marriage
+
+    person = Person.query.filter_by(id=document.person2_id).first()
+    controller = PersonsHistoryController(
+        personsHistory=PersonsHistory(
+            first_name=person.first_name,
+            last_name=person.last_name,
+            maiden_name=person.maiden_name,
+            birth_date=person.birth_date,
+            identity_number=person.identity_number,
+            father_id=person.father_id,
+            mother_id=person.mother_id,
+            district=person.district,
+            religion=person.religion,
+            person=person.id,
+            user_created=current_user
+        ))
+    controller.create()
+
+    person = Person.query.filter_by(id=document.person2_id).first()
+    spouse = Person.query.filter_by(id=document.person_id).first()
+    controller = PersonController(
+        person=Person(
+            id=person.id,
+            first_name=person.first_name,
+            last_name=spouse.last_name,
+            maiden_name=person.last_name,
+            birth_date=person.birth_date,
+            birth_place=person.birth_place,
+            identity_number=person.identity_number,
+            domicile=person.domicile,
+            father_id=person.father_id,
+            mother_id=person.father_id,
+            district=person.district,
+            religion=person.religion
+        ))
+    controller.alter()
 
     return jsonify(
-        data=RegistryOfMarriagesController.get_one_details(controller.marriage.id),
+        data=RegistryOfMarriagesController.get_one_details(marriage.id),
         status=Status.status_successfully_inserted().__dict__)
 
 

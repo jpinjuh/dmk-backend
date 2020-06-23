@@ -115,7 +115,7 @@ class RegistryOfMarriagesController(BaseController):
             person1_baptism_document = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%K%')).first()
             person1_extra_info = PersonExtraInfo.query.filter_by(person_id=row_data.Person.id).first()
             if person1_baptism_document is not None:
-                person1_baptism_district = District.query.filter_by(id=person1_baptism_document.district).first()
+                person1_baptism_district = District.query.filter_by(id=person1_baptism_document.district).first() if person1_baptism_document is not None else None
             elif person1_extra_info is not None:
                 person1_baptism_district = District.query.filter_by(id=person1_extra_info.baptism_district).first()
             else:

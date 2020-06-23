@@ -29,6 +29,10 @@ class PersonsHistorySchema(Schema):
                                           'and 50 characters long')])
     birth_date = fields.Date(required=True,
                              error_messages={"required": "Field is required"})
+
+    birth_place = fields.Nested(
+        'CitySchema', only=['id'], required=True)
+
     identity_number = fields.Str(validate=[
                           validate.Length(min=13, max=20,
                                           error=

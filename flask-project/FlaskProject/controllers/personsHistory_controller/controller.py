@@ -49,9 +49,9 @@ class PersonsHistoryController(BaseController):
                 raise FlaskProjectLogException(
                     Status.status_list_item_not_exist())
 
-        if self.personsHistory.person_id is not None:
+        if self.personsHistory.person is not None:
             person = PersonController.get_one(
-                self.personsHistory.person_id)
+                self.personsHistory.person)
 
             if person.person is None:
                 raise FlaskProjectLogException(

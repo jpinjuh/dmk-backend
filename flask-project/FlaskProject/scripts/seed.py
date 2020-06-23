@@ -19,6 +19,7 @@ from ..controllers.chrismNote_controller.controller import ChrismNoteController
 from ..controllers.registryOfMarriages_controller.controller import RegistryOfMarriagesController
 from ..controllers.personExtraInfo_controller.controller import PersonExtraInfoController
 from ..controllers.notes_controller.controller import NoteController
+from ..controllers.personsHistory_controller.controller import PersonsHistoryController
 from ..models.states import State, StateQuery
 from ..models.cities import City, CityQuery
 from ..models.roles import Role
@@ -37,6 +38,7 @@ from ..models.registryOfDeaths import RegistryOfDeaths
 from ..models.chrismNotes import ChrismNote
 from ..models.registryOfMarriages import RegistryOfMarriages
 from ..models.personExtraInfo import PersonExtraInfo
+from ..models.personsHistory import PersonsHistory
 from ..models.notes import Note
 from werkzeug.security import generate_password_hash, check_password_hash
 import re
@@ -100,6 +102,11 @@ class Seed(Command):
                 name='fratar'
             ))
         controller.create()
+        controller = RoleController(
+            role=Role(
+                name='đakon'
+            ))
+        controller.create()
         role = Role.query.filter_by(name='admin').first()
         district = District.query.filter_by(name='Župa sv. Stjepana Prvomučenika, Gorica-Sovići').first()
         controller = UserController(
@@ -108,6 +115,18 @@ class Seed(Command):
                 last_name='Bošnjak',
                 username='andjelabosnjak',
                 email='andjela.bosnjak30@gmail.com',
+                title='admin',
+                password_hash=generate_password_hash('123456', method='sha256'),
+                roles_id=role.id,
+                districts_id=district.id
+            ))
+        controller.create()
+        controller = UserController(
+            user=User(
+                first_name='Marija',
+                last_name='Bošnjak',
+                username='marijabosnjak',
+                email='marijabosnjak998@gmail.com',
                 title='admin',
                 password_hash=generate_password_hash('123456', method='sha256'),
                 roles_id=role.id,
@@ -127,19 +146,6 @@ class Seed(Command):
                 districts_id=district.id
             ))
         controller.create()
-        controller = UserController(
-            user=User(
-                first_name='Marija',
-                last_name='Bošnjak',
-                username='marijabosnjak',
-                email='marijabosnjak998@gmail.com',
-                title='admin',
-                password_hash=generate_password_hash('123456', method='sha256'),
-                roles_id=role.id,
-                districts_id=district.id
-            ))
-        controller.create()
-
         for rule in current_app.url_map.iter_rules():
             for method in rule.methods:
                 if method == 'OPTIONS' or method == 'HEAD':
@@ -157,7 +163,7 @@ class Seed(Command):
 
         permissions = Permission.query.all()
         for permission in permissions:
-            if any(path in permission.route for path in ['/permission', '/privilege', '/role', '/user', '/city', '/district', '/state', '/archdiocese']):
+            if any(path in permission.route for path in ['/permission', '/privilege', '/role', '/user', '/city', '/district', '/state', '/archdiocese', '/list', '/listItem']):
                 controller = PrivilegeController(
                     privilege=Privilege(
                         roles_id=role.id,
@@ -273,7 +279,7 @@ class Seed(Command):
         controller.create()
         controller = ListItemController(
             list_item=ListItem(
-                value='Škevnja Njiva',
+                value='Šamatorje',
                 list_id=list.id,
                 auxiliary_description=district.id
             ))
@@ -298,7 +304,6 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
-        religion = ListItem.query.filter_by(value='Kršćanstvo').first()
         controller = ListItemController(
             list_item=ListItem(
                 value='Islam',
@@ -312,7 +317,6 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
-        list_item = ListItem.query.filter_by(value='Da').first()
         controller = ListItemController(
             list_item=ListItem(
                 value='Ne',
@@ -334,7 +338,6 @@ class Seed(Command):
                 list_id=list.id
             ))
         controller.create()
-        document_type_value = ListItem.query.filter_by(value='Matica krštenih').first()
         controller = ListItemController(
             list_item=ListItem(
                 id='78c884e9-fb9a-4f0e-a9de-2e1ea53dd618',
@@ -380,14 +383,22 @@ class Seed(Command):
                 list_id=methods.id
             ))
         controller.create()
+        controller = CityController(
+            city=City(
+                name='Mostar',
+                state_id=state.id
+            ))
+        controller.create()
+        city = City.query.filter_by(name='Mostar').first()
+        religion = ListItem.query.filter_by(value='Kršćanstvo').first()
         controller = PersonController(
             person=Person(
-                first_name='Mirjana',
-                last_name='Bošnjak',
+                first_name='Ana',
+                last_name='Kraljević',
                 maiden_name='Marijanović',
-                birth_date='17/01/1973',
+                birth_date='17/01/1978',
                 birth_place=city.id,
-                identity_number='1701973155631',
+                identity_number='1701978155631',
                 domicile='Bobanova Draga bb, 88345 Sovići',
                 district=district.id,
                 religion=religion.id
@@ -405,29 +416,98 @@ class Seed(Command):
                 religion=religion.id
             ))
         controller.create()
-        controller = PersonController(
-            person=Person(
-                first_name='Ante',
-                last_name='Bošnjak',
-                birth_date='11/06/2005',
-                birth_place=city.id,
-                identity_number='11062005655131',
-                domicile='Bobanova Draga bb, 88345 Sovići',
-                district=district.id,
-                religion=religion.id
-            ))
-        controller.create()
-        mother = Person.query.filter_by(identity_number='1701973155631').first()
-        best_man = Person.query.filter_by(identity_number='11062005655131').first()
+        mother = Person.query.filter_by(identity_number='1701978155631').first()
+        father = Person.query.filter_by(identity_number='1005985997875').first()
         controller = PersonController(
             person=Person(
                 first_name='Marija',
-                last_name='Bošnjak',
+                last_name='Ivić',
                 birth_date='25/06/1998',
                 birth_place=city.id,
                 identity_number='2506998155631',
                 domicile='Bobanova Draga bb, 88345 Sovići',
                 mother_id=mother.id,
+                father_id=father.id,
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
+                first_name='Karolina',
+                last_name='Stipić',
+                birth_date='25/06/1996',
+                birth_place=city.id,
+                identity_number='25069961556317',
+                domicile='Bobanova Draga bb, 88345 Sovići',
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
+                first_name='Ante',
+                last_name='Ivić',
+                birth_date='11/06/2005',
+                birth_place=city.id,
+                identity_number='11062005655131',
+                domicile='Bobanova Draga bb, 88345 Sovići',
+                mother_id=mother.id,
+                father_id=father.id,
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
+                first_name='Josip',
+                last_name='Ivić',
+                birth_date='11/06/2010',
+                birth_place=city.id,
+                identity_number='11062010655131',
+                domicile='Bobanova Draga bb, 88345 Sovići',
+                mother_id=mother.id,
+                father_id=father.id,
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
+                first_name='Zlatko',
+                last_name='Marković',
+                birth_date='11/05/1987',
+                birth_place=city.id,
+                identity_number='11051987155631',
+                domicile='Kralja Tomislava, 41',
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        controller = PersonController(
+            person=Person(
+                first_name='Zlata',
+                last_name='Marković',
+                birth_date='10/08/1988',
+                birth_place=city.id,
+                identity_number='1008988155631',
+                domicile='Kralja Tomislava, 41',
+                district=district.id,
+                religion=religion.id
+            ))
+        controller.create()
+        mother = Person.query.filter_by(identity_number='1008988155631').first()
+        father = Person.query.filter_by(identity_number='11051987155631').first()
+        controller = PersonController(
+            person=Person(
+                first_name='Marko',
+                last_name='Marković',
+                birth_date='10/08/1998',
+                birth_place=city.id,
+                identity_number='10089981556311',
+                domicile='Kralja Tomislava, 41',
+                mother_id=mother.id,
+                father_id=father.id,
                 district=district.id,
                 religion=religion.id
             ))
@@ -449,6 +529,9 @@ class Seed(Command):
         controller.create()
         person = Person.query.filter_by(identity_number='2506998155631').first()
         user = User.query.filter_by(username='stipemarkovic').first()
+        document_type_value = ListItem.query.filter_by(value='Matica krštenih').first()
+        list_item = ListItem.query.filter_by(value='Da').first()
+        best_man = Person.query.filter_by(identity_number='1008988155631').first()
         controller = DocumentController(
             document=Document(
                 id='95e923dd-0121-4ac5-a321-c1de097a14d9',
@@ -481,24 +564,25 @@ class Seed(Command):
                 name=person.first_name,
                 surname=person.last_name,
                 birth_date=person.birth_date,
-                birth_place=city.id,
+                birth_place=person.birth_place,
                 identity_number=person.identity_number,
                 child=child.id,
                 parents_canonically_married=list_item.id
             ))
         controller.create()
-        person = Person.query.filter_by(identity_number='1005985997875').first()
+        person = Person.query.filter_by(identity_number='11062005655131').first()
+        best_man = Person.query.filter_by(identity_number='11051987155631').first()
         controller = DocumentController(
             document=Document(
                 id='13771757-26ef-4d08-bc62-6e3b172bfb38',
                 document_type=document_type_value.id,
                 person_id=person.id,
-                act_date='20/06/1985',
+                act_date='24/07/2005',
                 act_performed=user.id,
                 document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
                 volume=10,
-                year=1998,
+                year=2005,
                 page=1,
                 number=10,
                 user_created=user.id
@@ -520,24 +604,25 @@ class Seed(Command):
                 name=person.first_name,
                 surname=person.last_name,
                 birth_date=person.birth_date,
-                birth_place=city.id,
+                birth_place=person.birth_place,
                 identity_number=person.identity_number,
                 child=child.id,
                 parents_canonically_married=list_item.id
             ))
         controller.create()
+        person = Person.query.filter_by(identity_number='1005985997875').first()
         document_type_value = ListItem.query.filter_by(value='Matica umrlih').first()
         controller = DocumentController(
             document=Document(
                 id='94a69e96-57a8-413c-be80-f52c390afc72',
                 document_type=document_type_value.id,
                 person_id=person.id,
-                act_date='20/06/1999',
+                act_date='20/06/2020',
                 act_performed=user.id,
                 document_number='U - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
                 volume=10,
-                year=1999,
+                year=2020,
                 page=1,
                 number=10,
                 user_created=user.id
@@ -550,26 +635,27 @@ class Seed(Command):
                 person_id=document.person_id
             ))
         controller.create()
-        cemetery = ListItem.query.filter_by(value='Mekovac').first()
+        cemetery = ListItem.query.filter_by(value='Šamatorje').first()
         controller = RegistryOfDeathsController(
             death=RegistryOfDeaths(
                 id=document.id,
                 person_id=person.id,
-                date_of_death='19/06/1999',
+                date_of_death='19/06/2020',
                 place_of_death=city.id,
                 place_of_burial=cemetery.id
             ))
         controller.create()
         user = User.query.filter_by(username='stipemarkovic').first()
-        person = Person.query.filter_by(identity_number='1005985997875').first()
+        person = Person.query.filter_by(identity_number='2506998155631').first()
         district = District.query.filter_by(name='Župa sv. Stjepana Prvomučenika, Gorica-Sovići').first()
         document_type_value = ListItem.query.filter_by(value='Matica krizmanih').first()
+        best_man = Person.query.filter_by(identity_number='1008988155631').first()
         controller = DocumentController(
             document=Document(
                 id='75053a32-362b-4ddf-b087-5865fd7aea4b',
                 document_type=document_type_value.id,
                 person_id=person.id,
-                act_date='20/08/2005',
+                act_date='20/08/2015',
                 act_performed=user.id,
                 document_number='P - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
@@ -584,13 +670,29 @@ class Seed(Command):
                 best_man=best_man.id
             ))
         controller.create()
+        baptism_note = Note.query.filter_by(id='95e923dd-0121-4ac5-a321-c1de097a14d9').first()
+        document = Document.query.filter_by(id='75053a32-362b-4ddf-b087-5865fd7aea4b').first()
+        document_district = District.query.filter_by(id=document.district).first()
+        district_city = City.query.filter_by(id=document_district.city_id).first()
+        controller = NoteController(
+            note=Note(
+                id=baptism_note.id,
+                person_id=baptism_note.person_id,
+                chrism_place=district_city.id,
+                chrism_date=document.act_date,
+                marriage_district=baptism_note.marriage_district,
+                marriage_date=baptism_note.marriage_date,
+                spouse_name=baptism_note.spouse_name
+            ))
+        controller.alter()
         document_type_value = ListItem.query.filter_by(value='Matica vjenčanih').first()
-        person2 = Person.query.filter_by(first_name='Marija').first()
+        person1 = Person.query.filter_by(identity_number='10089981556311').first()
+        person2 = Person.query.filter_by(identity_number='2506998155631').first()
         controller = DocumentController(
             document=Document(
                 id='474d4590-202a-44b6-9977-b0ae8213994d',
                 document_type=document_type_value.id,
-                person_id=person.id,
+                person_id=person1.id,
                 person2_id=person2.id,
                 act_date='20/02/2020',
                 act_performed=user.id,
@@ -604,30 +706,76 @@ class Seed(Command):
             ))
         controller.create()
         document = Document.query.filter_by(id='474d4590-202a-44b6-9977-b0ae8213994d').first()
+        best_man1 = Person.query.filter_by(identity_number='11062010655131').first()
+        best_man2 = Person.query.filter_by(identity_number='25069961556317').first()
         controller = RegistryOfMarriagesController(
             marriage=RegistryOfMarriages(
                 id=document.id,
-                person_id=person.id,
+                person_id=person1.id,
                 person2_id=person2.id,
-                best_man=best_man.id,
-                best_man2=best_man.id
+                best_man=best_man1.id,
+                best_man2=best_man2.id
             ))
         controller.create()
-        person = Person.query.filter_by(first_name='Mirjana').first()
+        person = Person.query.filter_by(identity_number='2506998155631').first()
         list_item = ListItem.query.filter_by(value='Da').first()
         controller = PersonExtraInfoController(
             extra_info=PersonExtraInfo(
                 person_id=person.id,
                 baptism_district=district.id,
-                baptism_date='25/05/1985',
+                baptism_date='25/05/1999',
                 parents_canonically_married=list_item.id
             ))
         controller.create()
+        document = Document.query.filter_by(id='474d4590-202a-44b6-9977-b0ae8213994d').first()
+        controller = NoteController(
+            note=Note(
+                id=baptism_note.id,
+                person_id=baptism_note.person_id,
+                marriage_district=document.district,
+                marriage_date=document.act_date,
+                spouse_name=person1.first_name,
+                chrism_place=baptism_note.chrism_place,
+                chrism_date=baptism_note.chrism_date
+            ))
+        controller.alter()
         controller = NoteController(
             note=Note(
                 id=document.id,
                 person_id=document.person_id
             ))
         controller.create()
+        controller = PersonsHistoryController(
+            personsHistory=PersonsHistory(
+                first_name=person2.first_name,
+                last_name=person2.last_name,
+                maiden_name=person2.maiden_name,
+                birth_date=person2.birth_date,
+                identity_number=person2.identity_number,
+                father_id=person2.father_id,
+                mother_id=person2.mother_id,
+                district=person2.district,
+                religion=person2.religion,
+                person=person2.id,
+                user_created=user.id
+            ))
+        controller.create()
+        spouse = Person.query.filter_by(id=document.person_id).first()
+        controller = PersonController(
+            person=Person(
+                id=person.id,
+                first_name=person.first_name,
+                last_name=spouse.last_name,
+                maiden_name=person.last_name,
+                birth_date=person.birth_date,
+                birth_place=person.birth_place,
+                identity_number=person.identity_number,
+                domicile=person.domicile,
+                father_id=person.father_id,
+                mother_id=person.father_id,
+                district=person.district,
+                religion=person.religion
+            ))
+        controller.alter()
 
 
