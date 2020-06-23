@@ -1,0 +1,29 @@
+###############################################################################
+#                               Registry Of Marriages
+
+###
+#@name create_registry_of_marriage
+POST http://0.0.0.0:5000/registry_of_marriage
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "person": {"id": "UUID as string"},
+    "person2" : {"id": "UUID as string"},
+    "act_date": "Some date",
+    "act_performed": {"id": "UUID as string"},
+    "district": {"id": "UUID as string"},
+    "volume": "Some string",
+    "year": Integer,
+    "page": Integer,
+    "number": Integer,
+    "other_notes": "Some text",
+    "best_man": {"id": "UUID as string"},
+    "best_man2" : {"id": "UUID as string"}
+}
+
+###
+#@name get_one_marriage
+GET http://0.0.0.0:5000/registry_of_marriages/<string:marriage_id>'
+content-type: application/json
+Authorization: {{token}}
