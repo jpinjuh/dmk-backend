@@ -26,6 +26,11 @@ def alter_note(note_id):
         note=Note(
             id=note_id,
             person_id=note.person_id,
+            chrism_place=note.chrism_place,
+            chrism_date=note.chrism_date,
+            marriage_district=note.marriage_district,
+            marriage_date=note.marriage_date,
+            spouse_name=note.spouse_name,
             other_notes=params.get('other_notes', None)
         ))
     controller.alter()
