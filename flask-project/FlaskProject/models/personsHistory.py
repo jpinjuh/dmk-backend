@@ -73,6 +73,9 @@ class PersonsHistory(ModelsMixin, TimestampedModelMixin, db.Model):
     last_name = db.Column(db.String(50), nullable=False)
     maiden_name = db.Column(db.String(50), nullable=True)
     birth_date = db.Column(db.Date, nullable=False)
+    birth_place = db.Column(UUID(as_uuid=True),
+                            db.ForeignKey('cities.id'),
+                            nullable=True)
     identity_number = db.Column(db.String(20), nullable=False)
     father_id = db.Column(UUID(as_uuid=True),
                          db.ForeignKey('persons.id'),

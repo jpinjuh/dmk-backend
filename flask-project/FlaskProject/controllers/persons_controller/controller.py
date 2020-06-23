@@ -302,8 +302,8 @@ class PersonController(BaseController):
             document_chrism = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%P%')).first()
             document_marriage = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%V%')).first()
             document_death = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%U%')).first()
-            extra_info_district = District.query.filter_by(id=row_data.PersonExtraInfo.baptism_district).first()
-            extra_info_pcm = ListItem.query.filter_by(id=row_data.PersonExtraInfo.parents_canonically_married).first()
+            extra_info_district = District.query.filter_by(id=row_data.PersonExtraInfo.baptism_district).first() if row_data.PersonExtraInfo is not None else None
+            extra_info_pcm = ListItem.query.filter_by(id=row_data.PersonExtraInfo.parents_canonically_married).first()  if row_data.PersonExtraInfo is not None else None
             return_dict['mother'] = obj_to_dict(mother)
             return_dict['father'] = obj_to_dict(father)
             return_dict['religion'] = obj_to_dict(row_data.ListItem)
