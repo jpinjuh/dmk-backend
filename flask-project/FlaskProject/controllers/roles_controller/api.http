@@ -12,7 +12,7 @@ Authorization: {{token}}
 }
 
 ###
-#@name role_alter
+#@name alter_role
 PUT http://0.0.0.0:5000/role/<string:role_id>
 content-type: application/json
 Authorization: {{token}}
@@ -38,13 +38,13 @@ Authorization: {{token}}
 }
 
 ###
-#@name role_get_one
+#@name get_one_role
 GET http://0.0.0.1:5000/role/<string:role_id>
 content-type: application/json
 Authorization: {{token}}
 
 ###
-#@name role_autocomplete_by_name
+#@name role_autocomplete
 POST http://0.0.0.0:5000/role/autocomplete
 content-type: application/json
 Authorization: {{token}}
@@ -53,8 +53,17 @@ Authorization: {{token}}
   "search": "Some string"
 }
 
+#@name role_search
+POST http://0.0.0.0:5000/role/search
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
 ###
-#@name role_pagination
+#@name get_roles
 GET http://0.0.0.1:5000/role?start=some_int&limit=some_int&name=some_string
 content-type: application/json
 Authorization: {{token}}

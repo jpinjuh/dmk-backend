@@ -1,0 +1,38 @@
+###############################################################################
+#                               Registry Of Baptisms
+
+###
+#@name create_registry_of_baptism
+POST http://0.0.0.0:5000/registry_of_baptism
+content-type: application/json
+Authorization: {{token}}
+
+{
+   "first_name": "Some string",
+   "last_name": "Some string",
+   "birth_date": "Some date",
+   "birth_place": {"id": "UUID as string"},
+   "identity_number": "Some string",
+   "domicile": "Some string",
+   "father": {"id": "UUID as string"},
+   "mother": {"id": "UUID as string"},
+   "district": {"id": "UUID as string"},
+   "religion": {"id": "UUID as string"},
+   "act_date": "Some date",
+   "act_performed": {"id": "UUID as string"},
+   "district": {"id": "UUID as string"},
+   "volume": "Some string",
+   "year": Integer,
+   "page": Integer,
+   "number": Integer,
+   "other_notes": "Some text",
+   "best_man": {"id": "UUID as string"},
+   "child": {"id": "UUID as string"},
+   "parents_canonically_married": {"id": "UUID as string"}
+}
+
+###
+#@name get_one_baptism
+GET http://0.0.0.0:5000/registry_of_baptism/<string:baptism_id>
+content-type: application/json
+Authorization: {{token}}

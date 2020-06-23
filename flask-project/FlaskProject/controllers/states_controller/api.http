@@ -54,7 +54,17 @@ Authorization: {{token}}
 }
 
 ###
-#@name get_state
+#@name state_search
+POST http://0.0.0.0:5000/state/search
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
+
+###
+#@name get_states
 GET http://0.0.0.1:5000/state?start=some_int&limit=some_int&name=some_string
 content-type: application/json
 Authorization: {{token}}

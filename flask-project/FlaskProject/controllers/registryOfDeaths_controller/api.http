@@ -1,0 +1,30 @@
+###############################################################################
+#                               Registry Of Deaths
+
+###
+#@name create_registry_of_death
+POST http://0.0.0.0:5000/registry_of_death
+content-type: application/json
+Authorization: {{token}}
+
+{
+    "person": {"id": "UUID as string"},
+    "date_of_death": "Some date",
+    "place_of_death": {"id": "UUID as string"},
+    "place_of_burial": {"id": "UUID as string"},
+    "birth_date": "Some date",
+    "act_date": "Some date",
+    "act_performed": {"id": "UUID as string"},
+    "district": {"id": "UUID as string"},
+    "volume": "Some string",
+    "year": Integer,
+    "page": Integer,
+    "number": Integer,
+    "other_notes": "Some text"
+}
+
+###
+#@name get_one_death
+GET http://0.0.0.0:5000/registry_of_deaths/<string:death_id>
+content-type: application/json
+Authorization: {{token}}

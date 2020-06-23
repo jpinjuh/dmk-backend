@@ -12,17 +12,60 @@ Authorization: {{token}}
   "last_name": "Some string",
   "username": "Some string",
   "email": "Some string",
+  "password_hash": "Some string",
+  "title": "Some string",
   "role": {"id":  "UUID as string"},
   "district": {"id":  "UUID as string"}
 }
 
+###
+#@name alter_user
+PUT http://0.0.0.0:5000/user/<string:user_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "first_name": "Some string",
+  "last_name": "Some string",
+  "username": "Some string",
+  "email": "Some string",
+  "title": "Some string",
+  "role": {"id":  "UUID as string"},
+  "district": {"id":  "UUID as string"}
+}
+
+###
+#@name alter_password
+PUT http://0.0.0.0:5000/user/alter_pass/<string:user_id>
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "password_change": "Some string",
+  "password_confirm": "Some string"
+}
+
+###
+#@name user_inactivate
+DELETE http://0.0.0.0:5000/user/<string:user_id>
+content-type: application/json
+Authorization: {{token}}
+
+###
+#@name user_activate
+POST http://0.0.0.0:5000/user/activate
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "id": "UUID as string"
+}
 
 ###
 #@name get_one_user
 GET http://0.0.0.1:5000/user/<string:user_id>
 content-type: application/json
 Authorization: {{token}}
-
 
 ###
 #@name user_autocomplete
@@ -34,9 +77,18 @@ Authorization: {{token}}
   "search": "Some string"
 }
 
+###
+#@name user_search
+POST http://0.0.0.0:5000/user/search
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "search": "Some string"
+}
 
 ###
 #@name get_users
-GET http://0.0.0.1:5000/user?start=some_int&limit=some_int&first_name=some_string&last_name=some_string&username=some_string&email=some_string&role_id=some_string&district_id=some_string
+GET http://0.0.0.1:5000/user?start=some_int&limit=some_int&first_name=some_string&last_name=some_string&username=some_string&email=some_string&title=some_string&role_id=some_string&district_id=some_string
 content-type: application/json
 Authorization: {{token}}
