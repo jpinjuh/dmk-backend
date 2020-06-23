@@ -771,8 +771,8 @@ class Seed(Command):
                 birth_place=person.birth_place,
                 identity_number=person.identity_number,
                 domicile=person.domicile,
+                mother_id=person.mother_id,
                 father_id=person.father_id,
-                mother_id=person.father_id,
                 district=person.district,
                 religion=person.religion
             ))
