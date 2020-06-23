@@ -3,7 +3,7 @@ from ..districts_controller.controller import DistrictController
 from ..listItems_controller.controller import ListItemController
 from ..cities_controller.controller import CityController
 from ... import Person, FlaskProjectLogException, District, ListItem, \
-    RegistryOfBaptisms, City, Document, RegistryOfDeaths, RegistryOfMarriages, ChrismNote
+    RegistryOfBaptisms, City, Document, RegistryOfDeaths, RegistryOfMarriages, ChrismNote, PersonExtraInfo
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 import datetime
@@ -302,6 +302,8 @@ class PersonController(BaseController):
             document_chrism = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%P%')).first()
             document_marriage = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%V%')).first()
             document_death = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%U%')).first()
+            extra_info_district = District.query.filter_by(id=row_data.PersonExtraInfo.baptism_district).first()
+            extra_info_pcm = ListItem.query.filter_by(id=row_data.PersonExtraInfo.parents_canonically_married).first()
             return_dict['mother'] = obj_to_dict(mother)
             return_dict['father'] = obj_to_dict(father)
             return_dict['religion'] = obj_to_dict(row_data.ListItem)
@@ -309,5 +311,8 @@ class PersonController(BaseController):
             return_dict['birth_place'] = obj_to_dict(row_data.City)
             return_dict['documents'] = [obj_to_dict(document_baptism), obj_to_dict(document_chrism),
                                         obj_to_dict(document_marriage), obj_to_dict(document_death)]
+            return_dict['extra_info'] = obj_to_dict(row_data.PersonExtraInfo)
+            return_dict['extra_info_baptism_district'] = obj_to_dict(extra_info_district)
+            return_dict['extra_info_pcm'] = obj_to_dict(extra_info_pcm)
             return return_dict
         return None

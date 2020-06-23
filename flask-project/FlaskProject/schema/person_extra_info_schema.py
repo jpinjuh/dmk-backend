@@ -10,13 +10,12 @@ class PersonExtraInfoSchema(Schema):
                          "null": "Field can not be null"})
 
     person_id = fields.Nested(
-        'PersonSchema', only=['id'], required=True)
+        'PersonSchema', only=['id'], required=False)
 
     baptism_district = fields.Nested(
-        'DistrictSchema', only=['id'], required=True)
+        'DistrictSchema', only=['id'], required=False, allow_none=True)
 
-    baptism_date = fields.Date(required=True,
-                               error_messages={"required": "Field is required"})
+    baptism_date = fields.Date(required=False, allow_none=True)
 
     parents_canonically_married = fields.Nested(
-        'ListItemSchema', only=['id'], required=True)
+        'ListItemSchema', only=['id'], required=False, allow_none=True)

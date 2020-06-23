@@ -36,12 +36,12 @@ class PersonQuery(BaseQuery):
 
     @staticmethod
     def query_details():
-        from . import District, Person, ListItem, City, RegistryOfBaptisms, RegistryOfDeaths, RegistryOfMarriages, ChrismNote
+        from . import District, Person, ListItem, City, RegistryOfBaptisms, RegistryOfDeaths, RegistryOfMarriages, ChrismNote, PersonExtraInfo
         mother = aliased(Person)
         father = aliased(Person)
         person1_marriage = aliased(RegistryOfMarriages)
         person2_marriage = aliased(RegistryOfMarriages)
-        return db.session.query(Person, District, mother, father, ListItem, City, RegistryOfBaptisms, RegistryOfBaptisms, person1_marriage, person2_marriage, ChrismNote) \
+        return db.session.query(Person, District, mother, father, ListItem, City, RegistryOfBaptisms, RegistryOfBaptisms, person1_marriage, person2_marriage, ChrismNote, PersonExtraInfo) \
             .join(mother, Person.mother_id == mother.id, isouter=True) \
             .join(father, Person.father_id == father.id, isouter=True) \
             .join(City, Person.birth_place == City.id, isouter=False)\
@@ -51,7 +51,8 @@ class PersonQuery(BaseQuery):
             .join(ChrismNote, Person.id == ChrismNote.person_id, isouter=True)\
             .join(person1_marriage, Person.id == person1_marriage.person_id, isouter=True) \
             .join(person2_marriage, Person.id == person2_marriage.person_id, isouter=True) \
-            .join(RegistryOfDeaths, Person.id == RegistryOfDeaths.person_id, isouter=True)
+            .join(RegistryOfDeaths, Person.id == RegistryOfDeaths.person_id, isouter=True) \
+            .join(PersonExtraInfo, Person.id == PersonExtraInfo.person_id, isouter=True)
 
     def get_one_details(self, _id):
         try:

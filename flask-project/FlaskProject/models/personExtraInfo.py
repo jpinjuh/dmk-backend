@@ -56,7 +56,7 @@ class PersonExtraInfo(ModelsMixin, TimestampedModelMixin, db.Model):
     id = db.Column(UUID(as_uuid=True), default=uuid4, primary_key=True)
     person_id = db.Column(UUID(as_uuid=True),
                                  db.ForeignKey('persons.id'),
-                                 nullable=False)
+                                 nullable=True)
     baptism_district = db.Column(UUID(as_uuid=True),
                                  db.ForeignKey('districts.id'),
                                  nullable=True)

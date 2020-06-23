@@ -1,14 +1,15 @@
 from flask import request, jsonify
 from .controller import PersonController
 from ..personsHistory_controller.controller import PersonsHistoryController
+from ..personExtraInfo_controller.controller import PersonExtraInfoController
 from ...flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity, get_jwt_claims
 )
-from ... import bpp, Person, FlaskProjectLogException
+from ... import bpp, Person, FlaskProjectLogException, PersonExtraInfo
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
-from ...schema import PersonSchema
+from ...schema import PersonSchema, PersonExtraInfoSchema, PersonsHistorySchema
 import datetime
 from sqlalchemy.sql import func
 
@@ -19,7 +20,19 @@ from sqlalchemy.sql import func
 def create_person():
     request_json = request.get_json()
     schema = PersonSchema(exclude=('id',))
-    params = schema.load(request_json)
+    params = schema.load({
+        'first_name': request_json['first_name'],
+        'last_name': request_json['last_name'],
+        'maiden_name': request_json.get('maiden_name', ''),
+        'birth_date': request_json['birth_date'],
+        'birth_place': request_json['birth_place'],
+        'identity_number': request_json['identity_number'],
+        'domicile': request_json['domicile'],
+        'father': request_json['father'],
+        'mother': request_json['mother'],
+        'district': request_json['district'],
+        'religion': request_json['religion']
+    })
 
     controller = PersonController(
         person=Person(
@@ -37,8 +50,26 @@ def create_person():
         ))
     controller.create()
 
+    person = controller.person
+
+    schema = PersonExtraInfoSchema(exclude=('id', 'person_id'))
+    params = schema.load({
+        'baptism_district': request_json.get('baptism_district', None),
+        'baptism_date': request_json.get('baptism_date'),
+        'parents_canonically_married': request_json.get('parents_canonically_married', None)
+    })
+
+    controller = PersonExtraInfoController(
+        extra_info=PersonExtraInfo(
+            person_id=person.id,
+            baptism_district=params.get('baptism_district').get('id') if params.get('baptism_district') is not None else None,
+            baptism_date=params.get('baptism_date', None),
+            parents_canonically_married=params.get('parents_canonically_married').get('id') if params.get('parents_canonically_married') is not None else None
+        ))
+    controller.create()
+
     return jsonify(
-        data=PersonController.get_one_details(controller.person.id),
+        data=PersonController.get_one_details(person.id),
         status=Status.status_successfully_inserted().__dict__)
 
 
