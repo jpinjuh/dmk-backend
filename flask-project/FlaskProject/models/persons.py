@@ -50,7 +50,7 @@ class PersonQuery(BaseQuery):
             .join(RegistryOfBaptisms, Person.id == RegistryOfBaptisms.person_id, isouter=True) \
             .join(ChrismNote, Person.id == ChrismNote.person_id, isouter=True)\
             .join(person1_marriage, Person.id == person1_marriage.person_id, isouter=True) \
-            .join(person2_marriage, Person.id == person2_marriage.person_id, isouter=True) \
+            .join(person2_marriage, Person.id == person2_marriage.person2_id, isouter=True) \
             .join(RegistryOfDeaths, Person.id == RegistryOfDeaths.person_id, isouter=True) \
             .join(PersonExtraInfo, Person.id == PersonExtraInfo.person_id, isouter=True)
 

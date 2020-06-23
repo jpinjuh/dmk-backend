@@ -300,7 +300,10 @@ class PersonController(BaseController):
             father = Person.query.filter_by(id=row_data.Person.father_id).first()
             document_baptism = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%K%')).first()
             document_chrism = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%P%')).first()
-            document_marriage = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%V%')).first()
+            if Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%V%')).first() is not None:
+                document_marriage = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%V%')).first()
+            else:
+                document_marriage = Document.query.filter_by(person2_id=row_data.Person.id).filter(Document.document_number.ilike('%V%')).first()
             document_death = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%U%')).first()
             extra_info_district = District.query.filter_by(id=row_data.PersonExtraInfo.baptism_district).first() if row_data.PersonExtraInfo is not None else None
             extra_info_pcm = ListItem.query.filter_by(id=row_data.PersonExtraInfo.parents_canonically_married).first()  if row_data.PersonExtraInfo is not None else None
