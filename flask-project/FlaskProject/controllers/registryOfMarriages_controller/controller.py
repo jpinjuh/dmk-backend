@@ -99,17 +99,17 @@ class RegistryOfMarriagesController(BaseController):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.RegistryOfMarriages)
             person2 = Person.query.filter_by(id=row_data.RegistryOfMarriages.person2_id).first()
-            person1_birth_place = City.query.filter_by(id=row_data.Person.birth_place).first()
-            person2_birth_place = City.query.filter_by(id=person2.birth_place).first()
-            person1_mother = Person.query.filter_by(id=row_data.Person.mother_id).first()
-            person1_father = Person.query.filter_by(id=row_data.Person.father_id).first()
-            person2_mother = Person.query.filter_by(id=person2.mother_id).first()
-            person2_father = Person.query.filter_by(id=person2.father_id).first()
+            person1_birth_place = City.query.filter_by(id=row_data.Person.birth_place).first() if row_data.Person is not None else None
+            person2_birth_place = City.query.filter_by(id=person2.birth_place).first() if person2 is not None else None
+            person1_mother = Person.query.filter_by(id=row_data.Person.mother_id).first() if row_data.Person is not None else None
+            person1_father = Person.query.filter_by(id=row_data.Person.father_id).first() if row_data.Person is not None else None
+            person2_mother = Person.query.filter_by(id=person2.mother_id).first() if person2 is not None else None
+            person2_father = Person.query.filter_by(id=person2.father_id).first() if person2 is not None else None
             best_man1 = Person.query.filter_by(id=row_data.RegistryOfMarriages.best_man).first()
             best_man2 = Person.query.filter_by(id=row_data.RegistryOfMarriages.best_man2).first()
             document_marriage = Document.query.filter_by(id=row_data.RegistryOfMarriages.id).first()
-            marriage_district = District.query.filter_by(id=document_marriage.district).first()
-            marriage_archdiocese = Archdiocese.query.filter_by(id=marriage_district.archdiocese_id).first()
+            marriage_district = District.query.filter_by(id=document_marriage.district).first() if document_marriage is not None else None
+            marriage_archdiocese = Archdiocese.query.filter_by(id=marriage_district.archdiocese_id).first() if marriage_district is not None else None
             person1_baptism_document = Document.query.filter_by(person_id=row_data.Person.id).filter(Document.document_number.ilike('%K%')).first()
             person1_extra_info = PersonExtraInfo.query.filter_by(person_id=row_data.Person.id).first()
             if person1_baptism_document is not None:
@@ -118,8 +118,8 @@ class RegistryOfMarriagesController(BaseController):
                 person1_baptism_district = District.query.filter_by(id=person1_extra_info.baptism_district).first()
             else:
                 person1_baptism_district = None
-            person2_baptism_document = Document.query.filter_by(person_id=person2.id).filter(Document.document_number.ilike('%K%')).first()
-            person2_extra_info = PersonExtraInfo.query.filter_by(person_id=person2.id).first()
+            person2_baptism_document = Document.query.filter_by(person_id=person2.id).filter(Document.document_number.ilike('%K%')).first() if person2 is not None else None
+            person2_extra_info = PersonExtraInfo.query.filter_by(person_id=person2.id).first() if person2 is not None else None
             if person2_baptism_document is not None:
                 person2_baptism_district = District.query.filter_by(id=person2_baptism_document.district).first()
             elif person2_extra_info is not None:
@@ -127,7 +127,7 @@ class RegistryOfMarriagesController(BaseController):
             else:
                 person2_baptism_district = None
             person1_religion = ListItem.query.filter_by(id=Person.religion).first()
-            person2_religion = ListItem.query.filter_by(id=person2.religion).first()
+            person2_religion = ListItem.query.filter_by(id=person2.religion).first() if person2 is not None else None
             person1_baptism = RegistryOfBaptisms.query.filter_by(person_id=row_data.Person.id).first()
             if person1_baptism is not None:
                 person1_parents_canonically_married = ListItem.query.filter_by(id=person1_baptism.parents_canonically_married).first()

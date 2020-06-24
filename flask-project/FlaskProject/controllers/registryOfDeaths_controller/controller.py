@@ -119,8 +119,8 @@ class RegistryOfDeathsController(BaseController):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.RegistryOfDeaths)
             person = Person.query.filter_by(id=row_data.RegistryOfDeaths.person_id).first()
-            mother = Person.query.filter_by(id=person.mother_id).first()
-            father = Person.query.filter_by(id=person.father_id).first()
+            mother = Person.query.filter_by(id=person.mother_id).first() if person is not None else None
+            father = Person.query.filter_by(id=person.father_id).first() if person is not None else None
             death = City.query.filter_by(id=row_data.RegistryOfDeaths.place_of_death).first()
             birth = City.query.filter_by(id=row_data.RegistryOfBaptisms.birth_place).first()
             district_person = District.query.filter_by(id=row_data.Person.district).first()

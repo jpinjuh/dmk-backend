@@ -103,8 +103,8 @@ class RegistryOfBaptismsController(BaseController):
             return_dict = obj_to_dict(row_data.RegistryOfBaptisms)
             person = Person.query.filter_by(id=row_data.RegistryOfBaptisms.person_id).first()
             best_man = Person.query.filter_by(id=row_data.RegistryOfBaptisms.best_man).first()
-            mother = Person.query.filter_by(id=person.mother_id).first()
-            father = Person.query.filter_by(id=person.father_id).first()
+            mother = Person.query.filter_by(id=person.mother_id).first() if person is not None else None
+            father = Person.query.filter_by(id=person.father_id).first() if person is not None else None
             mother_religion = ListItem.query.filter_by(id=mother.religion).first() if mother is not None else None
             father_religion = ListItem.query.filter_by(id=father.religion).first() if father is not None else None
             child = ListItem.query.filter_by(id=row_data.RegistryOfBaptisms.child).first()

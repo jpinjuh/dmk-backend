@@ -83,15 +83,15 @@ class ChrismNoteController(BaseController):
         if row_data is not None:
             return_dict = obj_to_dict(row_data.ChrismNote)
             person = Person.query.filter_by(id=row_data.ChrismNote.person_id).first()
-            mother = Person.query.filter_by(id=person.mother_id).first()
-            father = Person.query.filter_by(id=person.father_id).first()
+            mother = Person.query.filter_by(id=person.mother_id).first() if person is not None else None
+            father = Person.query.filter_by(id=person.father_id).first() if person is not None else None
             best_man = Person.query.filter_by(id=row_data.ChrismNote.best_man).first()
-            birth_place = City.query.filter_by(id=person.birth_place).first()
-            district_best_man = District.query.filter_by(id=best_man.district).first()
+            birth_place = City.query.filter_by(id=person.birth_place).first() if person is not None else None
+            district_best_man = District.query.filter_by(id=best_man.district).first() if best_man is not None else None
             document_baptism = Document.query.filter_by(person_id=row_data.ChrismNote.person_id).filter(Document.document_number.ilike('%K%')).first()
-            baptism_district = District.query.filter_by(id=document_baptism.district).first()
+            baptism_district = District.query.filter_by(id=document_baptism.district).first() if document_baptism is not None else None
             document_chrism = Document.query.filter_by(id=row_data.ChrismNote.id).first()
-            chrism_district = District.query.filter_by(id=document_chrism.district).first()
+            chrism_district = District.query.filter_by(id=document_chrism.district).first() if document_chrism is not None else None
             return_dict['person'] = obj_to_dict(person)
             return_dict['birth_place'] = obj_to_dict(birth_place)
             return_dict['mother'] = obj_to_dict(mother)
