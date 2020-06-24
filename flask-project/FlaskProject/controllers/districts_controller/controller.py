@@ -2,7 +2,7 @@ from sqlalchemy import and_
 
 from ..cities_controller.controller import CityController
 from ..archdioceses_controller.controller import ArchdioceseController
-from ... import City, FlaskProjectLogException, State, District, Archdiocese
+from ... import City, FlaskProjectLogException, District, Archdiocese
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 

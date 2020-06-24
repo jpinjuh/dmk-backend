@@ -1,6 +1,5 @@
-from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
-from ... import Person, City, FlaskProjectLogException, District, ChrismNote, Document, User
+from ... import Person, City, FlaskProjectLogException, District, ChrismNote, Document
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 

@@ -1,7 +1,6 @@
 from flask import request, jsonify
 from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
+    jwt_required, get_jwt_claims
 )
 from .controller import RegistryOfMarriagesController
 from ..documents_controller.controller import DocumentController
@@ -10,9 +9,9 @@ from ..persons_controller.controller import PersonController
 from ..notes_controller.controller import NoteController
 from ..personsHistory_controller.controller import PersonsHistoryController
 from ... import bpp, RegistryOfMarriages, FlaskProjectLogException, Document, Person, ListItem, Counter, Note, District, RegistryOfBaptisms, PersonsHistory
-from ...general import Status, obj_to_dict
+from ...general import Status
 from ...general.route_decorators import allow_access
-from ...schema import PersonSchema, NoteSchema, DocumentSchema, RegistryOfMarriagesSchema
+from ...schema import NoteSchema, DocumentSchema, RegistryOfMarriagesSchema
 
 
 @bpp.route('/registry_of_marriage', methods=['POST'])

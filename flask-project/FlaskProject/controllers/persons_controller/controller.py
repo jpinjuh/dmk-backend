@@ -3,10 +3,9 @@ from ..districts_controller.controller import DistrictController
 from ..listItems_controller.controller import ListItemController
 from ..cities_controller.controller import CityController
 from ... import Person, FlaskProjectLogException, District, ListItem, \
-    RegistryOfBaptisms, City, Document, RegistryOfDeaths, RegistryOfMarriages, ChrismNote, PersonExtraInfo
+    City, Document, RegistryOfMarriages
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
-import datetime
 
 
 class PersonController(BaseController):

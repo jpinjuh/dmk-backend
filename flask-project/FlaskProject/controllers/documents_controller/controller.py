@@ -3,7 +3,7 @@ from ..persons_controller.controller import PersonController
 from ..listItems_controller.controller import ListItemController
 from ..users_controller.controller import UserController
 from ..districts_controller.controller import DistrictController
-from ... import Document, ListItem, Person, User, District, FlaskProjectLogException
+from ... import Document, Person, User, District, FlaskProjectLogException
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 

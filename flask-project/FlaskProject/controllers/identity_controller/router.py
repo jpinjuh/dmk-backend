@@ -1,18 +1,15 @@
-from flask import request, jsonify, make_response, current_app, Flask
+from flask import request, jsonify
 from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
+    jwt_required, create_access_token,
     get_jwt_identity, get_jwt_claims
 )
 from ...controllers.users_controller.controller import UserController
-from ... import bpp, User, FlaskProjectLogException
-from ...general import Status, authenticate, identity
+from ... import bpp, User
+from ...general import Status
 from ...general.route_decorators import allow_access
-from ...schema import UserSchema, PasswordSchema, YourPasswordSchema
-from werkzeug.security import generate_password_hash, check_password_hash
-import jwt
-import json
+from ...schema import YourPasswordSchema
+from werkzeug.security import generate_password_hash
 import datetime
-import uuid
 
 
 @bpp.route('/login', methods=('POST',))

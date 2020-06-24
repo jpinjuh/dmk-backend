@@ -4,7 +4,6 @@ from ..roles_controller.controller import RoleController
 from ... import User, FlaskProjectLogException, Role, District
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
-from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class UserController(BaseController):

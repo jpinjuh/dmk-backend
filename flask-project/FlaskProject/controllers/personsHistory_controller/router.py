@@ -1,14 +1,8 @@
-import controller as controller
 from flask import request, jsonify
-from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
-)
+from ...flask_jwt_extended import jwt_required
 from . controller import PersonsHistoryController
-from ... import bpp, PersonsHistory, FlaskProjectLogException, Person
-from ...general import Status, obj_to_dict
+from ... import bpp
 from ...general.route_decorators import allow_access
-from ...schema import PersonsHistorySchema
 
 
 @bpp.route('/persons_history', methods=['GET'])

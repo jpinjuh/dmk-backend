@@ -3,7 +3,6 @@ from sqlalchemy import and_
 from ... import Permission, FlaskProjectLogException
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
-from ...models import User
 
 class PermissionController(BaseController):
 

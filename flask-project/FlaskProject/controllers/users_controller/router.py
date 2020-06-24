@@ -1,14 +1,11 @@
 from flask import request, jsonify
-from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
-)
+from ...flask_jwt_extended import jwt_required
 from .controller import UserController
 from ... import bpp, User, FlaskProjectLogException
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import UserSchema, PasswordSchema
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 
 
 @bpp.route('/user', methods=['POST'])

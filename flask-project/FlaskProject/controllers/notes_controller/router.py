@@ -1,11 +1,8 @@
 from flask import request, jsonify
-from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
-)
+from ...flask_jwt_extended import jwt_required
 from .controller import NoteController
-from ... import bpp, Note, FlaskProjectLogException
-from ...general import Status, obj_to_dict
+from ... import bpp, Note
+from ...general import Status
 from ...general.route_decorators import allow_access
 from ...schema import NoteSchema
 

@@ -1,17 +1,11 @@
 from flask import request, jsonify
 from .controller import PersonController
-from ..personsHistory_controller.controller import PersonsHistoryController
 from ..personExtraInfo_controller.controller import PersonExtraInfoController
-from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
-)
+from ...flask_jwt_extended import jwt_required
 from ... import bpp, Person, FlaskProjectLogException, PersonExtraInfo
-from ...general import Status, obj_to_dict
+from ...general import Status
 from ...general.route_decorators import allow_access
-from ...schema import PersonSchema, PersonExtraInfoSchema, PersonsHistorySchema
-import datetime
-from sqlalchemy.sql import func
+from ...schema import PersonSchema, PersonExtraInfoSchema
 
 
 @bpp.route('/person', methods=['POST'])

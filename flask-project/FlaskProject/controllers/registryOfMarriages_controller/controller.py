@@ -1,9 +1,7 @@
-from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
-from ... import Person, City, FlaskProjectLogException, District, Document, RegistryOfMarriages, Archdiocese, RegistryOfBaptisms, ListItem, User, Note, PersonExtraInfo
+from ... import Person, City, FlaskProjectLogException, District, Document, RegistryOfMarriages, Archdiocese, RegistryOfBaptisms, ListItem, PersonExtraInfo
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
-from sqlalchemy.orm import relationship, foreign, aliased
 
 
 class RegistryOfMarriagesController(BaseController):

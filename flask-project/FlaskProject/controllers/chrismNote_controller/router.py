@@ -1,18 +1,16 @@
 from flask import request, jsonify
 from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
+    jwt_required, get_jwt_claims
 )
 from .controller import ChrismNoteController
 from ..documents_controller.controller import DocumentController
 from ..counter_controller.controller import CounterController
-from ..persons_controller.controller import PersonController
 from ..notes_controller.controller import NoteController
-from ... import bpp, RegistryOfDeaths, FlaskProjectLogException,\
-    Document, Person, ListItem, Counter, ChrismNote, Note, City, District, RegistryOfBaptisms
-from ...general import Status, obj_to_dict
+from ... import bpp, FlaskProjectLogException,\
+    Document, ListItem, Counter, ChrismNote, Note, City, District, RegistryOfBaptisms
+from ...general import Status
 from ...general.route_decorators import allow_access
-from ...schema import PersonSchema, ChrismNoteSchema, NoteSchema, DocumentSchema
+from ...schema import ChrismNoteSchema, DocumentSchema
 
 
 @bpp.route('/chrism_note', methods=['POST'])

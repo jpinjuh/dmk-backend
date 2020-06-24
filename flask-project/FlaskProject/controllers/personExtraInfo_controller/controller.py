@@ -1,6 +1,4 @@
-from sqlalchemy import and_
-
-from ... import PersonExtraInfo, FlaskProjectLogException, Person, District, ListItem
+from ... import PersonExtraInfo, FlaskProjectLogException
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 

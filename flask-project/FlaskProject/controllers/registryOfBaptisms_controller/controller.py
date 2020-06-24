@@ -1,8 +1,7 @@
-from sqlalchemy import and_
 from ..cities_controller.controller import CityController
 from ..listItems_controller.controller import ListItemController
 from ..persons_controller.controller import PersonController
-from ... import RegistryOfBaptisms, Person, City, ListItem, FlaskProjectLogException, District, Archdiocese, Note, Document
+from ... import RegistryOfBaptisms, Person, City, ListItem, FlaskProjectLogException, District
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
 

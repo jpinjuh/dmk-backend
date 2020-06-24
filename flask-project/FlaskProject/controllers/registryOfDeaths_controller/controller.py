@@ -1,11 +1,9 @@
-from sqlalchemy import and_
 from ..persons_controller.controller import PersonController
 from ..cities_controller.controller import CityController
 from ..listItems_controller.controller import ListItemController
-from ... import RegistryOfDeaths, Person, City, ListItem, FlaskProjectLogException, Document, District, Archdiocese, User, Note, RegistryOfBaptisms, RegistryOfMarriages
+from ... import RegistryOfDeaths, Person, City, ListItem, FlaskProjectLogException, District, RegistryOfBaptisms, RegistryOfMarriages
 from ...controllers.base_controller import BaseController
 from ...general import Status, obj_to_dict
-from flask import jsonify
 
 
 class RegistryOfDeathsController(BaseController):

@@ -1,17 +1,15 @@
 from flask import request, jsonify
 from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
+    jwt_required, get_jwt_claims
 )
 from .controller import RegistryOfDeathsController
 from ..documents_controller.controller import DocumentController
 from ..counter_controller.controller import CounterController
-from ..persons_controller.controller import PersonController
 from ..notes_controller.controller import NoteController
-from ... import bpp, RegistryOfDeaths, FlaskProjectLogException, Document, Person, ListItem, Counter, Note
-from ...general import Status, obj_to_dict
+from ... import bpp, RegistryOfDeaths, FlaskProjectLogException, Document, ListItem, Counter, Note
+from ...general import Status
 from ...general.route_decorators import allow_access
-from ...schema import PersonSchema, RegistryOfDeathsSchema, NoteSchema, DocumentSchema
+from ...schema import RegistryOfDeathsSchema, NoteSchema, DocumentSchema
 
 
 @bpp.route('/registry_of_death', methods=['POST'])

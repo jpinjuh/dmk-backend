@@ -1,10 +1,9 @@
 from flask import request, jsonify
 from .controller import ListItemController
 from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
+    jwt_required, get_jwt_claims
 )
-from ... import bpp, ListItem, List, FlaskProjectLogException
+from ... import bpp, ListItem
 from ...general import Status, obj_to_dict
 from ...general.route_decorators import allow_access
 from ...schema import ListItemSchema

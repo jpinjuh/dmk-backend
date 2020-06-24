@@ -1,9 +1,5 @@
 from flask import request, jsonify
-#from ...flask_jwt import JWT, current_identity, jwt_required
-from ...flask_jwt_extended import (
-    JWTManager, jwt_required, create_access_token,
-    get_jwt_identity, get_jwt_claims
-)
+from ...flask_jwt_extended import jwt_required
 from .controller import StateController
 from ... import bpp, State, FlaskProjectLogException
 from ...general import Status, obj_to_dict
