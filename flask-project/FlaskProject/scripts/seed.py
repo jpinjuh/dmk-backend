@@ -396,7 +396,7 @@ class Seed(Command):
                 first_name='Ana',
                 last_name='Kraljević',
                 maiden_name='Marijanović',
-                birth_date='17/01/1978',
+                birth_date='1973-01-17',
                 birth_place=city.id,
                 identity_number='1701978155631',
                 domicile='Bobanova Draga bb, 88345 Sovići',
