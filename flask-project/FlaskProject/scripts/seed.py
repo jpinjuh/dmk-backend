@@ -408,7 +408,7 @@ class Seed(Command):
             person=Person(
                 first_name='Ivo',
                 last_name='Ivić',
-                birth_date='10/05/1985',
+                birth_date='1985-05-10',
                 birth_place=city.id,
                 identity_number='1005985997875',
                 domicile='Bobanova Draga bb, 88345 Sovići',
@@ -422,7 +422,7 @@ class Seed(Command):
             person=Person(
                 first_name='Marija',
                 last_name='Ivić',
-                birth_date='25/06/1998',
+                birth_date='1998-06-25',
                 birth_place=city.id,
                 identity_number='2506998155631',
                 domicile='Bobanova Draga bb, 88345 Sovići',
@@ -436,7 +436,7 @@ class Seed(Command):
             person=Person(
                 first_name='Karolina',
                 last_name='Stipić',
-                birth_date='25/06/1996',
+                birth_date='1996-06-25',
                 birth_place=city.id,
                 identity_number='25069961556317',
                 domicile='Bobanova Draga bb, 88345 Sovići',
@@ -448,7 +448,7 @@ class Seed(Command):
             person=Person(
                 first_name='Ante',
                 last_name='Ivić',
-                birth_date='11/06/2005',
+                birth_date='2005-06-11',
                 birth_place=city.id,
                 identity_number='11062005655131',
                 domicile='Bobanova Draga bb, 88345 Sovići',
@@ -462,7 +462,7 @@ class Seed(Command):
             person=Person(
                 first_name='Josip',
                 last_name='Ivić',
-                birth_date='11/06/2010',
+                birth_date='2010-06-11',
                 birth_place=city.id,
                 identity_number='11062010655131',
                 domicile='Bobanova Draga bb, 88345 Sovići',
@@ -476,7 +476,7 @@ class Seed(Command):
             person=Person(
                 first_name='Zlatko',
                 last_name='Marković',
-                birth_date='11/05/1987',
+                birth_date='1987-05-11',
                 birth_place=city.id,
                 identity_number='11051987155631',
                 domicile='Kralja Tomislava, 41',
@@ -488,7 +488,7 @@ class Seed(Command):
             person=Person(
                 first_name='Zlata',
                 last_name='Marković',
-                birth_date='10/08/1988',
+                birth_date='1988-08-10',
                 birth_place=city.id,
                 identity_number='1008988155631',
                 domicile='Kralja Tomislava, 41',
@@ -502,7 +502,7 @@ class Seed(Command):
             person=Person(
                 first_name='Marko',
                 last_name='Marković',
-                birth_date='10/08/1998',
+                birth_date='1998-08-10',
                 birth_place=city.id,
                 identity_number='10089981556311',
                 domicile='Kralja Tomislava, 41',
@@ -537,7 +537,7 @@ class Seed(Command):
                 id='95e923dd-0121-4ac5-a321-c1de097a14d9',
                 document_type=document_type_value.id,
                 person_id=person.id,
-                act_date='24/07/1998',
+                act_date='1998-07-24',
                 act_performed=user.id,
                 document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
@@ -577,7 +577,7 @@ class Seed(Command):
                 id='13771757-26ef-4d08-bc62-6e3b172bfb38',
                 document_type=document_type_value.id,
                 person_id=person.id,
-                act_date='24/07/2005',
+                act_date='2005-07-24',
                 act_performed=user.id,
                 document_number='K - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
@@ -617,7 +617,7 @@ class Seed(Command):
                 id='94a69e96-57a8-413c-be80-f52c390afc72',
                 document_type=document_type_value.id,
                 person_id=person.id,
-                act_date='20/06/2020',
+                act_date='2020-06-20',
                 act_performed=user.id,
                 document_number='U - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
@@ -640,7 +640,7 @@ class Seed(Command):
             death=RegistryOfDeaths(
                 id=document.id,
                 person_id=person.id,
-                date_of_death='19/06/2020',
+                date_of_death='2020-06-19',
                 place_of_death=city.id,
                 place_of_burial=cemetery.id
             ))
@@ -655,7 +655,7 @@ class Seed(Command):
                 id='75053a32-362b-4ddf-b087-5865fd7aea4b',
                 document_type=document_type_value.id,
                 person_id=person.id,
-                act_date='20/08/2015',
+                act_date='2015-08-20',
                 act_performed=user.id,
                 document_number='P - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
@@ -694,7 +694,7 @@ class Seed(Command):
                 document_type=document_type_value.id,
                 person_id=person1.id,
                 person2_id=person2.id,
-                act_date='20/02/2020',
+                act_date='2020-02-20',
                 act_performed=user.id,
                 document_number='V - ' + CounterController.generate(Counter.counters['document_number']),
                 district=district.id,
@@ -723,7 +723,7 @@ class Seed(Command):
             extra_info=PersonExtraInfo(
                 person_id=person.id,
                 baptism_district=district.id,
-                baptism_date='25/05/1999',
+                baptism_date='1999-05-25',
                 parents_canonically_married=list_item.id
             ))
         controller.create()
